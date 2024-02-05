@@ -1,0 +1,12 @@
+asgiref
+Django
+django-widget-tweaks
+sqlparse
+tzdata
+psycopg
+
+pip
+wheel
+setuptools
+python-dotenv
+whitenoise
