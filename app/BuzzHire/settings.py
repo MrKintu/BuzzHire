@@ -11,21 +11,29 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load environment variables
+load_dotenv()
+env = os.environ
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-c5ze5*+$4vn0f@p@ox$%jeb#ffzlyzi)g-*v))13wur_suhr7#"
+SECRET_KEY = env.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+]
 
 
 # Application definition
@@ -40,6 +48,7 @@ INSTALLED_APPS = [
 
     # My Apps
     "company",
+    "dashboard",
     "resume",
     "users",
 
@@ -49,6 +58,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -62,7 +72,7 @@ ROOT_URLCONF = "BuzzHire.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -83,9 +93,69 @@ WSGI_APPLICATION = "BuzzHire.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env.get("DB_NAME"),
+        "USER": env.get("DB_USER"),
+        "PASSWORD": env.get("DB_PASS"),
+        "HOST": env.get("DB_HOST"),
+        "PORT": env.get("DB_PORT"),
     }
+}
+
+
+LOGGING = {
+    "version": 1,  # the dictConfig format version
+    "disable_existing_loggers": False,  # retain the default loggers
+    "formatters": {
+        "verbose": {
+            "format": "{name} {levelname} {asctime} {module} {process:d} {thread:d} "
+                      "{message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "debug_file": {
+            "class": "logging.FileHandler",
+            "filename": "logs/debug.log",
+            "level": "DEBUG",
+            "formatter": "verbose",
+        },
+        "info_file": {
+            "class": "logging.FileHandler",
+            "filename": "logs/info.log",
+            "level": "INFO",
+            "formatter": "verbose",
+        },
+        "warning_file": {
+            "class": "logging.FileHandler",
+            "filename": "logs/warning.log",
+            "level": "WARNING",
+            "formatter": "verbose",
+        },
+        "error_file": {
+            "class": "logging.FileHandler",
+            "filename": "logs/error.log",
+            "level": "ERROR",
+            "formatter": "verbose",
+        },
+        "critical_file": {
+            "class": "logging.FileHandler",
+            "filename": "logs/critical.log",
+            "level": "CRITICAL",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "": {
+            "level": "DEBUG",
+            "handlers": ["debug_file", "info_file", "warning_file", "error_file",
+                         "critical_file"],
+        },
+    },
 }
 
 
@@ -124,11 +194,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, "public")
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-AUTH_USER_MODEL = "users.User"
-AUTHENTICATION_BACKENDS = ["users.backends.EmailBackend"]
