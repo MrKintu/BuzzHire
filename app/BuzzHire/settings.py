@@ -50,10 +50,7 @@ INSTALLED_APPS = [
     "company",
     "dashboard",
     "resume",
-    "users",
-
-    # 3rd Party Apps
-    "widget_tweaks",
+    "users"
 ]
 
 MIDDLEWARE = [
@@ -93,7 +90,7 @@ WSGI_APPLICATION = "BuzzHire.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": env.get("DB_NAME"),
         "USER": env.get("DB_USER"),
         "PASSWORD": env.get("DB_PASS"),
@@ -198,8 +195,24 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATIC_ROOT = os.path.join(BASE_DIR, "public")
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# CSRF SESSIONS SETTINGS
+CSRF_USE_SESSIONS = True
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
+# SESSION_COOKIE_SECURE = False
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'
+LOGIN_URL = 'login'

@@ -13,7 +13,7 @@ def rename_file(instance, filename):
                            for i in range(5))
     newname = '{}{}.{}'.format(rand_strings, uuid4().hex, ext)
     BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
-    new_path = f'{BASE_DIR}\\uploads\\{newname}'
+    new_path = f'{BASE_DIR}\\media\\{newname}'
 
     return new_path
 
@@ -25,6 +25,7 @@ class Resume(models.Model):
     years = models.IntegerField(null=True, blank=True)
     resume = models.FileField(upload_to=rename_file, null=True, blank=True)
     street = models.CharField(max_length=100, null=True, blank=True)
+    city = models.CharField(max_length=100, null=True, blank=True)
     zipcode = models.CharField(max_length=100, null=True, blank=True)
     state = models.CharField(max_length=100, null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)

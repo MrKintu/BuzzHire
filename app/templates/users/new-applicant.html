@@ -12,7 +12,16 @@
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12">
-        <form class="card card-registration card-registration-2 bg-light-subtle" style="border-radius: 15px;">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}}" role="alert">
+            {{ message }}
+        </div>
+        <br/>
+        {% endfor %}
+        {% endif %}
+        <form class="card card-registration card-registration-2 bg-light-subtle" style="border-radius: 15px;"
+              method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="card-body p-0">
             <div class="row g-0">
@@ -32,7 +41,7 @@
 
                   <div class="mb-4 pb-2">
                     <select class="select" name="title">
-                      <option value="0">Title</option>
+                      <option>Title</option>
                       <option value="1">Mr</option>
                       <option value="2">Mrs</option>
                       <option value="3">Ms</option>
@@ -64,7 +73,7 @@
                     </div></div>
 
                     <div class="col-md-6">
-                      <input type="number" id="number" class="form-control" required/>
+                      <input type="number" id="number" class="form-control" name="years" required/>
                       <label class="form-label" for="number">Years of Experience</label>
                     </div>
                   </div>
@@ -72,7 +81,7 @@
                   <br>
                   <div class="mb-4 pb-2"><div class="form-outline">
                     <input type="file" id="resume" class="form-control" name="resume" required/>
-                    <label class="form-label" for="resume">Upload CV</label>
+                    <label class="form-label" for="resume">Upload Resume</label>
                     <div class="small text-muted mt-2">
                       Upload your CV/Resume or any other relevant file. Max file size 50 MB
                     </div>
@@ -85,8 +94,8 @@
 
                   <div class="mb-4 pb-2">
                     <div class="form-outline form-white">
-                      <input type="text" id="address" class="form-control" name="address" required/>
-                      <label class="form-label" for="address">Street Address</label>
+                      <input type="text" id="street" class="form-control" name="street" required/>
+                      <label class="form-label" for="street">Street Address</label>
                     </div>
                   </div>
 
@@ -125,7 +134,7 @@
 
                   <div class="row">
                     <div class="col-md-5 mb-4 pb-2"><div class="form-outline form-white">
-                      <input type="text" id="area_code" class="form-control" name="area_code" required/>
+                      <input type="text" id="area_code" class="form-control" name="code" required/>
                       <label class="form-label" for="area_code">Area Code</label>
                     </div></div>
 

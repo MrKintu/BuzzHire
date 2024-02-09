@@ -1,9 +1,9 @@
 asgiref
 Django
-django-widget-tweaks
 sqlparse
 tzdata
 psycopg
+psycopg2-binary
 
 pip
 wheel
