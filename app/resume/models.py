@@ -13,13 +13,13 @@ def rename_file(instance, filename):
                            for i in range(5))
     newname = '{}{}.{}'.format(rand_strings, uuid4().hex, ext)
     BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
-    new_path = f'{BASE_DIR}\\media\\{newname}'
+    new_path = f'{BASE_DIR}\\media\\resumes\\{newname}'
 
     return new_path
 
 
 class Resume(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, blank=True)
     industry = models.CharField(max_length=100, null=True, blank=True)
     profession = models.CharField(max_length=100, null=True, blank=True)
     years = models.IntegerField(null=True, blank=True)

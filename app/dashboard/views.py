@@ -1,13 +1,25 @@
 from django.shortcuts import render, redirect
+from job.models import JobPost
+from company.models import Company
 
 
 def index(request):
-    return render(request, "dashboard/index.html")
+    if request.method == "POST":
+        data = request.POST
+        query = data["search"]
+    else:
+        return render(request, "dashboard/index.html")
 
 
 def applicant_dash(request):
-    return render(request, "dashboard/applicant-dash.html")
+    if request.method == "POST":
+        pass
+    else:
+        return render(request, "dashboard/applicant-dash.html")
 
 
 def recruiter_dash(request):
-    return render(request, "dashboard/recruiter-dash.html")
+    if request.method == "POST":
+        pass
+    else:
+        return render(request, "dashboard/recruiter-dash.html")

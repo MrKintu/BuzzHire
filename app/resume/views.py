@@ -16,11 +16,12 @@ def edit_resume(request):
         #     pass
         user_state = User.objects.get(username=user.username)
         resume = Resume.objects.get(user=user_state)
-
         new_file = request.FILES["resume"]
         ext1 = new_file.name.split('.')[-1]
         if ext1 != "pdf":
             messages.warning(request, "Upload failed. Please upload in pdf format.")
+            return redirect("edit-resume")
+
         resume.industry = data["industry"]
         resume.profession = data["profession"]
         resume.years = data["years"]

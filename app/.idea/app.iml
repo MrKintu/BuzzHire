@@ -5,6 +5,8 @@
       <excludeFolder url="file://$MODULE_DIR$/logs" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
       <excludeFolder url="file://$MODULE_DIR$/media" />
+      <excludeFolder url="file://$MODULE_DIR$/public" />
+      <excludeFolder url="file://$MODULE_DIR$/static" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
