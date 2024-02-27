@@ -10,3 +10,4 @@ wheel
 setuptools
 python-dotenv
 whitenoise
+django-filter

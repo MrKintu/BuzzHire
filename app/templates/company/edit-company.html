@@ -10,15 +10,15 @@
 <body>
 <div class="container">
   <div class="py-5 text-center">
-    <a href="{% url 'recruiter-dash' %}">
-      <img class="d-block mx-auto mb-4" alt="" width="72" height="72"
-           src="{{ site.baseurl }}/docs/{{ site.docs_version }}/assets/brand/bootstrap-solid.svg">
-    </a>
+    <img class="d-block mx-auto mb-4" alt="" width="72" height="72"
+         src="{{ site.baseurl }}/docs/{{ site.docs_version }}/assets/brand/bootstrap-solid.svg">
     <h2>Edit Your Company Details</h2>
   </div>
 
   <div class="row">
     <div class="col-md-4 order-md-2 mb-4">
+      <a href="{% url 'recruiter-dash' %}" class="btn btn-danger">Go Back</a>
+      <br/> <br/>
       <h4 class="d-flex justify-content-between align-items-center mb-3">
         <span class="text-muted">Your Profile</span>
       </h4>
@@ -53,12 +53,28 @@
       <h4 class="mb-3">Keep these details up to date.</h4>
       <form class="needs-validation" method="post" enctype="multipart/form-data"> {% csrf_token %}
         <div class="mb-3">
+          <label for="industry">Industry</label>
+          <select name="industry" id="industry" class="form-control" required>
+            <option value="Transportation">Transportation</option>
+            <option value="Pharmaceutical">Pharmaceutical</option>
+            <option value="Telecommunications">Telecommunications</option>
+            <option value="Manufacturing">Manufacturing</option>
+            <option value="Mining">Mining</option>
+            <option value="Hospitality">Hospitality</option>
+            <option value="Media and News">Media and News</option>
+            <option value="Agriculture">Agriculture</option>
+            <option value="Computer and Technology">Computer and Technology</option>
+            <option value="Education">Education</option>
+            <option value="Finance and Economics">Finance and Economics</option>
+            <option value="Health Care">Health Care</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
           <label for="phone">Phone Number</label>
           <input type="text" class="form-control" id="phone" name="phone" value="{{ phone }}" required>
-          <div class="invalid-feedback">
-            Please enter your phone number.
-          </div>
         </div>
+
         <div class="mb-3">
           <label for="website">Website</label>
           <div class="input-group">
@@ -66,11 +82,9 @@
               <span class="input-group-text">@</span>
             </div>
             <input type="url" class="form-control" id="website" name="website" value="{{ website }}" required>
-            <div class="invalid-feedback" style="width: 100%;">
-              Your Company Website is required.
-            </div>
           </div>
         </div>
+
         <div class="mb-3">
           <label for="street">Street Address</label>
           <input type="text" class="form-control" id="street" name="street" value="{{ street }}" required>

@@ -9,103 +9,99 @@
     <title>Search</title>
 </head>
 <body>
-    <div class="container bg-primary">
-        <div class="py-5 text-center">
-            <a href="{% url 'recruiter-dash' %}">
-              <img class="d-block mx-auto mb-4" alt="" width="72" height="72"
-                   src="{{ site.baseurl }}/docs/{{ site.docs_version }}/assets/brand/bootstrap-solid.svg">
-            </a>
-            <h2>Search for Jobs</h2>
-        </div>
+  <header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+      <a class="navbar-brand" href="{% url 'index' %}">BuzzHire</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+              aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'login' %}">Home</a>
+          </li>
+        </ul>
+        <form class="form-inline mt-2 mt-md-0" method="post" enctype="multipart/form-data"> {% csrf_token %}
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search">
+          <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+  </header>
 
-        <section class="vh-100">
-          <div class="container py-5 h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100 bg-secondary">
-                <form class="container" method="post" enctype="multipart/form-data"> {% csrf_token %}
-                    <div class="row">
-                      <div class="col-md-2 mb-3">
-                        <label for="title">Job Title</label>
-                        <input type="text" class="form-control" id="title" name="title" required>
-                      </div>
-                      <div class="col-md-2 mb-3">
-                        <label for="company">Company Name</label>
-                        <input type="text" class="form-control" id="company" name="company">
-                      </div>
-                      <div class="col-md-2 mb-3">
-                        <label for="location">Location</label>
-                        <input type="text" class="form-control" id="location" name="location">
-                      </div>
-                        <div class="col-md-2 mb-3">
-                        <label for="pay">Annual Salary</label>
-                        <input type="number" class="form-control" id="pay" name="pay">
-                      </div>
-                        <div class="col-md-2 mb-3">
-                            <label for="industry">Job Industry</label>
-                            <input type="text" class="form-control" id="industry" name="industry">
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-success col-md-2 mb-3">Search</button>
-                </form>
-              <div class="col col-xl-10">
-                <div class="card mb-5" style="border-radius: 15px;">
-                  <div class="card-body p-4">
-                    <h3 class="mb-3">Program Title</h3>
-                    <p class="small mb-0"><i class="far fa-star fa-lg"></i> <span class="mx-2">|</span> Created by
-                      <strong>MDBootstrap</strong> on 11 April 2021</p>
-                    <hr class="my-4">
-                    <div class="d-flex justify-content-start align-items-center">
-                      <p class="mb-0 text-uppercase"><i class="fas fa-cog me-2"></i> <span
-                          class="text-muted small">settings</span></p>
-                      <p class="mb-0 text-uppercase"><i class="fas fa-link ms-4 me-2"></i> <span
-                          class="text-muted small">program link</span></p>
-                      <p class="mb-0 text-uppercase"><i class="fas fa-ellipsis-h ms-4 me-2"></i> <span
-                          class="text-muted small">program link</span>
-                      <span class="ms-3 me-4">|</span></p>
-                    </div>
+  <main role="main">
+    <br/> <br/> <br/> <br/>
+    <div class="container marketing">
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-{{message.tags}}" role="alert">
+          {{ message }}
+      </div>
+      {% endfor %}
+      {% endif %}
+      <h2>Match results for the keyword "{{ query }}".</h2>
+      <hr class="featurette-divider">
+      <section class="v-100 bg-secondary">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-xl-10">
+              {% for data in data %}
+              <div class="card mb-5" style="border-radius: 15px;">
+                <div class="card-body p-4">
+                  <h3 class="mb-3">{{ data.title }}</h3>
+                  <p class="small mb-0">
+                    <i class="far fa-star fa-lg">{{ data.industry }}</i>
+                    <span class="mx-2">|</span>
+                    Created by <strong>{{ data.company }}</strong> {{ data.timestamp | naturaltime }} ago.
+                  </p>
+                  <hr class="my-4">
+                  <div class="d-flex justify-content-start align-items-center">
+                    <p class="mb-0 text-uppercase">
+                      <i class="fas fa-cog me-2">{{ data.city }}, {{ data.state }}, {{ data.country }}.</i>
+                    </p>
+                    <span class="mx-2">|</span></p>
+                    <p class="mb-0 text-uppercase">
+                      <i class="fas fa-link ms-4 me-2">{{ data.pay }}</i>
+                    </p>
+                    <span class="mx-2">|</span></p>
+                    <a class="btn btn-primary btn-sm" href="{{ data.website }}" target="_blank">Company Website</a>
+                    <span class="mx-2">|</span></p>
+                    <a class="btn btn-success btn-sm" href="{% url 'view-job' pk=data.pk %}">View Job</a>
                   </div>
                 </div>
               </div>
+              {% endfor %}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <nav aria-label="...">
-          <ul class="pagination justify-content-center pagination-lg">
-            <li class="page-item disabled">
-              <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            <li class="page-item active">
-                <a class="page-link" href="#">1</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">2</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#">3</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-        <br/>
-    </div>
+      <hr class="featurette-divider">
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-              integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-              crossorigin="anonymous">
-      </script>
-      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
-              integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-              crossorigin="anonymous">
-      </script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
-              integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-              crossorigin="anonymous">
-      </script>
+      <!-- /END THE FEATURETTES -->
+
+    </div><!-- /.container -->
+
+
+    <!-- FOOTER -->
+    <footer class="container">
+      <p class="float-right"><a href="#">Back to top</a></p>
+      <p>&copy; 2024 BuzzHire</p>
+    </footer>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+          integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+          crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+          integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+          crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+          integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+          crossorigin="anonymous">
+  </script>
 </body>
 </html>

@@ -11,7 +11,7 @@
 <body>
   <form class="navbar navbar-dark fixed-top bg-primary flex-md-nowrap p-0 shadow" enctype="multipart/form-data"
         method="post"> {% csrf_token %}
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'recruiter-dash' %}">BuzzHire</a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'index' %}">BuzzHire</a>
     <input class="form-control form-control-dark w-100" type="text" placeholder="Search" name="search">
     <button type="submit" class="btn btn-outline-light">Search</button>
     <ul class="navbar-nav px-3">
@@ -27,6 +27,11 @@
       <nav class="col-md-2 d-none d-md-block bg-light sidebar">
         <div class="sidebar-sticky">
           <ul class="nav flex-column">
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'recruiter-dash' %}">
+                Dashboard
+              </a>
+            </li>
             <li class="nav-item">
               <a class="nav-link active" href="{% url 'edit-company' %}">
                 Edit Profile
@@ -38,7 +43,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'view-jobs' %}">
+              <a class="nav-link" href="{% url 'list-jobs' %}">
                 Manage Job Postings
               </a>
             </li>
@@ -53,6 +58,13 @@
       </nav>
 
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}}" role="alert">
+          {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h1 class="h2">Job Postings</h1>
         </div>
@@ -60,33 +72,50 @@
           <table class="table table-sm">
             <thead>
               <tr>
-                <th scope="col">ID Number</th>
-                <th scope="col">Number of Applicants</th>
-                <th scope="col">Job Title</th>
-                <th scope="col">Job Location</th>
+                <th scope="col">Title</th>
+                <th scope="col">Applicants</th>
+                <th scope="col">Location</th>
                 <th scope="col">Salary</th>
+                <th scope="col">Industry</th>
+                <th scope="col">Posted</th>
                 <th scope="col">Still Available?</th>
+                <th scope="col">Edit Job Post</th>
+                <th scope="col">View Job Results</th>
               </tr>
             </thead>
             <tbody>
               {% for single in data %}
               {% if single.available == "Yes" %}
               <tr>
-                <td><a href="{% url 'edit-job' pk=single.pk %}">{{ single.pk }}</a></td>
-                <td>{{ single.number }}</td>
                 <td>{{ single.title }}</td>
-                <td>{{ single.location }}</td>
-                <td>${{ single.pay }}/year</td>
-                <td>{{ single.available }}</td>
+                <td>{{ single.number }}</td>
+                <td>{{ single.city }}, {{ single.state }}, {{ single.country }}</td>
+                <td>{{ single.pay }}</td>
+                <td>{{ single.industry }}</td>
+                <td>{{ single.timestamp | naturaltime }}</td>
+                <td><span class="text-success">ACTIVE</span></td>
+                <td><a class="btn btn-primary btn-sm" href="{% url 'edit-job' pk=single.pk %}">
+                  Edit Job
+                </a></td>
+                <td><a class="btn btn-success btn-sm" href="{% url 'results' pk=single.pk %}">
+                  View Results
+                </a></td>
               </tr>
               {% else %}
               <tr>
-                <td><a href="{% url 'edit-job' pk=single.pk %}">{{ single.pk }}</a></td>
-                <td>{{ single.number }}</td>
                 <td>{{ single.title }}</td>
-                <td>{{ single.location }}</td>
-                <td>${{ single.pay }}/year</td>
-                <td>{{ single.available }}</td>
+                <td>{{ single.number }}</td>
+                <td>{{ single.city }}, {{ single.state }}, {{ single.country }}</td>
+                <td>{{ single.pay }}</td>
+                <td>{{ single.industry }}</td>
+                <td>{{ single.timestamp | naturaltime }}</td>
+                <td><span class="text-danger">DISABLED</span></td>
+                <td><a class="btn btn-primary btn-sm" href="{% url 'edit-job' pk=single.pk %}">
+                  Edit Job
+                </a></td>
+                <td><a class="btn btn-success btn-sm" href="{% url 'results' pk=single.pk %}">
+                  View Results
+                </a></td>
               </tr>
               {% endif %}
               {% endfor %}

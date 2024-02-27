@@ -11,22 +11,28 @@
 <body>
   <header>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
-      <a class="navbar-brand" href="#">BuzzHire</a>
+      <a class="navbar-brand" href="{% url 'index' %}">BuzzHire</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
               aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
+          {% if user.is_authenticated %}
+          {% if switch %}
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" href="{% url 'applicant-dash' %}">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+          {% else %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'recruiter-dash' %}">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
+          {% endif %}
+          {% else %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'login' %}">Home</a>
           </li>
+          {% endif %}
         </ul>
         <form class="form-inline mt-2 mt-md-0" method="post" enctype="multipart/form-data"> {% csrf_token %}
           <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search">
@@ -47,6 +53,9 @@
       {% endfor %}
       {% endif %}
       <!-- Three columns of text below the carousel -->
+      {% if user.is_authenticated %}
+      <h3>Hey there, {{ user.first_name }}!</h3>
+      {% else %}
       <div class="row">
         <div class="col-lg-4">
           <h2>Looking to hire?</h2>
@@ -70,77 +79,41 @@
           </a></p>
         </div><!-- /.col-lg-4 -->
       </div><!-- /.row -->
-
-
       <!-- START THE FEATURETTES -->
+      {% endif %}
 
       <hr class="featurette-divider">
 
-      <section class="vh-100 bg-primary">
+      <section class="v-100 bg-secondary">
         <div class="container py-5 h-100">
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col col-xl-10">
+              {% for data in data %}
               <div class="card mb-5" style="border-radius: 15px;">
                 <div class="card-body p-4">
-                  <h3 class="mb-3">Program Title</h3>
-                  <p class="small mb-0"><i class="far fa-star fa-lg"></i> <span class="mx-2">|</span> Created by
-                    <strong>MDBootstrap</strong> on 11 April , 2021</p>
-                  <hr class="my-4">
-                  <div class="d-flex justify-content-start align-items-center">
-                    <p class="mb-0 text-uppercase"><i class="fas fa-cog me-2"></i> <span
-                        class="text-muted small">settings</span></p>
-                    <p class="mb-0 text-uppercase"><i class="fas fa-link ms-4 me-2"></i> <span
-                        class="text-muted small">program link</span></p>
-                    <p class="mb-0 text-uppercase"><i class="fas fa-ellipsis-h ms-4 me-2"></i> <span
-                        class="text-muted small">program link</span>
-                      <span class="ms-3 me-4">|</span></p>
-                    <a href="#!">
-                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-2.webp" alt="avatar"
-                        class="img-fluid rounded-circle me-3" width="35">
-                    </a>
-                    <button type="button" class="btn btn-outline-dark btn-sm btn-floating">
-                      <i class="fas fa-plus"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class="card" style="border-radius: 15px;">
-                <div class="card-body p-4">
-                  <h3 class="mb-3">Company Culture</h3>
-                  <p class="small mb-0"><i class="fas fa-star fa-lg text-warning"></i> <span class="mx-2">|</span>
-                    Public <span class="mx-2">|</span> Updated by <strong>MDBootstrap</strong> on 11 April , 2021
+                  <h3 class="mb-3">{{ data.title }}</h3>
+                  <p class="small mb-0">
+                    <i class="far fa-star fa-lg">{{ data.industry }}</i>
+                    <span class="mx-2">|</span>
+                    Created by <strong>{{ data.company }}</strong> {{ data.timestamp | naturaltime }} ago.
                   </p>
                   <hr class="my-4">
                   <div class="d-flex justify-content-start align-items-center">
-                    <p class="mb-0 text-uppercase"><i class="fas fa-cog me-2"></i> <span
-                        class="text-muted small">settings</span></p>
-                    <p class="mb-0 text-uppercase"><i class="fas fa-link ms-4 me-2"></i> <span
-                        class="text-muted small">program link</span></p>
-                    <p class="mb-0 text-uppercase"><i class="fas fa-ellipsis-h ms-4 me-2"></i> <span
-                        class="text-muted small">program link</span>
-                      <span class="ms-3 me-4">|</span></p>
-                    <a href="#!">
-                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-2.webp" alt="avatar"
-                        class="img-fluid rounded-circle me-1" width="35">
-                    </a>
-                    <a href="#!">
-                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-3.webp" alt="avatar"
-                        class="img-fluid rounded-circle me-1" width="35">
-                    </a>
-                    <a href="#!">
-                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-4.webp" alt="avatar"
-                        class="img-fluid rounded-circle me-1" width="35">
-                    </a>
-                    <a href="#!">
-                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
-                        class="img-fluid rounded-circle me-3" width="35">
-                    </a>
-                    <button type="button" class="btn btn-outline-dark btn-sm btn-floating">
-                      <i class="fas fa-plus"></i>
-                    </button>
+                    <p class="mb-0 text-uppercase">
+                      <i class="fas fa-cog me-2">{{ data.city }}, {{ data.state }}, {{ data.country }}.</i>
+                    </p>
+                    <span class="mx-2">|</span></p>
+                    <p class="mb-0 text-uppercase">
+                      <i class="fas fa-link ms-4 me-2">{{ data.pay }}</i>
+                    </p>
+                    <span class="mx-2">|</span></p>
+                    <a class="btn btn-primary btn-sm" href="{{ data.website }}" target="_blank">Company Website</a>
+                    <span class="mx-2">|</span></p>
+                    <a class="btn btn-success btn-sm" href="{% url 'view-job' pk=data.pk %}">View Job</a>
                   </div>
                 </div>
               </div>
+              {% endfor %}
             </div>
           </div>
         </div>

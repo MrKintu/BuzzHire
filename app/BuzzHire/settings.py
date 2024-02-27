@@ -52,7 +52,10 @@ INSTALLED_APPS = [
     "dashboard",
     "job",
     "resume",
-    "users"
+    "users",
+
+    # Third Party Apps
+    "django_filters"
 ]
 
 MIDDLEWARE = [

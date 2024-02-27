@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
-from company.models import Company
-from resume.models import Resume
+from company.models import Company, Company_Industry
+from resume.models import Resume, Applicant_Industry
 from users.models import UserInfo
 
 
@@ -29,7 +29,8 @@ def new_applicant(request):
                 messages.warning(request, "Upload failed. Please upload in pdf format.")
             resume_model = Resume()
             resume_model.user = user_state
-            resume_model.industry = data["industry"]
+            industry = Applicant_Industry.objects.get(name=data["industry"])
+            resume_model.industry = industry
             resume_model.profession = data["profession"]
             resume_model.years = data["years"]
             resume_model.resume = new_file
@@ -91,7 +92,8 @@ def new_recruiter(request):
             else:
                 company_model.type = "Recruiter"
             company_model.company = data["company"]
-            company_model.industry = data["industry"]
+            industry = Company_Industry.objects.get(name=data["industry"])
+            company_model.industry = industry
             company_model.role = data["role"]
             company_model.website = data["website"]
             company_model.street = data["street"]
@@ -135,10 +137,10 @@ def login_user(request):
         if new_user is not None:
             login(request, new_user)
             user_state = User.objects.get(username=email)
-            user_details = UserInfo.objects.get(user=user_state)
-            if user_details.is_applicant:
+            user_info = UserInfo.objects.get(user=user_state)
+            if user_info.is_applicant:
                 return redirect('applicant-dash')
-            elif user_details.is_recruiter:
+            elif user_info.is_recruiter:
                 return redirect('recruiter-dash')
             else:
                 messages.warning(request, "Something went wrong...")

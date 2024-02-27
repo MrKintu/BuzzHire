@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+{% load humanize %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <title>Job Posting</title>
+</head>
+<body>
+  <form class="navbar navbar-dark fixed-top bg-primary flex-md-nowrap p-0 shadow" enctype="multipart/form-data"
+        method="post"> {% csrf_token %}
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'index' %}">BuzzHire</a>
+    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" name="search">
+    <button type="submit" class="btn btn-outline-light">Search</button>
+    <ul class="navbar-nav px-3">
+      <li class="nav-item text-nowrap">
+        <a class="nav-link" href="{% url 'logout' %}">Sign out</a>
+      </li>
+    </ul>
+  </form>
+
+  <br/> <br/>
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <div class="sidebar-sticky">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'applicant-dash' %}">
+                Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'edit-resume' %}">
+                Edit Profile
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'jobs-applied' %}">
+                Jobs Applied
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                Skills
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                Experience
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                Education
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">View Job Posting</h1>
+        </div>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}}" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <section class="v-100" style="background-color: #f4f5f7;">
+          <div class="container py-5 h-100">
+            <div class="container row align-items-start">
+              <div class="col card mb-3" style="border-radius: .5rem;">
+                <div class="row g-0 container">
+                  <div class="col-md-4 gradient-custom text-center"
+                    style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+                    <br/>
+                    {% if not applied %}
+                    <a href="{% url 'apply-job' pk=pk %}" class="btn btn-success btn-sm">
+                      APPLY NOW
+                    </a>
+                    {% else %}
+                    {% endif %}
+                    <h5>{{ title }}</h5>
+                    <p>{{ company }}</p>
+                    <i class="far fa-edit mb-5"></i>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body p-4">
+                      <h6>Quick Glance</h6>
+                      <hr class="mt-0 mb-4">
+                      <div class="row pt-1">
+                        <div class="col-6 mb-3">
+                          <h6>Location</h6>
+                          <p class="text-muted">{{ city }}, {{ state }}, {{ country }}.</p>
+                        </div>
+                        <div class="col-6 mb-3">
+                          <h6>Salary</h6>
+                          <p class="text-muted">${{ pay }}/year</p>
+                        </div>
+                      </div>
+                      <hr class="mt-0 mb-4">
+                      <div class="row pt-1">
+                        <div class="col-6 mb-3">
+                          <h6>Industry</h6>
+                          <p class="text-muted">{{ industry }}</p>
+                        </div>
+                        <div class="col-6 mb-3">
+                          <h6>Posted</h6>
+                          <p class="text-muted">{{ timestamp | naturaltime }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col card mb-3" style="border-radius: .5rem;">
+                <div class="row g-0 container">
+                  <div class="container">
+                    <div class="card-body p-4">
+                      <h6>Job Description</h6>
+                      <hr class="mt-0 mb-4">
+                      <div class="row pt-1">
+                        <div class="col-6 mb-3">
+                          <a class="btn btn-primary btn-sm" href="{{ download.url }}" target="_blank">
+                            DOWNLOAD
+                          </a>
+                        </div>
+                      </div>
+                      <hr class="mt-0 mb-4">
+                      <div class="row pt-1">
+                        <div class="col-6 mb-3">
+                          <h6>About</h6>
+                          <p>{{ describe }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container row align-items-start">
+              <div class="col card mb-3" style="border-radius: .5rem;">
+                <div class="row g-0 container">
+                  <div class="container">
+                    <div class="card-body p-4">
+                      <h6>Roles and Responsibilities</h6>
+                      <hr class="mt-0 mb-4">
+                      <div class="row pt-1">
+                        <div class="col-6 mb-3">
+                          <p>{{ tasks }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col card mb-3" style="border-radius: .5rem;">
+                <div class="row g-0 container">
+                  <div class="container">
+                    <div class="card-body p-4">
+                      <h6>Ideal Candidate</h6>
+                      <hr class="mt-0 mb-4">
+                      <div class="row pt-1">
+                        <div class="col-6 mb-3">
+                          <p>{{ ideal }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+          integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+          crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+          integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+          crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+          integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+          crossorigin="anonymous">
+  </script>
+</body>
+</html>
