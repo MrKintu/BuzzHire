@@ -26,25 +26,19 @@
         <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
             <h6 class="my-0">Account Name</h6>
-            <small class="text-muted">{{ first_name }} {{ last_name }}</small>
+            <small class="text-muted">{{ user_form.first_name.value }} {{ user_form.last_name.value }}</small>
           </div>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
             <h6 class="my-0">Account Email</h6>
-            <small class="text-muted">{{ email }}</small>
-          </div>
-        </li>
-        <li class="list-group-item d-flex justify-content-between lh-condensed">
-          <div>
-            <h6 class="my-0">Industry</h6>
-            <small class="text-muted">{{ industry }}</small>
+            <small class="text-muted">{{ user_form.email.value }}</small>
           </div>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
             <h6 class="my-0">Profession</h6>
-            <small class="text-muted">{{ profession }}</small>
+            <small class="text-muted">{{ resume_form.profession.value }}</small>
           </div>
         </li>
       </ul>
@@ -61,80 +55,47 @@
       <h4 class="mb-3">Keep these details up to date.</h4>
       <form class="needs-validation" method="post" enctype="multipart/form-data"> {% csrf_token %}
         <div class="mb-3">
-          <label for="industry">Industry</label>
-          <select name="industry" id="industry" class="form-control" required>
-            <option value="Transportation">Transportation</option>
-            <option value="Pharmaceutical">Pharmaceutical</option>
-            <option value="Telecommunications">Telecommunications</option>
-            <option value="Manufacturing">Manufacturing</option>
-            <option value="Mining">Mining</option>
-            <option value="Hospitality">Hospitality</option>
-            <option value="Media and News">Media and News</option>
-            <option value="Agriculture">Agriculture</option>
-            <option value="Computer and Technology">Computer and Technology</option>
-            <option value="Education">Education</option>
-            <option value="Finance and Economics">Finance and Economics</option>
-            <option value="Health Care">Health Care</option>
-          </select>
+          <label>Industry</label>
+          {{ resume_form.industry }}
         </div>
         <div class="mb-3">
-          <label for="profession">Profession</label>
-          <input type="text" class="form-control" id="profession" name="profession" value="{{ profession }}"
-                 required>
-          <div class="invalid-feedback" style="width: 100%;">
-            Your Profession is required.
-          </div>
+          <label>Profession</label>
+          {{ resume_form.profession }}
         </div>
         <div class="mb-3">
-          <label for="years">Years of Experience</label>
-          <input type="number" class="form-control" id="years" name="years" value="{{ years }}" required>
-          <div class="invalid-feedback" style="width: 100%;">
-            Your Company Website is required.
-          </div>
+          <label>Years of Experience</label>
+          {{ resume_form.years }}
         </div>
         <div class="mb-3">
-          <label for="resume">Resume</label>
-          <p>This is your current resume: <a href="{{ resume.url }}" target="_blank">{{ resume.name }}</a></p>
-          <input type="file" class="form-control" id="resume" name="resume" value="{{ resume }}" required>
-          <div class="invalid-feedback" style="width: 100%;">
-            Please upload a resume.
-          </div>
+          <label>Resume</label>
+          {{ resume_form.resume }}
         </div>
         <div class="mb-3">
-          <label for="phone">Phone Number</label>
-          <input type="text" class="form-control" id="phone" name="phone" value="{{ phone }}" required>
-          <div class="invalid-feedback" style="width: 100%;">
-            Your Phone Number is required.
-          </div>
+          <label>Phone Number</label>
+          {{ resume_form.phone }}
         </div>
         <div class="mb-3">
-          <label for="street">Street Address</label>
-          <input type="text" class="form-control" id="street" name="street" value="{{ street }}" required>
-          <div class="invalid-feedback">
-            Please enter your street address.
-          </div>
+          <label>Street Address</label>
+          {{ resume_form.street }}
         </div>
 
         <div class="mb-3">
-          <label for="city">City</label>
-          <input type="text" class="form-control" id="city" name="city" value="{{ city }}" required>
-        </div>
+            <label>Zip</label>
+            {{ resume_form.zipcode }}
+          </div>
 
         <div class="row">
-          <div class="col-md-5 mb-3">
-            <label for="country">Country</label>
-            <input type="text" class="form-control" id="country" name="country" value="{{ country }}" required>
-          </div>
-          <div class="col-md-4 mb-3">
-            <label for="state">State</label>
-            <input type="text" class="form-control" id="state" name="state" value="{{ state }}" required>
+          <div class="col-md-3 mb-3">
+            <label>City</label>
+            {{ resume_form.city }}
           </div>
           <div class="col-md-3 mb-3">
-            <label for="zipcode">Zip</label>
-            <input type="text" class="form-control" id="zipcode" name="zipcode" value="{{ zipcode }}" required>
-            <div class="invalid-feedback">
-              Zip code required.
-            </div>
+            <label>State</label>
+            {{ resume_form.state }}
+          </div>
+          <div class="col-md-3 mb-3">
+            <label>Country</label>
+            {{ resume_form.country }}
           </div>
         </div>
         <hr class="mb-4">

@@ -1,126 +1,110 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.shortcuts import render, redirect, get_object_or_404
 
 from job.models import JobPost, ApplyJob
 from resume.models import Resume
+from users.forms import ApplicantForm, UserInfoForm, CompanyForm
 from users.models import UserInfo
-from .models import Company, Company_Industry
+from .models import Company
 
 
 # Edit Company Details
 @login_required
 def edit_company(request):
+    user = request.user
+    user_info = get_object_or_404(UserInfo, user=user)
+    if not user_info.is_recruiter:
+        messages.warning(request, "You're not authorised to view that page!")
+        return redirect("applicant-dash")
+
     if request.method == "POST":
-        user = request.user
-        user_state = User.objects.get(username=user.username)
-        user_info = UserInfo.objects.get(user=user_state)
-        if not user_info.is_recruiter:
-            messages.warning(request, "You're not authorised to view that page!")
-            return redirect("applicant-dash")
+        user_form = ApplicantForm(request.POST)
+        user_info_form = UserInfoForm(request.POST)
+        company_form = CompanyForm(request.POST)
 
-        data = request.POST
-        company = Company.objects.get(user=user_state)
-        industry = Company_Industry.objects.get(name=data["industry"])
+        if user_form.is_valid() and user_info_form.is_valid() and company_form.is_valid():
+            user = user_form.save()
 
-        company.industry = industry
-        company.phone = data["phone"]
-        company.website = data["website"]
-        company.street = data["street"]
-        company.city = data["city"]
-        company.country = data["country"]
-        company.state = data["state"]
-        company.zipcode = data["zipcode"]
-        company.save()
+            user_info = user_info_form.save(commit=False)
+            user_info.user = user
+            user_info.is_recruiter = True
+            user_info.has_company = True
+            user_info.save()
 
-        messages.success(request, "Account has been successfully updated!")
-        return redirect("recruiter-dash")
+            company = company_form.save(commit=False)
+            company.user = user
+            company.save()
+
+            messages.success(request, "Your account has successfully been updated.")
+            return redirect("login")
+        else:
+            messages.warning(request, "Something went wrong, please try again.")
+            # If there are errors, render the form with the error messages
+            context = {
+                'user_form': user_form,
+                'company_form': company_form,
+                'user_info_form': user_info_form
+            }
+            return render(request, "company/edit-company.html", context)
     else:
-        user = request.user
-        user_state = User.objects.get(username=user.username)
-        user_info = UserInfo.objects.get(user=user_state)
-        if not user_info.is_recruiter:
-            messages.warning(request, "You're not authorised to view that page!")
-            return redirect("applicant-dash")
-
-        company = Company.objects.get(user=user_state)
-
-        send = {
-            "first_name": user_state.first_name,
-            "last_name": user_state.last_name,
-            "email": user_state.email,
-            "company": company.company,
-            "role": company.role,
-            "phone": company.phone,
-            "website": company.website,
-            "street": company.street,
-            "city": company.city,
-            "country": company.country,
-            "state": company.state,
-            "zipcode": company.zipcode
+        company = get_object_or_404(Company, user=user)
+        user_form = ApplicantForm(instance=user)
+        company_form = CompanyForm(instance=company)
+        user_info_form = UserInfoForm(instance=user_info)
+        context = {
+            'user_form': user_form,
+            'company_form': company_form,
+            'user_info_form': user_info_form
         }
-        return render(request, "company/edit-company.html", send)
+        return render(request, "company/edit-company.html", context)
 
 
 # View All applicants for a role
 @login_required
 def all_applicants(request, pk):
-    if request.method == "POST":
-        data = request.POST
-        user_query = data["search"]
+    user = request.user
+    user_info = get_object_or_404(UserInfo, user=user)
+    if not user_info.is_recruiter:
+        messages.warning(request, "You're not authorised to view that page!")
+        return redirect("applicant-dash")
 
-        return redirect("search", query=user_query)
-    else:
-        user = request.user
-        user_state = User.objects.get(username=user.username)
-        user_info = UserInfo.objects.get(user=user_state)
-        if not user_info.is_recruiter:
-            messages.warning(request, "You're not authorised to view that page!")
-            return redirect("applicant-dash")
+    job_post = get_object_or_404(JobPost, pk=pk)
+    applicants = ApplyJob.objects.filter(job=job_post).order_by("-timestamp")
 
-        job_post = JobPost.objects.get(pk=pk)
-        applicants = ApplyJob.objects.filter(job=job_post).order_by("-timestamp")
+    paginator = Paginator(applicants, 10)  # Show 10 applicants per page
+    page = request.GET.get('page')
+    try:
+        applicants = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        applicants = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        applicants = paginator.page(paginator.num_pages)
 
-        send = []
-        for x in range(len(applicants)):
-            single = applicants[x]
-            app_user = User.objects.get(pk=single.user.pk)
-            resume = Resume.objects.get(user=app_user)
-            user_info = UserInfo.objects.get(user=app_user)
+    context = {
+        "data": applicants,
+        "pk": pk,
+    }
 
-            details = {
-                "pk": single.pk,
-                "title": user_info.title,
-                "first_name": app_user.first_name,
-                "last_name": app_user.last_name,
-                "profession": resume.profession,
-                "industry": resume.industry.name,
-                "email": app_user.email,
-                "phone": resume.phone,
-                "city": resume.city,
-                "country": resume.country,
-                "timestamp": single.timestamp,
-                "status": single.status
-            }
-            send.append(details)
-
-        data = {"data": send}
-        return render(request, "company/results.html", data)
+    return render(request, "company/results.html", context)
 
 
 # View Single Application
+@login_required
 def single_applicant(request, pk):
-    if request.method == "POST":
-        user = request.user
-        user_state = User.objects.get(username=user.username)
-        user_info = UserInfo.objects.get(user=user_state)
-        if not user_info.is_recruiter:
-            messages.warning(request, "You're not authorised to view that page!")
-            return redirect("applicant-dash")
+    user = request.user
+    user_info = get_object_or_404(UserInfo, user=user)
+    if not user_info.is_recruiter:
+        messages.warning(request, "You're not authorised to view that page!")
+        return redirect("applicant-dash")
 
+    if request.method == "POST":
         data = request.POST
-        apply_job = ApplyJob.objects.get(pk=pk)
+        apply_job = get_object_or_404(ApplyJob, pk=pk)
 
         if data["decide"] == "1":
             apply_job.status = "Approved"
@@ -137,17 +121,10 @@ def single_applicant(request, pk):
 
         return redirect("results", pk=pk)
     else:
-        user = request.user
-        user_state = User.objects.get(username=user.username)
-        user_info = UserInfo.objects.get(user=user_state)
-        if not user_info.is_recruiter:
-            messages.warning(request, "You're not authorised to view that page!")
-            return redirect("applicant-dash")
-
-        apply_job = ApplyJob.objects.get(pk=pk)
-        app_user = User.objects.get(pk=apply_job.user.pk)
-        resume = Resume.objects.get(user=app_user)
-        user_info = UserInfo.objects.get(user=app_user)
+        apply_job = get_object_or_404(ApplyJob, pk=pk)
+        app_user = get_object_or_404(User, pk=apply_job.user.pk)
+        resume = get_object_or_404(Resume, user=app_user)
+        user_info = get_object_or_404(UserInfo, user=app_user)
 
         details = {
             "pk": apply_job.job.pk,

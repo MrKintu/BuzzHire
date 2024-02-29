@@ -8,182 +8,60 @@
         crossorigin="anonymous">
 </head>
 <body>
-<section class="h-100 h-custom gradient-custom-2 bg-primary bg-gradient">
+<section class="h-100 h-custom gradient-custom-2 bg-primary bg-gradient form-control">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-12">
+      <form class="col-12" method="post" enctype="multipart/form-data">{% csrf_token %}
         {% if messages %}
         {% for message in messages %}
         <div class="alert alert-{{message.tags}}" role="alert">
-            {{ message }}
+          {{ message }}
         </div>
         <br/>
         {% endfor %}
         {% endif %}
-        <form class="card card-registration card-registration-2 bg-light-subtle" style="border-radius: 15px;" method="post"
-              enctype="multipart/form-data">
-            {% csrf_token %}
+        <div class="card card-registration card-registration-2 bg-light-subtle" style="border-radius: 15px;">
           <div class="card-body p-0">
             <div class="row g-0">
               <div class="col-lg-6">
                 <div class="p-5">
                   <h3 class="fw-normal mb-5">General Information</h3>
-
-                  <div class="mb-4 pb-2"><div class="form-outline">
-                    <input type="password" id="password1" class="form-control" name="password1" required/>
-                    <label class="form-label" for="password1">Password</label>
-                  </div></div>
-
-                  <div class="mb-4 pb-2"><div class="form-outline">
-                    <input type="password" id="password2" class="form-control" name="password2" required/>
-                    <label class="form-label" for="password2">Retype Password</label>
-                  </div></div>
-
-                    <div class="mb-4 pb-2">
-                    <select class="select" name="title">
-                      <option value="1">Mr</option>
-                      <option value="2">Mrs</option>
-                      <option value="3">Ms</option>
-                    </select>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-6 mb-4 pb-2"><div class="form-outline">
-                      <input type="text" id="first_name" class="form-control" name="first_name" required/>
-                      <label class="form-label" for="first_name">First name</label>
-                    </div></div>
-
-                    <div class="col-md-6 mb-4 pb-2"><div class="form-outline">
-                      <input type="text" id="last_name" class="form-control" name="last_name" required/>
-                      <label class="form-label" for="last_name">Last name</label>
-                    </div></div>
-                  </div>
-
-                  <div class="mb-4 pb-2">
-                    <select class="select" name="type" required>
-                      <option>Which best describes you?</option>
-                      <option value="1">I work for the company</option>
-                      <option value="2">I'm a recruiter</option>
-                    </select>
-                  </div>
-
-                  <div class="mb-4 pb-2"><div class="form-outline">
-                    <input type="text" id="company" class="form-control" name="company" required/>
-                    <label class="form-label" for="company">Company Name</label>
-                  </div></div>
-
-                  <div class="mb-4 pb-2"><div class="form-outline">
-                    <select name="industry" id="industry" class="form-control" required>
-                      <option value="Transportation">Transportation</option>
-                      <option value="Pharmaceutical">Pharmaceutical</option>
-                      <option value="Telecommunications">Telecommunications</option>
-                      <option value="Manufacturing">Manufacturing</option>
-                      <option value="Mining">Mining</option>
-                      <option value="Hospitality">Hospitality</option>
-                      <option value="Media and News">Media and News</option>
-                      <option value="Agriculture">Agriculture</option>
-                      <option value="Computer and Technology">Computer and Technology</option>
-                      <option value="Education">Education</option>
-                      <option value="Finance and Economics">Finance and Economics</option>
-                      <option value="Health Care">Health Care</option>
-                    </select>
-                    <label class="form-label" for="industry">Industry</label>
-                  </div></div>
-
-                  <div class="mb-4 pb-2"><div class="form-outline">
-                    <input type="text" id="role" class="form-control" name="role" required/>
-                    <label class="form-label" for="role">Role</label>
-                  </div></div>
+                  {{ user_info_form.as_p }}
+                  {{ user_form.as_p }}
                 </div>
               </div>
               <div class="col-lg-6">
                 <div class="p-5">
                   <h3 class="fw-normal mb-5">Contact Details</h3>
 
-                    <div class="mb-4 pb-2">
-                    <div class="form-outline form-white">
-                      <input type="url" id="website" class="form-control" name="website" required/>
-                      <label class="form-label" for="website">Company Website</label>
-                    </div>
-                  </div>
-
-                  <div class="mb-4 pb-2">
-                    <div class="form-outline form-white">
-                      <input type="text" id="street" class="form-control" name="street" required/>
-                      <label class="form-label" for="street">Street Address</label>
-                    </div>
-                  </div>
-
-                  <div class="mb-4 pb-2">
-                    <div class="form-outline form-white">
-                      <input type="text" id="city" class="form-control" name="city" required/>
-                      <label class="form-label" for="city">City</label>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-5 mb-4 pb-2">
-
-                      <div class="form-outline form-white">
-                        <input type="text" id="zipcode" class="form-control" name="zipcode" required/>
-                        <label class="form-label" for="zipcode">Zip Code</label>
-                      </div>
-
-                    </div>
-                    <div class="col-md-7 mb-4 pb-2">
-
-                      <div class="form-outline form-white">
-                        <input type="text" id="state" class="form-control" name="state" required/>
-                        <label class="form-label" for="state">State</label>
-                      </div>
-
-                    </div>
-                  </div>
-
-                  <div class="mb-4 pb-2">
-                    <div class="form-outline form-white">
-                      <input type="text" id="country" class="form-control" name="country" required/>
-                      <label class="form-label" for="country">Country</label>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-5 mb-4 pb-2"><div class="form-outline form-white">
-                      <input type="text" id="code" class="form-control" name="code" required/>
-                      <label class="form-label" for="code">Area Code</label>
-                    </div></div>
-
-                    <div class="col-md-7 mb-4 pb-2"><div class="form-outline form-white">
-                      <input type="number" id="phone" class="form-control" name="phone" required/>
-                      <label class="form-label" for="phone">Phone Number</label>
-                    </div></div>
-                  </div>
-
-                  <div class="mb-4">
-                    <div class="form-outline form-white">
-                      <input type="email" id="email" class="form-control" name="email" required/>
-                      <label class="form-label" for="email">Your Email</label>
-                    </div>
-                  </div>
-
+                  {{ company_form.as_p }}
                   <div class="form-check d-flex justify-content-start mb-4 pb-3">
-                    <input class="form-check-input me-3" type="checkbox" value="" id="form2Example3" required/>
-                    <label class="form-check-label" for="form2Example3">
+                    <input class="form-check-input me-3" type="checkbox" value="1" id="accept" name="accept"
+                           required/>
+                    <label class="form-check-label" for="accept">
                       I do accept the <a href="#!"><u>Terms and Conditions</u></a> of your
                       site.
                     </label>
                   </div>
-
-                  <button type="submit" class="btn btn btn-success btn-lg" data-mdb-ripple-color="dark">
-                      Register
-                  </button>
-
+                </div>
+              </div>
+            <div class="container text-center">
+              <div class="row align-items-end">
+                <div class="col">
+                  <a class="btn btn btn-danger btn-lg" href="{% url 'index' %}"
+                     data-mdb-ripple-color="dark">Go Back</a>
+                </div>
+                <div class="col">
+                  <button type="submit" class="btn btn btn-success btn-lg"
+                          data-mdb-ripple-color="dark">Register</button>
                 </div>
               </div>
             </div>
+            <br/> <br/> <br/> <br/>
+            </div>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
 </section>

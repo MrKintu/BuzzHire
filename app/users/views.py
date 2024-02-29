@@ -1,153 +1,121 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
-from company.models import Company, Company_Industry
-from resume.models import Resume, Applicant_Industry
 from users.models import UserInfo
+from .forms import ApplicantForm, ResumeForm, UserInfoForm, CompanyForm
 
 
 # Register Applicant
 def new_applicant(request):
     if request.method == "POST":
-        data = request.POST
-        if data["password1"] == data["password2"]:
-            user = User.objects.create_user(
-                username=data["email"],
-                password=data["password1"],
-                email=data["email"],
-                first_name=data["first_name"],
-                last_name=data["last_name"]
-            )
+        user_form = ApplicantForm(request.POST)
+        resume_form = ResumeForm(request.POST, request.FILES)
+        user_info_form = UserInfoForm(request.POST)
+
+        if user_form.is_valid() and resume_form.is_valid() and user_info_form.is_valid():
+            user = user_form.save(commit=False)
             user.save()
-            user_state = User.objects.get(username=data["email"])
 
-            new_file = request.FILES["resume"]
-            ext1 = new_file.name.split('.')[-1]
-            if ext1 != "pdf":
-                messages.warning(request, "Upload failed. Please upload in pdf format.")
-            resume_model = Resume()
-            resume_model.user = user_state
-            industry = Applicant_Industry.objects.get(name=data["industry"])
-            resume_model.industry = industry
-            resume_model.profession = data["profession"]
-            resume_model.years = data["years"]
-            resume_model.resume = new_file
-            resume_model.street = data["street"]
-            resume_model.city = data["city"]
-            resume_model.zipcode = data["zipcode"]
-            resume_model.state = data["state"]
-            resume_model.country = data["country"]
-            resume_model.phone = f'{data["code"]}-{data["phone"]}'
-            resume_model.save()
+            user_info = user_info_form.save(commit=False)
+            user_info.user = user
+            user_info.is_applicant = True
+            user_info.has_resume = True
+            user_info.save()
 
-            user_model = UserInfo()
-            user_model.user = user_state
-            if data["title"] == "1":
-                user_model.title = "Mr"
-            elif data["title"] == "2":
-                user_model.title = "Mrs"
-            else:
-                user_model.title = "Ms"
-            user_model.is_applicant = True
-            user_model.has_resume = True
-            user_model.save()
+            resume = resume_form.save(commit=False)
+            resume.user = user
+            resume.save()
 
-            if (User.objects.filter(username=data["email"]).exists()
-                    and Resume.objects.filter(user=user_state).exists()
-                    and UserInfo.objects.filter(user=user_state).exists()):
-                messages.success(request, "Your account has successfully been created.")
-                return redirect("login")
-            else:
-                messages.warning(request, "Something went wrong, please try again.")
-                return redirect("new-applicant")
+            messages.success(request, "Your account has successfully been created.")
+            return redirect("login")
         else:
-            messages.warning(request, "Account creation failed! Passwords must match.")
-            return redirect("new-applicant")
+            messages.warning(request, "Something went wrong, please try again.")
+            # If there are errors, render the form with the error messages
+            context = {
+                'user_form': user_form,
+                'resume_form': resume_form,
+                'user_info_form': user_info_form
+            }
+            return render(request, "users/new-applicant.html", context)
     else:
-        return render(request, "users/new-applicant.html")
+        user_form = ApplicantForm()
+        resume_form = ResumeForm()
+        user_info_form = UserInfoForm()
+        context = {
+            'user_form': user_form,
+            'resume_form': resume_form,
+            'user_info_form': user_info_form
+        }
+        return render(request, "users/new-applicant.html", context)
 
 
 # Register Recruiter
 def new_recruiter(request):
     if request.method == "POST":
-        data = request.POST
-        if data["password1"] == data["password2"]:
-            user = User.objects.create_user(
-                username=data["email"],
-                password=data["password1"],
-                email=data["email"],
-                first_name=data["first_name"],
-                last_name=data["last_name"]
-            )
+        user_form = ApplicantForm(request.POST)
+        user_info_form = UserInfoForm(request.POST)
+        company_form = CompanyForm(request.POST)
+
+        if user_form.is_valid() and user_info_form.is_valid() and company_form.is_valid():
+            user = user_form.save(commit=False)
             user.save()
-            user_state = User.objects.get(username=data["email"])
 
-            company_model = Company()
-            company_model.user = user_state
-            role = data["type"]
-            if role == "1":
-                company_model.type = "Staff"
-            else:
-                company_model.type = "Recruiter"
-            company_model.company = data["company"]
-            industry = Company_Industry.objects.get(name=data["industry"])
-            company_model.industry = industry
-            company_model.role = data["role"]
-            company_model.website = data["website"]
-            company_model.street = data["street"]
-            company_model.city = data["city"]
-            company_model.zipcode = data["zipcode"]
-            company_model.state = data["state"]
-            company_model.country = data["country"]
-            company_model.phone = f'{data["code"]}-{data["phone"]}'
-            company_model.save()
+            user_info = user_info_form.save(commit=False)
+            user_info.user = user
+            user_info.is_recruiter = True
+            user_info.has_company = True
+            user_info.save()
 
-            user_model = UserInfo()
-            user_model.user = user_state
-            user_model.title = data["title"]
-            user_model.is_recruiter = True
-            user_model.has_company = True
-            user_model.save()
+            company = company_form.save(commit=False)
+            company.user = user
+            company.save()
 
-            if (User.objects.filter(username=data["email"]).exists()
-                    and Company.objects.filter(user=user_state).exists()
-                    and UserInfo.objects.filter(user=user_state).exists()):
-                messages.success(request, "Your account has successfully been created.")
-                return redirect("login")
-            else:
-                messages.warning(request, "Something went wrong, please try again.")
-                return redirect("new-recruiter")
+            messages.success(request, "Your account has successfully been created.")
+            return redirect("login")
         else:
-            messages.warning(request, "Account creation failed! Passwords must match.")
-            return redirect("new-recruiter")
+            messages.warning(request, "Something went wrong, please try again.")
+            # If there are errors, render the form with the error messages
+            context = {
+                'user_form': user_form,
+                'company_form': company_form,
+                'user_info_form': user_info_form
+            }
+            return render(request, "users/new-applicant.html", context)
     else:
-        return render(request, "users/new-recruiter.html")
+        user_form = ApplicantForm()
+        user_info_form = UserInfoForm()
+        company_form = CompanyForm()
+
+    context = {
+        'user_form': user_form,
+        'user_info_form': user_info_form,
+        'company_form': company_form
+    }
+    return render(request, "users/new-recruiter.html", context)
 
 
 # Login User
 def login_user(request):
     if request.method == "POST":
-        data = request.POST
-        email = data["email"]
-        password = data["password"]
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        user_state = get_object_or_404(User, username=email)
 
-        new_user = authenticate(request, username=email, password=password)
-        if new_user is not None:
-            login(request, new_user)
-            user_state = User.objects.get(username=email)
-            user_info = UserInfo.objects.get(user=user_state)
+        user = authenticate(request, username=email, password=password)
+        if user is not None and user.is_active:
+            login(request, user_state)
+            print(request.user.first_name)
+            user_info = get_object_or_404(UserInfo, user=user)
             if user_info.is_applicant:
                 return redirect('applicant-dash')
             elif user_info.is_recruiter:
                 return redirect('recruiter-dash')
-            else:
-                messages.warning(request, "Something went wrong...")
-                return redirect("login")
         else:
-            messages.warning(request, "Something went wrong...")
-            return redirect("login")
+            messages.warning(request, "Invalid email or password.")
+
+        return redirect("login")
     else:
         return render(request, "users/login.html")
 

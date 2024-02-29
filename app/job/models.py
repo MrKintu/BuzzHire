@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from company.models import Company
+from resume.models import Resume
 
 
 def rename_file(instance, filename):
@@ -19,13 +20,6 @@ def rename_file(instance, filename):
     return new_path
 
 
-class Job_Industry(models.Model):
-    name = models.CharField(max_length=50, null=True, blank=True)
-
-    def __str__(self):
-        return self.name
-
-
 class JobPost(models.Model):
     type_choices = (
         ("Remote", "Remote"),
@@ -33,24 +27,39 @@ class JobPost(models.Model):
         ("Hybrid", "Hybrid"),
     )
 
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    title = models.CharField(max_length=100, null=True, blank=True)
-    industry = models.ForeignKey(Job_Industry, on_delete=models.CASCADE, null=True)
+    industry_choices = (
+        ("Transportation", "Transportation"),
+        ("Pharmaceutical", "Pharmaceutical"),
+        ("Telecommunications", "Telecommunications"),
+        ("Manufacturing", "Manufacturing"),
+        ("Mining", "Mining"),
+        ("Hospitality", "Hospitality"),
+        ("Media and News", "Media and News"),
+        ("Agriculture", "Agriculture"),
+        ("Computer and Technology", "Computer and Technology"),
+        ("Education", "Education"),
+        ("Finance and Economics", "Finance and Economics"),
+        ("Health Care", "Health Care")
+    )
+
+    company = models.OneToOneField(Company, on_delete=models.CASCADE, null=True)
+    created_by = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    job_title = models.CharField(max_length=100, null=True, blank=True)
+    job_type = models.CharField(max_length=20, choices=type_choices, null=True, blank=True)
+    industry = models.CharField(max_length=100, blank=True, null=True, choices=industry_choices)
     city = models.CharField(max_length=100, null=True, blank=True)
     state = models.CharField(max_length=100, null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
-    pay = models.PositiveIntegerField(default=14)
+    pay = models.PositiveIntegerField(null=True, blank=True)
     describe = models.TextField()
     tasks = models.TextField()
-    ideal = models.TextField()
-    available = models.BooleanField(default=False)
+    ideal_candidate = models.TextField()
+    available = models.BooleanField(default=True)
     download = models.FileField(upload_to=rename_file, null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
-    job_type = models.CharField(max_length=20, choices=type_choices, null=True, blank=True)
 
     def __str__(self):
-        return self.title
+        return self.job_title
 
 
 class ApplyJob(models.Model):
@@ -60,7 +69,7 @@ class ApplyJob(models.Model):
         ("Pending", "Pending"),
     )
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    job = models.ForeignKey(JobPost, on_delete=models.CASCADE, null=True)
+    job = models.OneToOneField(JobPost, on_delete=models.CASCADE, null=True, blank=True)
+    resume = models.OneToOneField(Resume, on_delete=models.CASCADE, null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=status_choices)

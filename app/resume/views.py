@@ -1,102 +1,92 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render, redirect, get_object_or_404
 
-from .models import Resume, Applicant_Industry
 from job.models import JobPost, ApplyJob
-from company.models import Company
+from users.forms import ResumeForm, ApplicantForm, UserInfoForm
 from users.models import UserInfo
+from .models import Resume
 
 
 # Edit User Resume
 @login_required
 def edit_resume(request):
+    user = request.user
+    user_info = get_object_or_404(UserInfo, user=user)
+    if not user_info.is_applicant:
+        messages.warning(request, "You're not authorized to view that page!")
+        return redirect("recruiter-dash")
+
     if request.method == "POST":
-        user = request.user
-        user_state = User.objects.get(username=user.username)
-        user_info = UserInfo.objects.get(user=user_state)
-        if not user_info.is_applicant:
-            messages.warning(request, "You're not authorised to view that page!")
-            return redirect("recruiter-dash")
+        user_form = ApplicantForm(request.POST)
+        resume_form = ResumeForm(request.POST, request.FILES)
+        user_info_form = UserInfoForm(request.POST)
 
-        data = request.POST
-        resume = Resume.objects.get(user=user_state)
-        new_file = request.FILES["resume"]
-        ext1 = new_file.name.split('.')[-1]
-        if ext1 != "pdf":
-            messages.warning(request, "Upload failed. Please upload in pdf format.")
-            return redirect("edit-resume")
+        if user_form.is_valid() and resume_form.is_valid() and user_info_form.is_valid():
+            user = user_form.save(commit=False)
+            user.save()
 
-        industry = Applicant_Industry.objects.get(name=data["industry"])
-        resume.industry = industry
-        resume.profession = data["profession"]
-        resume.years = data["years"]
-        resume.resume = new_file
-        resume.phone = data["phone"]
-        resume.street = data["street"]
-        resume.city = data["city"]
-        resume.country = data["country"]
-        resume.state = data["state"]
-        resume.zipcode = data["zipcode"]
-        resume.save()
+            resume = resume_form.save(commit=False)
+            resume.user = user
+            resume.save()
 
-        messages.success(request, "Account has been successfully updated!")
-        return redirect("applicant-dash")
+            user_info = user_info_form.save(commit=False)
+            user_info.user = user
+            user_info.is_applicant = True
+            user_info.has_resume = True
+            user_info.save()
+
+            messages.success(request, "Your account has successfully been updated.")
+            return redirect("applicant-dash")
+        else:
+            messages.warning(request, "Something went wrong, please try again.")
+            # If there are errors, render the form with the error messages
+            context = {
+                'user_form': user_form,
+                'resume_form': resume_form,
+                'user_info_form': user_info_form
+            }
+            return render(request, "users/new-applicant.html", context)
     else:
-        user = request.user
-        user_state = User.objects.get(username=user.username)
-        user_info = UserInfo.objects.get(user=user_state)
-        if not user_info.is_applicant:
-            messages.warning(request, "You're not authorised to view that page!")
-            return redirect("recruiter-dash")
-
-        resume = Resume.objects.get(user=user_state)
-
-        send = {
-            "first_name": user_state.first_name,
-            "last_name": user_state.last_name,
-            "email": user_state.email,
-            "industry": resume.industry.name,
-            "profession": resume.profession,
-            "years": resume.years,
-            "resume": resume.resume,
-            "phone": resume.phone,
-            "street": resume.street,
-            "city": resume.city,
-            "country": resume.country,
-            "state": resume.state,
-            "zipcode": resume.zipcode
+        resume = get_object_or_404(Resume, user=user)
+        user_form = ApplicantForm(instance=user)
+        resume_form = ResumeForm(instance=resume)
+        user_info_form = UserInfoForm(instance=user_info)
+        context = {
+            'user_form': user_form,
+            'resume_form': resume_form,
+            'user_info_form': user_info_form
         }
-        return render(request, "resume/edit-resume.html", send)
+
+        return render(request, "resume/edit-resume.html", context)
 
 
 # View Job Posting
 @login_required
 def job_details(request, pk):
+    user = request.user
+    user_info = get_object_or_404(UserInfo, user=user)
+    if not user_info.is_applicant:
+        messages.warning(request, "You're not authorized to view that page!")
+        return redirect("recruiter-dash")
+
     if request.method == "POST":
         data = request.POST
         user_query = data["search"]
 
         return redirect("search", query=user_query)
     else:
-        user = request.user
-        user_state = User.objects.get(username=user.username)
-        user_info = UserInfo.objects.get(user=user_state)
-        if not user_info.is_applicant:
-            messages.warning(request, "You're not authorised to view that page!")
-            return redirect("recruiter-dash")
-
-        job_post = JobPost.objects.get(pk=pk)
+        job_post = get_object_or_404(JobPost, pk=pk)
         applied = False
-        if ApplyJob.objects.filter(user=user_state, job=job_post).exists():
+        if ApplyJob.objects.filter(user=user, job=job_post).exists():
             applied = True
             messages.info(request, "You have already applied for this job.")
 
         send = {
             "pk": pk,
             "company": job_post.company.company,
-            "title": job_post.title,
+            "title": job_post.job_title,
             "industry": job_post.industry.name,
             "city": job_post.city,
             "state": job_post.state,
@@ -117,20 +107,20 @@ def job_details(request, pk):
 @login_required
 def apply_to_job(request, pk):
     user = request.user
-    user_state = User.objects.get(username=user.username)
-    user_info = UserInfo.objects.get(user=user_state)
+    user_info = get_object_or_404(UserInfo, user=user)
     if not user_info.is_applicant:
-        messages.warning(request, "You're not authorised to view that page!")
+        messages.warning(request, "You're not authorized to view that page!")
         return redirect("recruiter-dash")
 
-    job_post = JobPost.objects.get(pk=pk)
-    if ApplyJob.objects.filter(user=user_state, job=job_post).exists():
+    job_post = get_object_or_404(JobPost, pk=pk)
+    if ApplyJob.objects.filter(user=user, job=job_post).exists():
         messages.warning(request, "Permission Denied.")
         return redirect("applicant-dash")
+    resume = get_object_or_404(Resume, user=user)
 
     application = ApplyJob()
-    application.user = user_state
     application.job = job_post
+    application.resume = resume
     application.status = "Pending"
     application.save()
 
@@ -138,32 +128,28 @@ def apply_to_job(request, pk):
     return redirect("applicant-dash")
 
 
+# View roles applied to.
 @login_required
 def jobs_applied(request):
     user = request.user
-    user_state = User.objects.get(username=user.username)
-    user_info = UserInfo.objects.get(user=user_state)
+    user_info = get_object_or_404(UserInfo, user=user)
     if not user_info.is_applicant:
-        messages.warning(request, "You're not authorised to view that page!")
+        messages.warning(request, "You're not authorized to view that page!")
         return redirect("recruiter-dash")
 
-    applied = ApplyJob.objects.filter(user=user_state)
-    job_list = []
-    for x in range(len(applied)):
-        single = applied[x]
-        details = {
-            "pk": single.job.pk,
-            "title": single.job.title,
-            "company": single.job.company.company,
-            "industry": single.job.industry.name,
-            "timestamp": single.timestamp,
-            "city": single.job.city,
-            "state": single.job.state,
-            "country": single.job.country,
-            "available": single.job.available,
-            "status": single.status
-        }
-        job_list.append(details)
+    applied = ApplyJob.objects.filter(user=user)
+
+    # Paginate the queryset
+    paginator = Paginator(applied, 10)  # Show 10 items per page
+    page_number = request.GET.get('page')
+    try:
+        job_list = paginator.page(page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        job_list = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        job_list = paginator.page(paginator.num_pages)
 
     send = {"data": job_list}
     return render(request, "resume/jobs-applied.html", send)

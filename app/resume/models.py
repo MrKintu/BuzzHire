@@ -17,16 +17,24 @@ def rename_file(instance, filename):
     return new_path
 
 
-class Applicant_Industry(models.Model):
-    name = models.CharField(max_length=50, null=True, blank=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Resume(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, blank=True)
-    industry = models.ForeignKey(Applicant_Industry, null=True, on_delete=models.CASCADE, blank=True)
+    industry_choices = (
+        ("Transportation", "Transportation"),
+        ("Pharmaceutical", "Pharmaceutical"),
+        ("Telecommunications", "Telecommunications"),
+        ("Manufacturing", "Manufacturing"),
+        ("Mining", "Mining"),
+        ("Hospitality", "Hospitality"),
+        ("Media and News", "Media and News"),
+        ("Agriculture", "Agriculture"),
+        ("Computer and Technology", "Computer and Technology"),
+        ("Education", "Education"),
+        ("Finance and Economics", "Finance and Economics"),
+        ("Health Care", "Health Care")
+    )
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    industry = models.CharField(max_length=100, null=True, blank=True, choices=industry_choices)
     profession = models.CharField(max_length=100, null=True, blank=True)
     years = models.IntegerField(null=True, blank=True)
     resume = models.FileField(upload_to=rename_file, null=True, blank=True)

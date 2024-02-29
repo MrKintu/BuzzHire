@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
           crossorigin="anonymous">
-    <title>Edit Job</title>
+    <title>Create Job</title>
 </head>
 <body>
     <section class="h-100 bg-primary bg-gradient">
@@ -13,7 +13,7 @@
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-xl-9">
 
-            <h1 class="text-white mb-4">Edit a Job.</h1>
+            <h1 class="text-white mb-4">Edit Job Details.</h1>
 
             {% if messages %}
             {% for message in messages %}
@@ -24,83 +24,64 @@
             {% endif %}
 
             <form class="card" style="border-radius: 15px;" enctype="multipart/form-data" method="post">
-              {% csrf_token %}
-              {% if available %}
-              <div class="form-check form-switch form-check-reverse form-control-lg">
-                <a href="{% url 'close-job' pk=pk %}" class="btn btn-info btn-lg" id="available1">Close Job</a>
-                <label class="form-check-label" for="available1">
-                  Is this role still available?
-                </label>
-              </div>
-              {% else %}
-              <div class="form-check form-switch form-check-reverse form-control-lg">
-                <a href="{% url 'open-job' pk=pk %}" class="btn btn-info btn-lg" id="available2">Re-Open Job</a>
-                <label class="form-check-label" for="available2">
-                  Re-Open this role.
-                </label>
-              </div>
-              {% endif %}
-
+                {% csrf_token %}
               <div class="card-body">
                 <div class="row align-items-center pt-4 pb-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">Job Title</h6>
+                    <h6 class="mb-0">{{ form.available.label_tag }}</h6>
                   </div>
                   <div class="col-md-9 pe-5">
-                    <input type="text" class="form-control" name="title" value="{{ title }}" required/>
+                    {{ form.available }}
                   </div>
                 </div>
 
                 <hr class="mx-n3">
                 <div class="row align-items-center pt-4 pb-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">Job Industry</h6>
+                    <h6 class="mb-0">{{ form.title.label_tag }}</h6>
                   </div>
                   <div class="col-md-9 pe-5">
-                    <select name="industry" id="industry" class="form-control" required>
-                      <option value="Transportation">Transportation</option>
-                      <option value="Pharmaceutical">Pharmaceutical</option>
-                      <option value="Telecommunications">Telecommunications</option>
-                      <option value="Manufacturing">Manufacturing</option>
-                      <option value="Mining">Mining</option>
-                      <option value="Hospitality">Hospitality</option>
-                      <option value="Media and News">Media and News</option>
-                      <option value="Agriculture">Agriculture</option>
-                      <option value="Computer and Technology">Computer and Technology</option>
-                      <option value="Education">Education</option>
-                      <option value="Finance and Economics">Finance and Economics</option>
-                      <option value="Health Care">Health Care</option>
-                    </select>
+                    {{ form.job_title }}
                   </div>
                 </div>
 
                 <hr class="mx-n3">
                 <div class="row align-items-center pt-4 pb-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">City</h6>
+                    <h6 class="mb-0">{{ form.industry.label_tag }}</h6>
                   </div>
                   <div class="col-md-9 pe-5">
-                    <input type="text" class="form-control" name="city" value="{{ city }}" required/>
+                    {{ form.industry }}
                   </div>
                 </div>
 
                 <hr class="mx-n3">
                 <div class="row align-items-center pt-4 pb-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">State</h6>
+                    <h6 class="mb-0">{{ form.city.label_tag }}</h6>
                   </div>
                   <div class="col-md-9 pe-5">
-                    <input type="text" class="form-control" name="state" value="{{ state }}" required/>
+                    {{ form.city }}
                   </div>
                 </div>
 
                 <hr class="mx-n3">
                 <div class="row align-items-center pt-4 pb-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">Country</h6>
+                    <h6 class="mb-0">{{ form.state.label_tag }}</h6>
                   </div>
                   <div class="col-md-9 pe-5">
-                    <input type="text" class="form-control" name="country" value="{{ country }}" required/>
+                    {{ form.state }}
+                  </div>
+                </div>
+
+                <hr class="mx-n3">
+                <div class="row align-items-center pt-4 pb-3">
+                  <div class="col-md-3 ps-5">
+                    <h6 class="mb-0">{{ form.country.label_tag }}</h6>
+                  </div>
+                  <div class="col-md-9 pe-5">
+                    {{ form.country }}
                   </div>
                 </div>
 
@@ -110,7 +91,7 @@
                     <h6 class="mb-0">Job Salary</h6>
                   </div>
                   <div class="col-md-9 pe-5">
-                    <input type="number" class="form-control" name="pay" value="{{ pay }}" required/>
+                    {{ form.pay }}
                   </div>
                 </div>
 
@@ -120,33 +101,27 @@
                     <h6 class="mb-0">Job Type</h6>
                   </div>
                   <div class="col-md-9 pe-5">
-                    <select name="type" id="type" required>
-                      <option value="Remote">REMOTE</option>
-                      <option value="Onsite">ONSITE</option>
-                      <option value="Hybrid">HYBRID</option>
-                    </select>
+                    {{ form.job_type }}
                   </div>
                 </div>
 
                 <hr class="mx-n3">
                 <div class="row align-items-center py-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">Job Description</h6>
+                    <h6 class="mb-0">Role Description</h6>
                   </div>
                   <div class="col-md-9 pe-5">
-                    <textarea class="form-control" rows="3" name="describe" required>
-                    </textarea>
+                    {{ form.describe }}
                   </div>
                 </div>
 
                 <hr class="mx-n3">
                 <div class="row align-items-center py-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">Job Responsibilities</h6>
+                    <h6 class="mb-0">Job Tasks</h6>
                   </div>
                   <div class="col-md-9 pe-5">
-                    <textarea class="form-control" rows="3" name="tasks" required>
-                    </textarea>
+                    {{ form.tasks }}
                   </div>
                 </div>
 
@@ -156,24 +131,17 @@
                     <h6 class="mb-0">Ideal Candidate</h6>
                   </div>
                   <div class="col-md-9 pe-5">
-                    <textarea class="form-control" rows="3" name="ideal" required>
-                    </textarea>
+                    {{ form.ideal }}
                   </div>
                 </div>
 
                 <hr class="mx-n3">
                 <div class="row align-items-center py-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">Download Copy</h6>
+                    <h6 class="mb-0">Job Description</h6>
                   </div>
                   <div class="col-md-9 pe-5">
-                    <p>This is your current Job Description:
-                      <a href="{{ download.url }}" target="_blank">{{ filename }}</a>
-                    </p>
-                    <input class="form-control" id="formFileLg" type="file" name="download" required/>
-                    <div class="small text-muted mt-2">
-                      Upload your Job Description or any other relevant file. Max file size 50 MB
-                    </div>
+                    {{ form.download }}
                   </div>
                 </div>
 
@@ -186,7 +154,7 @@
                     </div>
                     <div class="col-4">
                       <div class="px-5 py-4">
-                        <button type="submit" class="btn btn-success btn-lg">Update Job</button>
+                        <button type="submit" class="btn btn-success btn-lg">Create Job</button>
                       </div>
                     </div>
                 </div>
