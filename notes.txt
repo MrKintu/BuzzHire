@@ -6,3 +6,5 @@ HTML Templates: https://mdbootstrap.com/docs/standard/extended/
 
 HTML Templates: https://getbootstrap.com/docs/5.3/examples/
 
+Lorem Ipsum: https://loremipsum.io/
+

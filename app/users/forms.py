@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
 
 from company.models import Company
 from resume.models import Resume
@@ -22,6 +23,12 @@ class ApplicantForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
 
 
 class ResumeForm(forms.ModelForm):

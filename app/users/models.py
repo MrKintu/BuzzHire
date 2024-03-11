@@ -9,7 +9,7 @@ class UserInfo(models.Model):
         ("Ms", "Ms"),
     )
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=100, null=True, blank=True, choices=title_choices)
     is_recruiter = models.BooleanField(default=False)
     is_applicant = models.BooleanField(default=False)

@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous">
-  <title>Job Post Results</title>
+  <title>Quiz Results</title>
 </head>
 <body>
 <form class="navbar navbar-dark fixed-top bg-primary flex-md-nowrap p-0 shadow" enctype="multipart/form-data"
@@ -50,6 +50,12 @@
               Manage Job Postings
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'list-quiz' %}">
+              <span data-feather="users"></span>
+              Manage Job Quizzes
+            </a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -69,7 +75,6 @@
         <table class="table table-sm">
           <thead>
           <tr>
-            <th scope="col">Title</th>
             <th scope="col">First Name</th>
             <th scope="col">Last Name</th>
             <th scope="col">Profession</th>
@@ -77,45 +82,12 @@
             <th scope="col">Phone Number</th>
             <th scope="col">Location</th>
             <th scope="col">Sent</th>
-            <th scope="col">Status</th>
             <th scope="col">View Applicant</th>
           </tr>
           </thead>
           <tbody>
           {% for data in data %}
-          {% if data.status == "Approved" %}
           <tr>
-            <td>{{ data.user_info.title }}</td>
-            <td>{{ data.user.first_name }}</td>
-            <td>{{ data.user.last_name }}</td>
-            <td>{{ data.resume.profession }}</td>
-            <td>{{ data.user.email }}</td>
-            <td>{{ data.resume.phone }}</td>
-            <td>{{ data.resume.city }}, {{ data.resume.country }}</td>
-            <td>{{ data.timestamp | naturaltime }}</td>
-            <td><span class="text-success">APPROVED</span></td>
-            <td><a class="btn btn-success btn-sm" href="{% url 'view-applicant' pk=data.pk %}">
-              View
-            </a></td>
-          </tr>
-          {% elif data.status == "Declined" %}
-          <tr>
-            <td>{{ data.user_info.title }}</td>
-            <td>{{ data.user.first_name }}</td>
-            <td>{{ data.user.last_name }}</td>
-            <td>{{ data.resume.profession }}</td>
-            <td>{{ data.user.email }}</td>
-            <td>{{ data.resume.phone }}</td>
-            <td>{{ data.resume.city }}, {{ data.resume.country }}</td>
-            <td>{{ data.timestamp | naturaltime }}</td>
-            <td><span class="text-danger">DECLINED</span></td>
-            <td><a class="btn btn-success btn-sm" href="{% url 'view-applicant' pk=data.pk %}">
-              View
-            </a></td>
-          </tr>
-          {% else %}
-          <tr>
-            <td>{{ data.user_info.title }}</td>
             <td>{{ data.resume.user.first_name }}</td>
             <td>{{ data.resume.user.last_name }}</td>
             <td>{{ data.resume.profession }}</td>
@@ -123,12 +95,10 @@
             <td>{{ data.resume.phone }}</td>
             <td>{{ data.resume.city }}, {{ data.resume.country }}</td>
             <td>{{ data.timestamp | naturaltime }}</td>
-            <td><span class="text-warning">PENDING</span></td>
             <td><a class="btn btn-success btn-sm" href="{% url 'view-applicant' pk=data.pk %}">
               View
             </a></td>
           </tr>
-          {% endif %}
           {% endfor %}
           </tbody>
         </table>

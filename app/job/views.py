@@ -47,26 +47,31 @@ def list_jobs(request):
         messages.warning(request, "You're not authorised to view that page!")
         return redirect("applicant-dash")
 
-    company = get_object_or_404(Company, user=user)
-    job_list = JobPost.objects.filter(company=company).order_by("-timestamp")
+    if request.method == "POST":
+        data = request.POST
+        user_query = data["search"]
+        return redirect("search", query=user_query)
+    else:
+        company = get_object_or_404(Company, user=user)
+        job_list = JobPost.objects.filter(company=company).order_by("-timestamp")
 
-    paginator = Paginator(job_list, 10)  # Number of items per page
-    page = request.GET.get('page')
-    try:
-        jobs = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        jobs = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range, deliver last page of results.
-        jobs = paginator.page(paginator.num_pages)
+        paginator = Paginator(job_list, 10)  # Number of items per page
+        page = request.GET.get('page')
+        try:
+            jobs = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            jobs = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range, deliver last page of results.
+            jobs = paginator.page(paginator.num_pages)
 
-    # Calculate applicants for each job in the paginated queryset
-    for job in jobs:
-        job.applicants = ApplyJob.objects.filter(job=job).count()
+        # Calculate applicants for each job in the paginated queryset
+        for job in jobs:
+            job.applicants = ApplyJob.objects.filter(job=job).count()
 
-    send = {"data": jobs}  # Pass the paginated jobs to the template
-    return render(request, "company/list-jobs.html", send)
+        send = {"data": jobs}  # Pass the paginated jobs to the template
+        return render(request, "company/list-jobs.html", send)
 
 
 # Update Job Posting

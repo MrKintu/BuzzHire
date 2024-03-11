@@ -7,6 +7,7 @@ from django.db import models
 
 from company.models import Company
 from resume.models import Resume
+from users.models import UserInfo
 
 
 def rename_file(instance, filename):
@@ -42,8 +43,7 @@ class JobPost(models.Model):
         ("Health Care", "Health Care")
     )
 
-    company = models.OneToOneField(Company, on_delete=models.CASCADE, null=True)
-    created_by = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     job_title = models.CharField(max_length=100, null=True, blank=True)
     job_type = models.CharField(max_length=20, choices=type_choices, null=True, blank=True)
     industry = models.CharField(max_length=100, blank=True, null=True, choices=industry_choices)
@@ -69,7 +69,12 @@ class ApplyJob(models.Model):
         ("Pending", "Pending"),
     )
 
-    job = models.OneToOneField(JobPost, on_delete=models.CASCADE, null=True, blank=True)
-    resume = models.OneToOneField(Resume, on_delete=models.CASCADE, null=True, blank=True)
+    job = models.ForeignKey(JobPost, on_delete=models.CASCADE, null=True, blank=True)
+    resume = models.ForeignKey(Resume, on_delete=models.CASCADE, null=True, blank=True)
+    user_info = models.ForeignKey(UserInfo, on_delete=models.CASCADE, null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=status_choices)
+    reference = models.CharField(max_length=20, null=True, blank=True, unique=True)
+
+    def __str__(self):
+        return self.reference

@@ -1,13 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, redirect, get_object_or_404
 
 from job.models import JobPost, ApplyJob
-from resume.models import Resume
-from users.forms import ApplicantForm, UserInfoForm, CompanyForm
+from users.forms import UserForm, UserInfoForm, CompanyForm
 from users.models import UserInfo
+from .emailHandler import ApplicantStatus
 from .models import Company
 
 
@@ -21,9 +20,10 @@ def edit_company(request):
         return redirect("applicant-dash")
 
     if request.method == "POST":
-        user_form = ApplicantForm(request.POST)
-        user_info_form = UserInfoForm(request.POST)
-        company_form = CompanyForm(request.POST)
+        company = get_object_or_404(Company, user=user)
+        user_form = UserForm(request.POST, instance=user)
+        user_info_form = UserInfoForm(request.POST, instance=user_info)
+        company_form = CompanyForm(request.POST, instance=company)
 
         if user_form.is_valid() and user_info_form.is_valid() and company_form.is_valid():
             user = user_form.save()
@@ -39,7 +39,7 @@ def edit_company(request):
             company.save()
 
             messages.success(request, "Your account has successfully been updated.")
-            return redirect("login")
+            return redirect("recruiter-dash")
         else:
             messages.warning(request, "Something went wrong, please try again.")
             # If there are errors, render the form with the error messages
@@ -51,7 +51,7 @@ def edit_company(request):
             return render(request, "company/edit-company.html", context)
     else:
         company = get_object_or_404(Company, user=user)
-        user_form = ApplicantForm(instance=user)
+        user_form = UserForm(instance=user)
         company_form = CompanyForm(instance=company)
         user_info_form = UserInfoForm(instance=user_info)
         context = {
@@ -71,26 +71,27 @@ def all_applicants(request, pk):
         messages.warning(request, "You're not authorised to view that page!")
         return redirect("applicant-dash")
 
-    job_post = get_object_or_404(JobPost, pk=pk)
-    applicants = ApplyJob.objects.filter(job=job_post).order_by("-timestamp")
+    if request.method == "POST":
+        data = request.POST
+        user_query = data["search"]
+        return redirect("search", query=user_query)
+    else:
+        job_post = get_object_or_404(JobPost, pk=pk)
+        applicants = ApplyJob.objects.filter(job=job_post).order_by("-timestamp")
 
-    paginator = Paginator(applicants, 10)  # Show 10 applicants per page
-    page = request.GET.get('page')
-    try:
-        applicants = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        applicants = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        applicants = paginator.page(paginator.num_pages)
+        paginator = Paginator(applicants, 10)  # Show 10 applicants per page
+        page = request.GET.get('page')
+        try:
+            applicants = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            applicants = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            applicants = paginator.page(paginator.num_pages)
 
-    context = {
-        "data": applicants,
-        "pk": pk,
-    }
-
-    return render(request, "company/results.html", context)
+        context = {"data": applicants}
+        return render(request, "company/results.html", context)
 
 
 # View Single Application
@@ -119,30 +120,43 @@ def single_applicant(request, pk):
             apply_job.save()
             messages.info(request, "The applicant shall remain pending.")
 
-        return redirect("results", pk=pk)
+        send_data = {
+            "first_name": apply_job.resume.user.first_name,
+            "last_name": apply_job.resume.user.last_name,
+            "email": apply_job.resume.user.email,
+            "job_title": apply_job.job.job_title,
+            "company": apply_job.job.company.company,
+            "status": apply_job.status,
+            "reference": apply_job.reference
+        }
+        send_mail = ApplicantStatus(send_data)
+        if send_mail:
+            return redirect("results", pk=apply_job.job.pk)
+        else:
+            messages.warning(request, "Something went wrong. Please try again...")
+            return redirect("view-applicant", pk=pk)
     else:
         apply_job = get_object_or_404(ApplyJob, pk=pk)
-        app_user = get_object_or_404(User, pk=apply_job.user.pk)
-        resume = get_object_or_404(Resume, user=app_user)
-        user_info = get_object_or_404(UserInfo, user=app_user)
+        user_info = get_object_or_404(UserInfo, user=apply_job.resume.user)
 
-        details = {
+        context = {
             "pk": apply_job.job.pk,
             "title": user_info.title,
-            "first_name": app_user.first_name,
-            "last_name": app_user.last_name,
-            "email": app_user.email,
-            "phone": resume.phone,
-            "profession": resume.profession,
-            "industry": resume.industry.name,
-            "years": resume.years,
-            "street": resume.street,
-            "city": resume.city,
-            "zipcode": resume.zipcode,
-            "state": resume.state,
-            "country": resume.country,
-            "resume": resume.resume,
-            "timestamp": apply_job.timestamp
+            "first_name": apply_job.resume.user.first_name,
+            "last_name": apply_job.resume.user.last_name,
+            "email": apply_job.resume.user.email,
+            "phone": apply_job.resume.phone,
+            "profession": apply_job.resume.profession,
+            "industry": apply_job.resume.industry,
+            "years": apply_job.resume.years,
+            "street": apply_job.resume.street,
+            "city": apply_job.resume.city,
+            "zipcode": apply_job.resume.zipcode,
+            "state": apply_job.resume.state,
+            "country": apply_job.resume.country,
+            "resume": apply_job.resume.resume,
+            "timestamp": apply_job.timestamp,
+            "reference": apply_job.reference,
+            "status": apply_job.status
         }
-
-        return render(request, "company/view-applicant.html", details)
+        return render(request, "company/view-applicant.html", context)

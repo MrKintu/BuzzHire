@@ -23,7 +23,7 @@ class Company(models.Model):
         ("Health Care", "Health Care")
     )
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     recruiter_type = models.CharField(max_length=100, choices=type_choices, null=True, blank=True)
     company = models.CharField(max_length=100, null=True, blank=True)
     industry = models.CharField(max_length=100, null=True, blank=True, choices=industry_choices)

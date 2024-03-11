@@ -33,7 +33,7 @@ class Resume(models.Model):
         ("Health Care", "Health Care")
     )
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     industry = models.CharField(max_length=100, null=True, blank=True, choices=industry_choices)
     profession = models.CharField(max_length=100, null=True, blank=True)
     years = models.IntegerField(null=True, blank=True)

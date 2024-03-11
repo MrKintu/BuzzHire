@@ -15,20 +15,16 @@ def index(request):
     if request.method == "POST":
         data = request.POST
         user_query = data["search"]
-
         return redirect("search", query=user_query)
     else:
         user = request.user
         switch = False
         if user.is_authenticated:
-            jobs = JobPost.objects.all().order_by("-timestamp")
-            user_state = User.objects.get(username=user.username)
-            user_info = UserInfo.objects.get(user=user_state)
+            user_info = get_object_or_404(UserInfo, user=user)
             if user_info.is_applicant:
                 switch = True
-        else:
-            jobs = JobPost.objects.all().order_by("-timestamp")[:5]
 
+        jobs = JobPost.objects.all().order_by("-timestamp")
         paginator = Paginator(jobs, 5)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -52,7 +48,6 @@ def applicant_dash(request):
     if request.method == "POST":
         data = request.POST
         user_query = data["search"]
-
         return redirect("search", query=user_query)
     else:
         resume = get_object_or_404(Resume, user=user)
@@ -60,7 +55,7 @@ def applicant_dash(request):
             "title": user_info.title,
             "first_name": user.first_name,
             "last_name": user.last_name,
-            "email": user.email,
+            "email": resume.user.email,
             "phone": resume.phone,
             "profession": resume.profession,
             "industry": resume.industry,
@@ -88,7 +83,6 @@ def recruiter_dash(request):
     if request.method == "POST":
         data = request.POST
         user_query = data["search"]
-
         return redirect("search", query=user_query)
     else:
         company = get_object_or_404(Company, user=user)
@@ -136,7 +130,14 @@ def search(request, query):
         user_query = data["search"]
         return redirect("search", query=user_query)
     else:
-        titles = JobPost.objects.filter(title__icontains=query)
+        user = request.user
+        switch = False
+        if user.is_authenticated:
+            user_info = get_object_or_404(UserInfo, user=user)
+            if user_info.is_applicant:
+                switch = True
+
+        titles = JobPost.objects.filter(job_title__icontains=query)
         cities = JobPost.objects.filter(city__icontains=query)
         states = JobPost.objects.filter(state__icontains=query)
         countries = JobPost.objects.filter(country__icontains=query)
@@ -151,6 +152,7 @@ def search(request, query):
 
         send = {
             "query": query,
+            "switch": switch,
             "page_obj": page_obj
         }
         return render(request, "dashboard/search.html", send)

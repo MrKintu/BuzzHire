@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,12 +11,11 @@
 <body>
 <div class="container">
   <div class="py-5 text-center">
-    <img class="d-block mx-auto mb-4" alt="" width="72" height="72"
-         src="{{ site.baseurl }}/docs/{{ site.docs_version }}/assets/brand/bootstrap-solid.svg">
+    <img class="d-block mx-auto mb-4" alt="" width="216" height="72" src="{% static 'logo.png' %}">
     <h2>Edit Your Company Details</h2>
   </div>
 
-  <div class="row">
+  <form class="row" method="post" enctype="multipart/form-data"> {% csrf_token %}
     <div class="col-md-4 order-md-2 mb-4">
       <a href="{% url 'recruiter-dash' %}" class="btn btn-danger">Go Back</a>
       <br/> <br/>
@@ -26,32 +26,30 @@
         <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
             <h6 class="my-0">Account Name</h6>
-            <small class="text-muted">{{ user_form.first_name.value }} {{ user_form.last_name.value }}</small>
+            <small class="text-muted">
+                {{ user_info_form.title }}
+                {{ user_form.first_name }}
+                {{ user_form.last_name }}
+            </small>
           </div>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
             <h6 class="my-0">Account Email</h6>
-            <small class="text-muted">{{ user_form.email.value }}</small>
+            <small class="text-muted">{{ user_form.email }}</small>
           </div>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
             <h6 class="my-0">Company</h6>
-            <small class="text-muted">{{ company_form.company.value }}</small>
-          </div>
-        </li>
-        <li class="list-group-item d-flex justify-content-between lh-condensed">
-          <div>
-            <h6 class="my-0">Role</h6>
-            <small class="text-muted">{{ company_form.role.value }}</small>
+            <small class="text-muted">{{ company_form.company }}</small>
           </div>
         </li>
       </ul>
     </div>
     <div class="col-md-8 order-md-1">
       <h4 class="mb-3">Keep these details up to date.</h4>
-      <form class="needs-validation" method="post" enctype="multipart/form-data"> {% csrf_token %}
+      <div class="needs-validation">
         <div class="mb-3">
           <label>Recruiter Type</label>
           {{ company_form.recruiter_type }}
@@ -110,9 +108,9 @@
         </div>
         <hr class="mb-4">
         <button class="btn btn-success btn-lg btn-block" type="submit">CONFIRM</button>
-      </form>
+      </div>
     </div>
-  </div>
+  </form>
 
   <footer class="my-5 pt-5 text-muted text-center text-small">
     <p class="mb-1">&copy; 2024 BuzzHire</p>

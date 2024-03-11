@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,7 +11,9 @@
 <body>
 <form class="navbar navbar-dark fixed-top bg-primary flex-md-nowrap p-0 shadow" enctype="multipart/form-data"
       method="post"> {% csrf_token %}
-  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'index' %}">BuzzHire</a>
+  <a class=" col-sm-3 col-md-2 mr-0" href="{% url 'index' %}">
+      <img class="d-block mx-auto mb-4" alt="" width="102" height="34" src="{% static 'logo.png' %}">
+  </a>
   <input class="form-control form-control-dark w-100" type="text" placeholder="Search" name="search">
   <button type="submit" class="btn btn-outline-light">Search</button>
   <ul class="navbar-nav px-3">
@@ -46,11 +49,6 @@
               Manage Job Postings
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              View Post Results
-            </a>
-          </li>
         </ul>
       </div>
     </nav>
@@ -75,8 +73,8 @@
                   <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
                     class="rounded-circle img-fluid" style="width: 150px;">
                   <h5 class="my-3">{{ title }}. {{ first_name }} {{ last_name }}</h5>
-                  <p class="text-muted mb-1">{{ type }}</p>
-                  <p class="text-muted mb-4">{{ company }}</p>
+                  <p class="mb-1">{{ type }}</p>
+                  <p class="mb-4">{{ company }}</p>
                 </div>
               </div>
               <div class="card mb-4 mb-lg-0">
@@ -136,7 +134,7 @@
                       <p class="mb-0">Full Name</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{ title }} {{ first_name }} {{ last_name }}</p>
+                      <p class="mb-0">{{ title }}. {{ first_name }} {{ last_name }}</p>
                     </div>
                   </div>
                   <hr>
@@ -145,7 +143,7 @@
                       <p class="mb-0">Email</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{ email }}</p>
+                      <p class="mb-0">{{ email }}</p>
                     </div>
                   </div>
                   <hr>
@@ -154,7 +152,7 @@
                       <p class="mb-0">Phone</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{ phone }}</p>
+                      <p class="mb-0">{{ phone }}</p>
                     </div>
                   </div>
                   <hr>
@@ -163,7 +161,7 @@
                       <p class="mb-0">Recruiter Type</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{ type }}</p>
+                      <p class="mb-0">{{ type }}</p>
                     </div>
                   </div>
                   <hr>
@@ -172,7 +170,7 @@
                       <p class="mb-0">Company</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{ company }}</p>
+                      <p class="mb-0">{{ company }}</p>
                     </div>
                   </div>
                   <hr>
@@ -181,7 +179,7 @@
                       <p class="mb-0">Role</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{ role }}</p>
+                      <p class="mb-0">{{ role }}</p>
                     </div>
                   </div>
                   <hr>
@@ -190,7 +188,7 @@
                       <p class="mb-0">Industry</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{ industry }}</p>
+                      <p class="mb-0">{{ industry }}</p>
                     </div>
                   </div>
                   <hr>
@@ -199,7 +197,7 @@
                       <p class="mb-0">Website</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{ website }}</p>
+                      <p class="mb-0"><a href="{{ website }}">{{ website }}</a></p>
                     </div>
                   </div>
                   <hr>
@@ -208,8 +206,8 @@
                       <p class="mb-0">Address</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{ street }}.</p>
-                      <p class="text-muted mb-0">{{ city }}, {{ state }}, {{ country }}.</p>
+                      <p class="mb-0">{{ street }}.</p>
+                      <p class="mb-0">{{ city }}, {{ state }}, {{ country }}.</p>
                     </div>
                   </div>
                   <hr>
@@ -218,7 +216,7 @@
                       <p class="mb-0">Zip Code</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">{{ zipcode }}</p>
+                      <p class="mb-0">{{ zipcode }}</p>
                     </div>
                   </div>
                 </div>

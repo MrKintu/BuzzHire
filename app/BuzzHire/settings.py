@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "company",
     "dashboard",
     "job",
+    "quiz",
     "resume",
     "users",
 ]
@@ -218,3 +219,11 @@ CSRF_COOKIE_SAMESITE = 'Lax'
 # LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
 LOGIN_URL = 'login'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'comms@buzzhire.com'
+EMAIL_HOST_USER = env.get("EMAIL_USER")
+EMAIL_HOST_PASSWORD = env.get("EMAIL_PASS")
