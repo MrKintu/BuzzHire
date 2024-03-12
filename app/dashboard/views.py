@@ -51,6 +51,11 @@ def applicant_dash(request):
         return redirect("search", query=user_query)
     else:
         resume = get_object_or_404(Resume, user=user)
+        applications = ApplyJob.objects.filter(resume=resume)
+        app_count = applications.count()
+        approved = applications.filter(status="Approved").count()
+        declined = applications.filter(status="Declined").count()
+        pending = applications.exclude(status__in=["Approved", "Declined"]).count()
         send = {
             "title": user_info.title,
             "first_name": user.first_name,
@@ -65,7 +70,11 @@ def applicant_dash(request):
             "state": resume.state,
             "country": resume.country,
             "zipcode": resume.zipcode,
-            "resume": resume.resume
+            "resume": resume.resume,
+            "applications": app_count,
+            "approved": approved,
+            "declined": declined,
+            "pending": pending
         }
 
         return render(request, "dashboard/applicant-dash.html", send)

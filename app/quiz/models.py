@@ -1,17 +1,33 @@
+from django.contrib.auth.models import User
 from django.db import models
 
-from resume.models import Resume
+
+class Personality(models.Model):
+    dichotomy_choices = (
+        ('I/E', 'Introversion/Extroversion'),
+        ('S/N', 'Sensing/Intuition'),
+        ('T/F', 'Thinking/Feeling'),
+        ('J/P', 'Judging/Perceiving')
+    )
+
+    name = models.CharField(max_length=50, null=True, blank=True)
+    abbrv = models.CharField(max_length=1)
+    dichotomy = models.CharField(max_length=3, choices=dichotomy_choices)
+    describe = models.TextField()
+
+    def __str__(self):
+        return self.name
 
 
 class Question(models.Model):
     dichotomy_choices = (
         ('I/E', 'Introversion/Extroversion'),
-        ('S/I', 'Sensing/Intuition'),
+        ('S/N', 'Sensing/Intuition'),
         ('T/F', 'Thinking/Feeling'),
         ('J/P', 'Judging/Perceiving')
     )
 
-    text = models.TextField()
+    text = models.CharField(max_length=100)
     dichotomy = models.CharField(max_length=3, choices=dichotomy_choices)
 
     def __str__(self):
@@ -19,9 +35,17 @@ class Question(models.Model):
 
 
 class UserResponse(models.Model):
-    user_id = models.ForeignKey(Resume, on_delete=models.CASCADE, null=True, blank=True)  # Assuming each user has an ID
+    dichotomy_choices = (
+        ('I/E', 'Introversion/Extroversion'),
+        ('S/N', 'Sensing/Intuition'),
+        ('T/F', 'Thinking/Feeling'),
+        ('J/P', 'Judging/Perceiving')
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, null=True, blank=True)
-    response = models.IntegerField()  # Assuming the response scale is 1-7
+    response = models.IntegerField()
+    dichotomy = models.CharField(max_length=3, choices=dichotomy_choices)
 
 
 class PersonalityType(models.Model):
@@ -44,22 +68,9 @@ class PersonalityType(models.Model):
         ('ESFP', 'ESFP')
     )
 
-    type_name = models.CharField(max_length=4, choices=type_choices, unique=True)
-    description = models.TextField()
+    combo = models.CharField(max_length=4, choices=type_choices, unique=True)
+    name = models.CharField(max_length=50, null=True, blank=True)
+    describe = models.TextField()
 
     def __str__(self):
-        return self.type_name
-
-
-class Personality(models.Model):
-    dichotomy_choices = (
-        ('I/E', 'Introversion/Extroversion'),
-        ('S/I', 'Sensing/Intuition'),
-        ('T/F', 'Thinking/Feeling'),
-        ('J/P', 'Judging/Perceiving')
-    )
-
-    name = models.CharField(max_length=20)
-    abbrv = models.CharField(max_length=1)
-    dichotomy = models.CharField(max_length=3, choices=dichotomy_choices)
-    describe = models.TextField()
+        return self.name

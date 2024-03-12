@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 {% load humanize %}
 <html lang="en">
 <head>
@@ -11,7 +12,9 @@
 <body>
   <form class="navbar navbar-dark fixed-top bg-primary flex-md-nowrap p-0 shadow" enctype="multipart/form-data"
         method="post"> {% csrf_token %}
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'index' %}">BuzzHire</a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'index' %}">
+      <img class="d-block mx-auto mb-4" alt="" width="102" height="34" src="{% static 'logo.png' %}">
+    </a>
     <input class="form-control form-control-dark w-100" type="text" placeholder="Search" name="search">
     <button type="submit" class="btn btn-outline-light">Search</button>
     <ul class="navbar-nav px-3">
@@ -21,7 +24,7 @@
     </ul>
   </form>
 
-  <br/> <br/>
+  <br/> <br/> <br/>
   <div class="container-fluid">
     <div class="row">
       <nav class="col-md-2 d-none d-md-block bg-light sidebar">
@@ -55,6 +58,11 @@
             <li class="nav-item">
               <a class="nav-link" href="#">
                 Education
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'questions' pk=1 %}">
+                Personality Test
               </a>
             </li>
           </ul>

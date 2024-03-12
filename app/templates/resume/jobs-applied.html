@@ -24,7 +24,7 @@
   </ul>
 </form>
 
-<br/> <br/>
+<br/> <br/> <br/>
 <div class="container-fluid">
   <div class="row">
     <nav class="col-md-2 d-none d-md-block bg-light sidebar">
@@ -60,13 +60,18 @@
               Education
             </a>
           </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'questions' pk=1 %}">
+                Personality Test
+              </a>
+            </li>
         </ul>
       </div>
     </nav>
 
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Applicant Dashboard</h1>
+        <h1 class="h2">Jobs Applications Sent</h1>
       </div>
       {% if messages %}
       {% for message in messages %}
@@ -75,9 +80,6 @@
       </div>
       {% endfor %}
       {% endif %}
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Jobs Applications Sent</h1>
-      </div>
       <div class="table-responsive small">
         <table class="table table-sm">
           <thead>
