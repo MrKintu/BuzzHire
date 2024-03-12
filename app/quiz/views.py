@@ -2,7 +2,6 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
-from resume.models import Resume
 from users.models import UserInfo
 from .forms import ResponseForm
 from .models import Question, PersonalityType, Personality
@@ -74,53 +73,21 @@ def quiz_results(request, persona):
             "INFJ_the_advocate.png", "INFP_the_mediator.png", "INTJ_the_architect.jpg", "INTP_the_logician.jpg",
             "ISFJ_the_defender.png", "ISFP_the_adventurer.png", "ISTJ_the_logistician.png", "ISTP_the_virtuoso.png"
         ]
-        image = str
-        for x in range(len(images)):
-            if images[x].startswith(persona):
-                image = images[x]
+        image = next((img for img in images if img.startswith(persona)), None)
 
         personalities = []
         combo = list(persona)
-        I_E_items = Personality.objects.filter(dichotomy="I/E")
-        S_I_items = Personality.objects.filter(dichotomy="S/N")
-        T_F_items = Personality.objects.filter(dichotomy="T/F")
-        J_P_items = Personality.objects.filter(dichotomy="J/P")
-
-        for a in range(len(I_E_items)):
-            single = I_E_items[a]
-            if single.abbrv == combo[0]:
-                details = {
-                    "name": single.name,
-                    "describe": single.describe
-                }
-                personalities.append(details)
-
-        for b in range(len(S_I_items)):
-            single = S_I_items[b]
-            if single.abbrv == combo[1]:
-                details = {
-                    "name": single.name,
-                    "describe": single.describe
-                }
-                personalities.append(details)
-
-        for c in range(len(T_F_items)):
-            single = T_F_items[c]
-            if single.abbrv == combo[2]:
-                details = {
-                    "name": single.name,
-                    "describe": single.describe
-                }
-                personalities.append(details)
-
-        for d in range(len(J_P_items)):
-            single = J_P_items[d]
-            if single.abbrv == combo[3]:
-                details = {
-                    "name": single.name,
-                    "describe": single.describe
-                }
-                personalities.append(details)
+        personality = Personality.objects.all()
+        for x in range(len(personality)):
+            single = personality[x]
+            for y in range(len(combo)):
+                letter = combo[y]
+                if single.abbrv == letter:
+                    data = {
+                        "name": single.name,
+                        "describe": single.describe
+                    }
+                    personalities.append(data)
 
         context = {
             "persona": persona,

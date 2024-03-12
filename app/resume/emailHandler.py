@@ -16,7 +16,7 @@ def ApplicantEmail(data=dict):
 
     # Create the EmailMultiAlternatives object
     subject = f'Application to {data["company"]}'
-    from_email = env.get('EMAIL_USER')
+    from_email = "no_reply@buzzhire.ca"
     to_email = [data["email"]]
     msg = EmailMultiAlternatives(subject, strip_tags(html_content), from_email, to_email)
 
@@ -40,7 +40,7 @@ def RecruiterEmail(data=dict):
 
     # Create the EmailMultiAlternatives object
     subject = f'Application received for {data["company"]}'
-    from_email = env.get('EMAIL_USER')
+    from_email = "no_reply@buzzhire.ca"
     to_email = [data["email"]]
     msg = EmailMultiAlternatives(subject, strip_tags(html_content), from_email, to_email)
 
