@@ -34,7 +34,7 @@ class UserForm(forms.ModelForm):
 class ResumeForm(forms.ModelForm):
     class Meta:
         model = Resume
-        exclude = ['user']
+        exclude = ['user', 'personality']
 
     def clean_download(self):
         resume = self.cleaned_data.get('resume')
@@ -47,7 +47,7 @@ class ResumeForm(forms.ModelForm):
 class UserInfoForm(forms.ModelForm):
     class Meta:
         model = UserInfo
-        fields = ['title']
+        fields = ['title', 'gender', 'd_o_b']
 
 
 class CompanyForm(forms.ModelForm):

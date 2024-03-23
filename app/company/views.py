@@ -140,7 +140,7 @@ def single_applicant(request, pk):
         user_info = get_object_or_404(UserInfo, user=apply_job.resume.user)
 
         context = {
-            "pk": apply_job.job.pk,
+            "ref": apply_job.job.pk,
             "title": user_info.title,
             "first_name": apply_job.resume.user.first_name,
             "last_name": apply_job.resume.user.last_name,

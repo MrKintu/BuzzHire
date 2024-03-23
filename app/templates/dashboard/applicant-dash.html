@@ -60,7 +60,7 @@
             </a>
           </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'questions' pk=1 %}">
+              <a class="nav-link" href="{% url 'questions' ref=1 %}">
                 Personality Test
               </a>
             </li>
@@ -204,7 +204,9 @@
                       <p class="mb-0">View Resume</p>
                     </div>
                     <div class="col-sm-9">
-                      <a href="" class="btn btn-primary">My Resume</a>
+                      <a href="{{ resume.url }}" class="btn btn-primary" target="_blank">
+                          My Resume
+                      </a>
                     </div>
                   </div>
                 </div>

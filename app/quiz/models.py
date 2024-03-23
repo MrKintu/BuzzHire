@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from users.models import UserInfo
+
 
 class Personality(models.Model):
     dichotomy_choices = (
@@ -27,25 +29,18 @@ class Question(models.Model):
         ('J/P', 'Judging/Perceiving')
     )
 
-    text = models.CharField(max_length=100)
-    dichotomy = models.CharField(max_length=3, choices=dichotomy_choices)
+    count = models.IntegerField()
+    dichotomy = models.CharField(max_length=50, choices=dichotomy_choices)
+    text = models.CharField(max_length=200)
 
     def __str__(self):
         return self.text
 
 
 class UserResponse(models.Model):
-    dichotomy_choices = (
-        ('I/E', 'Introversion/Extroversion'),
-        ('S/N', 'Sensing/Intuition'),
-        ('T/F', 'Thinking/Feeling'),
-        ('J/P', 'Judging/Perceiving')
-    )
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user_info = models.ForeignKey(UserInfo, on_delete=models.CASCADE, null=True, blank=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, null=True, blank=True)
     response = models.IntegerField()
-    dichotomy = models.CharField(max_length=3, choices=dichotomy_choices)
 
 
 class PersonalityType(models.Model):
@@ -68,9 +63,21 @@ class PersonalityType(models.Model):
         ('ESFP', 'ESFP')
     )
 
-    combo = models.CharField(max_length=4, choices=type_choices, unique=True)
+    combo = models.CharField(max_length=4, choices=type_choices)
     name = models.CharField(max_length=50, null=True, blank=True)
     describe = models.TextField()
 
     def __str__(self):
         return self.name
+
+
+class UserPersonality(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    introversion = models.FloatField()
+    extroversion = models.FloatField()
+    sensing = models.FloatField()
+    intuition = models.FloatField()
+    thinking = models.FloatField()
+    feeling = models.FloatField()
+    judging = models.FloatField()
+    perceiving = models.FloatField()

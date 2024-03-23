@@ -3,12 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 from users.models import UserInfo
+from .fuzzyANN.predictModel import PredictPersona
 from .forms import ResponseForm
-from .models import Question, PersonalityType, Personality
+from .models import Question, PersonalityType, Personality, UserResponse, UserPersonality
 
 
 @login_required
-def quiz_questions(request, pk):
+def quiz_questions(request, ref):
     user = request.user
     user_info = get_object_or_404(UserInfo, user=user)
     if not user_info.is_applicant:
@@ -16,23 +17,37 @@ def quiz_questions(request, pk):
         return redirect("recruiter-dash")
 
     if request.method == "POST":
-        question = get_object_or_404(Question, pk=pk)
-        count = pk
+        question = get_object_or_404(Question, count=ref)
+        count = ref
 
         response_form = ResponseForm(request.POST)
         if response_form.is_valid():
             response = response_form.save(commit=False)
-            response.user = user
+            response.user_info = user_info
             response.question = question
             response.dichotomy = question.dichotomy
             response.save()
 
             count += 1
             if count <= 100:
-                return redirect("questions", pk=count)
+                return redirect("questions", ref=count)
             else:
+                answers = UserResponse.objects.filter(user_info=user_info)
+                personality = PredictPersona(answers)
+                user_personality = UserPersonality()
+                user_personality.user = user
+                user_personality.introversion = personality["introversion"]
+                user_personality.extroversion = personality["extroversion"]
+                user_personality.sensing = personality["sensing"]
+                user_personality.intuition = personality["intuition"]
+                user_personality.thinking = personality["thinking"]
+                user_personality.feeling = personality["feeling"]
+                user_personality.judging = personality["judging"]
+                user_personality.perceiving = personality["perceiving"]
+                user_personality.save()
+
                 messages.success(request, "You have successfully completed the quiz!")
-                return redirect("applicant-dash")
+                return redirect("quiz-results", persona=personality["persona"])
         else:
             messages.warning(request, "Something went wrong, please try again.")
             # If there are errors, render the form with the error messages
@@ -42,7 +57,7 @@ def quiz_questions(request, pk):
             }
             return render(request, "quiz/questions.html", context)
     else:
-        question = get_object_or_404(Question, pk=pk)
+        question = get_object_or_404(Question, count=ref)
         response_form = ResponseForm()
 
         context = {

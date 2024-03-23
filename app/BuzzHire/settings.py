@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "dashboard",
     "job",
     "quiz",
+    "quiz.myers_briggs",
     "resume",
     "users",
 ]

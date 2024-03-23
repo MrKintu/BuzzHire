@@ -2,7 +2,6 @@ import secrets
 import string
 from pathlib import Path
 
-from django.contrib.auth.models import User
 from django.db import models
 
 from company.models import Company

@@ -80,7 +80,7 @@ def job_details(request, pk):
             messages.info(request, "You have already applied for this job.")
 
         send = {
-            "pk": pk,
+            "ref": pk,
             "company": job_post.company.company,
             "title": job_post.job_title,
             "industry": job_post.industry,

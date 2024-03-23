@@ -20,7 +20,6 @@ def create_job(request):
 
     if request.method == "POST":
         form = JobPostForm(request.POST, request.FILES)
-        print(form)
         if form.is_valid():
             company = get_object_or_404(Company, user=user)
             new_job = form.save(commit=False)

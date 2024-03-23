@@ -26,15 +26,133 @@
               <div class="col-lg-6">
                 <div class="p-5">
                   <h3 class="fw-normal mb-5">General Information</h3>
-                  {{ user_info_form.as_p }}
-                  {{ user_form.as_p }}
+                    <div class="card-body">
+                        <div class="row align-items-center pt-4 pb-3">
+                          <div class="col-md-3 ps-5"><h6 class="mb-0">
+                              {{ user_info_form.title.label }}:
+                          </h6></div>
+                          <div class="col-md-9 pe-5">{{ user_info_form.title }}</div>
+                        </div>
+                        <hr class="mx-n3">
+
+                        <div class="row align-items-center pt-4 pb-3">
+                          <div class="col-md-3 ps-5"><h6 class="mb-0">
+                              {{ user_form.first_name.label }}:
+                          </h6></div>
+                          <div class="col-md-9 pe-5">{{ user_form.first_name }}</div>
+                        </div>
+                        <hr class="mx-n3">
+
+                        <div class="row align-items-center pt-4 pb-3">
+                          <div class="col-md-3 ps-5"><h6 class="mb-0">
+                              {{ user_form.last_name.label }}:
+                          </h6></div>
+                          <div class="col-md-9 pe-5">{{ user_form.last_name }}</div>
+                        </div>
+                        <hr class="mx-n3">
+
+                        <div class="row align-items-center pt-4 pb-3">
+                          <div class="col-md-3 ps-5"><h6 class="mb-0">
+                              {{ user_form.email.label }}:
+                          </h6></div>
+                          <div class="col-md-9 pe-5">{{ user_form.email }}</div>
+                        </div>
+                        <hr class="mx-n3">
+
+                        <div class="row align-items-center pt-4 pb-3">
+                          <div class="col-md-3 ps-5"><h6 class="mb-0">
+                              Enter new Password:
+                          </h6></div>
+                          <div class="col-md-9 pe-5">{{ user_form.password1 }}</div>
+                        </div>
+                        <p>Your password can’t be too similar to your other personal information.</p>
+                        <p>Your password must contain at least 8 characters.</p>
+                        <p>Your password can’t be a commonly used password.</p>
+                        <p>Your password can’t be entirely numeric.</p>
+                        <hr class="mx-n3">
+
+                        <div class="row align-items-center pt-4 pb-3">
+                          <div class="col-md-3 ps-5"><h6 class="mb-0">
+                              Please Re-type Password:
+                          </h6></div>
+                          <div class="col-md-9 pe-5">{{ user_form.password2 }}</div>
+                        </div>
+                        <p>Enter the same password as before, for verification.</p>
+                        <hr class="mx-n3">
+                    </div>
                 </div>
               </div>
               <div class="col-lg-6">
                 <div class="p-5">
                   <h3 class="fw-normal mb-5">Contact Details</h3>
 
-                  {{ company_form.as_p }}
+                  <div class="card-body">
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ company_form.recruiter_type.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ company_form.recruiter_type }}</div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ company_form.company.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ company_form.company }}</div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ company_form.industry.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ company_form.industry }}</div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ company_form.role.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ company_form.role }}</div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ company_form.website.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ company_form.website }}</div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ company_form.street.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ company_form.street }}</div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ company_form.city.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ company_form.city }}</div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ company_form.zipcode.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ company_form.zipcode }}</div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ company_form.state.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ company_form.state }}</div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ company_form.country.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ company_form.country }}</div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ company_form.phone.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ company_form.phone }}</div>
+                    </div>
+                    <hr class="mx-n3">
+                  </div>
                   <div class="form-check d-flex justify-content-start mb-4 pb-3">
                     <input class="form-check-input me-3" type="checkbox" value="1" id="accept" name="accept"
                            required/>
