@@ -45,15 +45,16 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.humanize",
 
     # My Apps
     "company",
     "dashboard",
+    "job",
+    "quiz",
+    "quiz.myers_briggs",
     "resume",
     "users",
-
-    # 3rd Party Apps
-    "widget_tweaks",
 ]
 
 MIDDLEWARE = [
@@ -93,7 +94,7 @@ WSGI_APPLICATION = "BuzzHire.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": env.get("DB_NAME"),
         "USER": env.get("DB_USER"),
         "PASSWORD": env.get("DB_PASS"),
@@ -195,11 +196,35 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_ROOT = os.path.join(BASE_DIR, "public")
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "public")]
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# CSRF SESSIONS SETTINGS
+CSRF_USE_SESSIONS = True
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
+# SESSION_COOKIE_SECURE = False
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'
+LOGIN_URL = 'login'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'comms@buzzhire.com'
+EMAIL_HOST_USER = env.get("EMAIL_USER")
+EMAIL_HOST_PASSWORD = env.get("EMAIL_PASS")

@@ -1,0 +1,121 @@
+Instructions: Please read each statement carefully and rate your agreement with it on a scale from 1 to 7, where:
+
+1 - Strongly Agree
+2 - Agree
+3 - Slightly Agree
+4 - Neutral
+5 - Slightly Disagree
+6 - Disagree
+7 - Strongly Disagree
+
+Introversion (I) / Extraversion (E):
+
+I prefer quiet evenings at home rather than going out to parties.
+I enjoy spending time alone with my thoughts.
+I find large social gatherings overwhelming.
+I feel drained after spending too much time in social settings.
+I prefer deep conversations with a few close friends over small talk with many acquaintances.
+I tend to listen more than I talk in social situations.
+I feel energized after spending time alone.
+I seek out opportunities to meet new people and try new experiences.
+I feel comfortable being the centre of attention in a group.
+I enjoy networking and meeting new people.
+I feel excited and energized in social situations.
+I often initiate conversations with strangers.
+I enjoy being part of a large group and participating in group activities.
+I prefer to work in a team rather than independently.
+I feel comfortable speaking in front of large audiences.
+I enjoy attending social events and parties.
+I prefer to think before I speak in social situations.
+I feel comfortable striking up conversations with people I don't know well.
+I enjoy participating in group discussions and brainstorming sessions.
+I feel energized by interacting with others.
+I prefer to have a few close friends rather than many acquaintances.
+I find it easy to approach strangers and start conversations.
+I prefer activities that I can do alone rather than in a group.
+I feel uncomfortable in situations where I don't know anyone.
+I prefer to observe rather than participate in group activities.
+
+Sensing (S) / Intuition (N):
+
+I trust my practical, hands-on experience more than abstract theories.
+I prefer to focus on details rather than seeing the big picture.
+I rely on facts and evidence when making decisions.
+I prefer to follow a step-by-step approach rather than experimenting with new ideas.
+I pay attention to the present moment rather than thinking about future possibilities.
+I prefer concrete, tangible information over abstract concepts.
+I enjoy activities that require careful attention to detail.
+I prefer to learn through hands-on experience rather than theoretical study.
+I tend to notice small changes in my environment.
+I trust my senses to provide accurate information about the world.
+I enjoy using practical skills to solve problems.
+I focus on what is real and tangible rather than what could be.
+I prefer to stick to proven methods rather than trying new approaches.
+I trust my observations and experiences over theories and concepts.
+I enjoy activities that engage my senses, like cooking or gardening.
+I prefer to rely on established procedures rather than improvising.
+I prefer to have all the facts before making a decision.
+I tend to focus on specifics rather than generalities.
+I am good at remembering details and specifics.
+I trust my intuition to guide me in uncertain situations.
+I enjoy brainstorming and exploring new possibilities.
+I often have hunches or gut feelings about things.
+I enjoy imagining future scenarios and possibilities.
+I tend to see patterns and connections between seemingly unrelated things.
+I prefer to explore multiple options rather than settling on one solution.
+
+Thinking (T) / Feeling (F):
+
+I value logic and reason over emotions when making decisions.
+I tend to analyze situations objectively rather than considering how they make me feel.
+I prefer to give feedback based on facts and evidence rather than emotions.
+I believe it's important to maintain emotional detachment in professional settings.
+I prioritize fairness and justice over empathy and compassion.
+I tend to prioritize logical consistency over accommodating others' feelings.
+I prefer to solve problems using logical analysis rather than empathetic understanding.
+I find it easier to express thoughts and ideas than emotions.
+I believe in being honest and straightforward, even if it may hurt someone's feelings.
+I value efficiency and effectiveness over maintaining harmony in relationships.
+I prefer to make decisions based on objective criteria rather than personal values.
+I tend to focus on the task at hand rather than the emotional atmosphere of a situation.
+I value honesty and transparency in relationships.
+I believe in constructive criticism even if it may be perceived as harsh.
+I prefer to keep my emotions private rather than sharing them with others.
+I tend to rely on logic rather than intuition when solving problems.
+I find it challenging to empathize with others' emotions.
+I believe in treating everyone fairly and equally.
+I prefer to address conflicts rationally rather than emotionally.
+I believe it's important to remain objective in decision-making.
+I prioritize practical considerations over emotional ones.
+I tend to suppress my emotions in favour of logical reasoning.
+I find it easier to discuss ideas and concepts than personal feelings.
+I prefer to rely on facts and evidence rather than intuition or gut feelings.
+I believe in being straightforward in communication.
+
+Judging (J) / Perceiving (P):
+
+I prefer to plan rather than go with the flow.
+I feel uncomfortable with uncertainty and prefer to have a clear plan.
+I like to make decisions quickly rather than keeping my options open.
+I feel stressed when things are left to the last minute.
+I enjoy having a structured routine and sticking to a schedule.
+I prefer to complete tasks before moving on to new ones.
+I feel satisfied when I accomplish my goals on schedule.
+I like to have a clear plan of action before starting a project.
+I find it difficult to adapt to changes in plans.
+I prefer to work on one task at a time rather than juggle multiple tasks.
+I feel more comfortable when things are organized and predictable.
+I enjoy setting goals and working towards achieving them.
+I prefer to follow a set schedule rather than improvise.
+I feel anxious when I have too many open-ended tasks.
+I tend to stick to my plans even if unexpected opportunities arise.
+I prefer to make decisions quickly rather than ponder all the possibilities.
+I enjoy having a clear sense of direction and purpose.
+I feel unsettled when plans change at the last minute.
+I prefer to make lists and schedules to stay organized.
+I feel satisfied when I can check items off my to-do list.
+I find it difficult to relax until I have completed my tasks.
+I prefer to have deadlines to motivate me to complete tasks.
+I enjoy having a sense of closure and completion.
+I feel more productive when I have a clear plan in place.
+I prefer to stick to my plans rather than being spontaneous.

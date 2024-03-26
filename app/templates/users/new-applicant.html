@@ -8,140 +8,145 @@
         crossorigin="anonymous">
 </head>
 <body>
-<section class="h-100 h-custom gradient-custom-2 bg-primary bg-gradient">
+<section class="h-100 h-custom gradient-custom-2 bg-primary bg-gradient form-control">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-12">
-        <form class="card card-registration card-registration-2 bg-light-subtle" style="border-radius: 15px;">
-          {% csrf_token %}
+      <form class="col-12" method="post" enctype="multipart/form-data">{% csrf_token %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}}" role="alert">
+          {{ message }}
+        </div>
+        <br/>
+        {% endfor %}
+        {% endif %}
+        <div class="card card-registration card-registration-2 bg-light-subtle" style="border-radius: 15px;">
           <div class="card-body p-0">
             <div class="row g-0">
               <div class="col-lg-6">
                 <div class="p-5">
-                  <h3 class="fw-normal mb-5">General Information</h3>
+                    <h3 class="fw-normal mb-5">General Information</h3>
+                    <div class="card-body">
+                        <div class="row align-items-center pt-4 pb-3">
+                          <div class="col-md-3 ps-5"><h6 class="mb-0">
+                              {{ user_info_form.title.label }}:
+                          </h6></div>
+                          <div class="col-md-9 pe-5">{{ user_info_form.title }}</div>
+                        </div>
+                        <hr class="mx-n3">
 
-                  <div class="mb-4 pb-2"><div class="form-outline">
-                    <input type="password" id="password1" class="form-control" name="password1" required/>
-                    <label class="form-label" for="password1">Password</label>
-                  </div></div>
+                        <div class="row align-items-center pt-4 pb-3">
+                          <div class="col-md-3 ps-5"><h6 class="mb-0">
+                              {{ user_form.first_name.label }}:
+                          </h6></div>
+                          <div class="col-md-9 pe-5">{{ user_form.first_name }}</div>
+                        </div>
+                        <hr class="mx-n3">
 
-                  <div class="mb-4 pb-2"><div class="form-outline">
-                    <input type="password" id="password2" class="form-control" name="password2" required/>
-                    <label class="form-label" for="password2">Retype Password</label>
-                  </div></div>
+                        <div class="row align-items-center pt-4 pb-3">
+                          <div class="col-md-3 ps-5"><h6 class="mb-0">
+                              {{ user_form.last_name.label }}:
+                          </h6></div>
+                          <div class="col-md-9 pe-5">{{ user_form.last_name }}</div>
+                        </div>
+                        <hr class="mx-n3">
 
-                  <div class="mb-4 pb-2">
-                    <select class="select" name="title">
-                      <option value="0">Title</option>
-                      <option value="1">Mr</option>
-                      <option value="2">Mrs</option>
-                      <option value="3">Ms</option>
-                    </select>
-                  </div>
+                        <div class="row align-items-center pt-4 pb-3">
+                          <div class="col-md-3 ps-5"><h6 class="mb-0">
+                              {{ user_form.email.label }}:
+                          </h6></div>
+                          <div class="col-md-9 pe-5">{{ user_form.email }}</div>
+                        </div>
+                        <hr class="mx-n3">
 
-                  <div class="row">
-                    <div class="col-md-6 mb-4 pb-2"><div class="form-outline">
-                      <input type="text" id="first_name" class="form-control" name="first_name" required/>
-                      <label class="form-label" for="first_name">First name</label>
-                    </div></div>
+                        <div class="row align-items-center pt-4 pb-3">
+                          <div class="col-md-3 ps-5"><h6 class="mb-0">
+                              Enter new Password:
+                          </h6></div>
+                          <div class="col-md-9 pe-5">{{ user_form.password1 }}</div>
+                        </div>
+                        <p>Your password can’t be too similar to your other personal information.</p>
+                        <p>Your password must contain at least 8 characters.</p>
+                        <p>Your password can’t be a commonly used password.</p>
+                        <p>Your password can’t be entirely numeric.</p>
+                        <hr class="mx-n3">
 
-                    <div class="col-md-6 mb-4 pb-2"><div class="form-outline">
-                      <input type="text" id="last_name" class="form-control" name="last_name" required/>
-                      <label class="form-label" for="last_name">Last name</label>
-                    </div></div>
-                  </div>
-
-                  <div class="mb-4 pb-2"><div class="form-outline">
-                    <input type="text" id="industry" class="form-control" name="industry" required/>
-                    <label class="form-label" for="industry">Industry</label>
-                  </div></div>
-
-                  <div class="row">
-
-                    <div class="col-md-6 mb-4 pb-2 mb-md-0 pb-md-0"><div class="form-outline">
-                      <input type="text" id="profession" class="form-control" name="profession" required/>
-                      <label class="form-label" for="profession">Profession</label>
-                    </div></div>
-
-                    <div class="col-md-6">
-                      <input type="number" id="number" class="form-control" required/>
-                      <label class="form-label" for="number">Years of Experience</label>
+                        <div class="row align-items-center pt-4 pb-3">
+                          <div class="col-md-3 ps-5"><h6 class="mb-0">
+                              Please Re-type Password:
+                          </h6></div>
+                          <div class="col-md-9 pe-5">{{ user_form.password2 }}</div>
+                        </div>
+                        <p>Enter the same password as before, for verification.</p>
+                        <hr class="mx-n3">
                     </div>
-                  </div>
-
-                  <br>
-                  <div class="mb-4 pb-2"><div class="form-outline">
-                    <input type="file" id="resume" class="form-control" name="resume" required/>
-                    <label class="form-label" for="resume">Upload CV</label>
-                    <div class="small text-muted mt-2">
-                      Upload your CV/Resume or any other relevant file. Max file size 50 MB
-                    </div>
-                  </div></div>
                 </div>
               </div>
               <div class="col-lg-6">
                 <div class="p-5">
                   <h3 class="fw-normal mb-5">Contact Details</h3>
 
-                  <div class="mb-4 pb-2">
-                    <div class="form-outline form-white">
-                      <input type="text" id="address" class="form-control" name="address" required/>
-                      <label class="form-label" for="address">Street Address</label>
+                  <div class="card-body">
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ resume_form.industry.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ resume_form.industry }}</div>
                     </div>
-                  </div>
+                    <hr class="mx-n3">
 
-                  <div class="mb-4 pb-2">
-                    <div class="form-outline form-white">
-                      <input type="text" id="city" class="form-control" name="city" required/>
-                      <label class="form-label" for="city">City</label>
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ resume_form.profession.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ resume_form.profession }}</div>
                     </div>
-                  </div>
+                    <hr class="mx-n3">
 
-                  <div class="row">
-                    <div class="col-md-5 mb-4 pb-2">
-
-                      <div class="form-outline form-white">
-                        <input type="text" id="zipcode" class="form-control" name="zipcode" required/>
-                        <label class="form-label" for="zipcode">Zip Code</label>
-                      </div>
-
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">Years of Practice:</h6></div>
+                      <div class="col-md-9 pe-5">{{ resume_form.years }}</div>
                     </div>
-                    <div class="col-md-7 mb-4 pb-2">
+                    <hr class="mx-n3">
 
-                      <div class="form-outline form-white">
-                        <input type="text" id="state" class="form-control" name="state" required/>
-                        <label class="form-label" for="state">State</label>
-                      </div>
-
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ resume_form.phone.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ resume_form.phone }}</div>
                     </div>
-                  </div>
+                    <hr class="mx-n3">
 
-                  <div class="mb-4 pb-2">
-                    <div class="form-outline form-white">
-                      <input type="text" id="country" class="form-control" name="country" required/>
-                      <label class="form-label" for="country">Country</label>
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ resume_form.street.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ resume_form.street }}</div>
                     </div>
-                  </div>
+                    <hr class="mx-n3">
 
-                  <div class="row">
-                    <div class="col-md-5 mb-4 pb-2"><div class="form-outline form-white">
-                      <input type="text" id="area_code" class="form-control" name="area_code" required/>
-                      <label class="form-label" for="area_code">Area Code</label>
-                    </div></div>
-
-                    <div class="col-md-7 mb-4 pb-2"><div class="form-outline form-white">
-                      <input type="number" id="phone" class="form-control" name="phone" required/>
-                      <label class="form-label" for="phone">Phone Number</label>
-                    </div></div>
-                  </div>
-
-                  <div class="mb-4">
-                    <div class="form-outline form-white">
-                      <input type="email" id="email" class="form-control" name="email" required/>
-                      <label class="form-label" for="email">Your Email</label>
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ resume_form.city.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ resume_form.city }}</div>
                     </div>
-                  </div>
+                    <hr class="mx-n3">
 
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ resume_form.zipcode.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ resume_form.zipcode }}</div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ resume_form.state.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ resume_form.state }}</div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ resume_form.country.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ resume_form.country }}</div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                      <div class="col-md-3 ps-5"><h6 class="mb-0">{{ resume_form.resume.label }}:</h6></div>
+                      <div class="col-md-9 pe-5">{{ resume_form.resume }}</div>
+                    </div>
+                    <hr class="mx-n3">
+                  </div>
                   <div class="form-check d-flex justify-content-start mb-4 pb-3">
                     <input class="form-check-input me-3" type="checkbox" value="1" id="accept" name="accept"
                            required/>
@@ -150,16 +155,25 @@
                       site.
                     </label>
                   </div>
-
+                </div>
+              </div>
+            <div class="container text-center">
+              <div class="row align-items-end">
+                <div class="col">
+                  <a class="btn btn btn-danger btn-lg" href="{% url 'index' %}"
+                     data-mdb-ripple-color="dark">Go Back</a>
+                </div>
+                <div class="col">
                   <button type="submit" class="btn btn btn-success btn-lg"
                           data-mdb-ripple-color="dark">Register</button>
-
                 </div>
               </div>
             </div>
+            <br/> <br/> <br/> <br/>
+            </div>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
 </section>

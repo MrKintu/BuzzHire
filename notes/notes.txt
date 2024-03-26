@@ -4,5 +4,7 @@ Docker Demo: https://www.youtube.com/playlist?list=PLOLrQ9Pn6cazCfL7v4CdaykNoWMQ
 
 HTML Templates: https://mdbootstrap.com/docs/standard/extended/
 
-HTML Templates: https://getbootstrap.com/docs/4.3/examples/
+HTML Templates: https://getbootstrap.com/docs/5.3/examples/
+
+Lorem Ipsum: https://loremipsum.io/
 
