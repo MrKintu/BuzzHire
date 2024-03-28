@@ -86,10 +86,10 @@
           {% if data.status == "Approved" %}
           <tr>
             <td>{{ data.user_info.title }}</td>
-            <td>{{ data.user.first_name }}</td>
-            <td>{{ data.user.last_name }}</td>
+            <td>{{ data.resume.user.first_name }}</td>
+            <td>{{ data.resume.user.last_name }}</td>
             <td>{{ data.resume.profession }}</td>
-            <td>{{ data.user.email }}</td>
+            <td>{{ data.resume.user.email }}</td>
             <td>{{ data.resume.phone }}</td>
             <td>{{ data.resume.city }}, {{ data.resume.country }}</td>
             <td>{{ data.timestamp | naturaltime }}</td>
@@ -101,10 +101,10 @@
           {% elif data.status == "Declined" %}
           <tr>
             <td>{{ data.user_info.title }}</td>
-            <td>{{ data.user.first_name }}</td>
-            <td>{{ data.user.last_name }}</td>
+            <td>{{ data.resume.user.first_name }}</td>
+            <td>{{ data.resume.user.last_name }}</td>
             <td>{{ data.resume.profession }}</td>
-            <td>{{ data.user.email }}</td>
+            <td>{{ data.resume.user.email }}</td>
             <td>{{ data.resume.phone }}</td>
             <td>{{ data.resume.city }}, {{ data.resume.country }}</td>
             <td>{{ data.timestamp | naturaltime }}</td>
@@ -119,7 +119,7 @@
             <td>{{ data.resume.user.first_name }}</td>
             <td>{{ data.resume.user.last_name }}</td>
             <td>{{ data.resume.profession }}</td>
-            <td>{{ data.user.email }}</td>
+            <td>{{ data.resume.user.email }}</td>
             <td>{{ data.resume.phone }}</td>
             <td>{{ data.resume.city }}, {{ data.resume.country }}</td>
             <td>{{ data.timestamp | naturaltime }}</td>

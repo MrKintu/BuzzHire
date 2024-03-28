@@ -16,3 +16,4 @@ tensorflow
 matplotlib
 seaborn
 scikit-learn
+mpld3

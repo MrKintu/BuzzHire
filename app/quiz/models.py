@@ -73,6 +73,7 @@ class PersonalityType(models.Model):
 
 class UserPersonality(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    persona = models.ForeignKey(PersonalityType, on_delete=models.CASCADE, null=True, blank=True)
     introversion = models.FloatField()
     extroversion = models.FloatField()
     sensing = models.FloatField()

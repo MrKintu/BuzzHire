@@ -4,6 +4,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, redirect, get_object_or_404
 
 from job.models import JobPost, ApplyJob
+from quiz.models import UserPersonality
 from users.forms import UserForm, UserInfoForm, CompanyForm
 from users.models import UserInfo
 from .emailHandler import ApplicantStatus
@@ -121,6 +122,7 @@ def single_applicant(request, pk):
             messages.info(request, "The applicant shall remain pending.")
 
         send_data = {
+            "title": apply_job.user_info.title,
             "first_name": apply_job.resume.user.first_name,
             "last_name": apply_job.resume.user.last_name,
             "email": apply_job.resume.user.email,
@@ -138,9 +140,17 @@ def single_applicant(request, pk):
     else:
         apply_job = get_object_or_404(ApplyJob, pk=pk)
         user_info = get_object_or_404(UserInfo, user=apply_job.resume.user)
+        ref = ""
+        test = False
+        if UserPersonality.objects.filter(user=apply_job.resume.user).exists():
+            test = True
+            persona = get_object_or_404(UserPersonality, user=apply_job.resume.user)
+            ref = persona.pk
 
         context = {
-            "ref": apply_job.job.pk,
+            "pk": apply_job.job.pk,
+            "ref": ref,
+            "test": test,
             "title": user_info.title,
             "first_name": apply_job.resume.user.first_name,
             "last_name": apply_job.resume.user.last_name,

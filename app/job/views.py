@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from company.models import Company
 from users.models import UserInfo
-from .forms import JobPostForm
+from .forms import CreateJobForm, UpdateJobForm
 from .models import JobPost, ApplyJob
 
 
@@ -19,7 +19,7 @@ def create_job(request):
         return redirect("applicant-dash")
 
     if request.method == "POST":
-        form = JobPostForm(request.POST, request.FILES)
+        form = CreateJobForm(request.POST, request.FILES)
         if form.is_valid():
             company = get_object_or_404(Company, user=user)
             new_job = form.save(commit=False)
@@ -33,7 +33,7 @@ def create_job(request):
             messages.warning(request, "Upload failed. Please upload in pdf format.")
             return redirect("new-job")
     else:
-        form = JobPostForm()
+        form = CreateJobForm()
         return render(request, "company/new-job.html", {"form": form})
 
 
@@ -82,7 +82,7 @@ def update_job(request, pk):
         return redirect("applicant-dash")
 
     job_post = get_object_or_404(JobPost, pk=pk)
-    form = JobPostForm(request.POST or None, request.FILES or None, instance=job_post)
+    form = UpdateJobForm(request.POST or None, request.FILES or None, instance=job_post)
 
     if request.method == "POST":
         if form.is_valid():
