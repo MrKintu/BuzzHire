@@ -4,9 +4,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from resume.models import Resume
 from users.models import UserInfo
-from .fuzzyANN.plotGraph import GenerateChart
-from .fuzzyANN.predictModel import PredictPersona
 from .forms import ResponseForm
+from .fuzzyANN.predictModel import PredictPersona
 from .models import Question, PersonalityType, Personality, UserResponse, UserPersonality
 
 
@@ -48,6 +47,12 @@ def quiz_questions(request, ref):
                 user_personality.feeling = personality["feeling"]
                 user_personality.judging = personality["judging"]
                 user_personality.perceiving = personality["perceiving"]
+                percentages = [
+                    personality["introversion"], personality["extroversion"], personality["sensing"],
+                    personality["intuition"], personality["thinking"], personality["feeling"],
+                    personality["judging"], personality["perceiving"]
+                ]
+                user_personality.save_chart(percentages)
                 user_personality.save()
 
                 resume = get_object_or_404(Resume, user=user)
@@ -130,21 +135,18 @@ def persona_chart(request, ref):
         user_query = data["search"]
         return redirect("search", query=user_query)
     else:
-        persona = get_object_or_404(UserPersonality, pk=ref)
-        personality_percentages = [persona.introversion, persona.extroversion, persona.sensing, persona.intuition,
-                                   persona.thinking, persona.feeling, persona.judging, persona.perceiving]
-        personality_chart = GenerateChart(personality_percentages)
-
         user = request.user
         user_info = get_object_or_404(UserInfo, user=user)
         switch = False
         if user_info.is_applicant:
             switch = True
 
+        persona = get_object_or_404(UserPersonality, pk=ref)
+
         send = {
             "switch": switch,
             "first_name": persona.user.first_name,
             "last_name": persona.user.last_name,
-            'chart_data': personality_chart
+            "graph": persona.graph
         }
-        return render(request, 'quiz/radar-chart.html', send)
+        return render(request, 'quiz/persona-chart.html', send)

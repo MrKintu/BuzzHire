@@ -50,9 +50,15 @@
           <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
               <div class="col col-xl-10">
-                  <p class="text-white">This is the Myers-Briggs Personality description for
-                      {{ first_name }} {{ last_name }} as predicted by our AI Model:</p>
-                  {{ chart_data|safe }}
+                  <div class="row justify-content-center">
+                      <p class="text-white">This is the Myers-Briggs Personality description for
+                          {{ first_name }} {{ last_name }} as predicted by our AI Model:</p>
+                      <div class="col-lg-6">
+                          <div class="image-container">
+                              <img src="{{ graph.url }}" alt="Personality Chart" height="500" width="500">
+                          </div>
+                      </div>
+                  </div>
               </div>
             </div>
           </div>
@@ -69,32 +75,6 @@
       </footer>
     </main>
 
-    <script>
-        var radarChartCanvas = document.getElementById('radarChart').getContext('2d');
-        var radarChart = new Chart(radarChartCanvas, {
-            type: 'radar',
-            data: {
-                labels: ['Introversion', 'Extroversion', 'Sensing', 'Intuition',
-                    'Thinking', 'Feeling', 'Judging', 'Perceiving'],
-                datasets: [{
-                    label: 'Personality Percentages',
-                    data: {{ radar_chart_data }},
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scale: {
-                    ticks: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                }
-            }
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous">

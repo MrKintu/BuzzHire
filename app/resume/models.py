@@ -13,7 +13,7 @@ def rename_file(instance, filename):
     alphabet = string.ascii_letters + string.digits
     secure_string = ''.join(secrets.choice(alphabet) for _ in range(20))
     newname = f'{secure_string}.{ext}'
-    BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+
     new_path = f'{BASE_DIR}/media/resumes/{newname}'
 
     return new_path
