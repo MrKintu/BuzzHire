@@ -60,11 +60,14 @@
                 Education
               </a>
             </li>
+            {% if test %}
+            {% else %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'questions' ref=1 %}">
                 Personality Test
               </a>
             </li>
+            {% endif %}
           </ul>
         </div>
       </nav>

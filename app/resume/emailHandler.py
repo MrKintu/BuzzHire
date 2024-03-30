@@ -1,10 +1,8 @@
 import os
 
-from django.contrib import messages
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -16,7 +14,7 @@ def ApplicantEmail(data=dict):
 
     # Create the EmailMultiAlternatives object
     subject = f'Application to {data["company"]}'
-    from_email = "no_reply@buzzhire.ca"
+    from_email = env.get("EMAIL_USER")
     to_email = [data["email"]]
     msg = EmailMultiAlternatives(subject, strip_tags(html_content), from_email, to_email)
 
@@ -40,7 +38,7 @@ def RecruiterEmail(data=dict):
 
     # Create the EmailMultiAlternatives object
     subject = f'Application received for {data["company"]}'
-    from_email = "no_reply@buzzhire.ca"
+    from_email = env.get("EMAIL_USER")
     to_email = [data["email"]]
     msg = EmailMultiAlternatives(subject, strip_tags(html_content), from_email, to_email)
 

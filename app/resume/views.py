@@ -79,8 +79,13 @@ def job_details(request, pk):
             applied = True
             messages.info(request, "You have already applied for this job.")
 
+        resume = get_object_or_404(Resume, user=user)
+        test = False
+        if resume.personality:
+            test = True
+
         send = {
-            "ref": pk,
+            "pk": pk,
             "company": job_post.company.company,
             "title": job_post.job_title,
             "industry": job_post.industry,
@@ -93,7 +98,8 @@ def job_details(request, pk):
             "ideal": job_post.ideal_candidate,
             "download": job_post.download,
             "timestamp": job_post.timestamp,
-            "applied": applied
+            "applied": applied,
+            "test": test
         }
 
         return render(request, "resume/view-job.html", send)
@@ -125,11 +131,13 @@ def apply_to_job(request, pk):
     application = ApplyJob()
     application.job = job_post
     application.resume = resume
+    application.user_info = user_info
     application.status = "Pending"
     application.reference = new_reference()
     application.save()
 
     applicant_data = {
+        "title": user_info.title,
         "first_name": resume.user.first_name,
         "last_name": resume.user.last_name,
         "email": resume.user.email,
@@ -182,5 +190,13 @@ def jobs_applied(request):
             # If page is out of range (e.g. 9999), deliver last page of results.
             job_list = paginator.page(paginator.num_pages)
 
-        send = {"data": job_list}
+        resume = get_object_or_404(Resume, user=user)
+        test = False
+        if resume.personality:
+            test = True
+
+        send = {
+            "data": job_list,
+            "test": test
+        }
         return render(request, "resume/jobs-applied.html", send)

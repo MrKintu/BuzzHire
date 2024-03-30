@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,14 +11,21 @@
 <body>
 <div class="container">
   <div class="py-5 text-center">
-    <img class="d-block mx-auto mb-4" alt="" width="72" height="72"
-         src="{{ site.baseurl }}/docs/{{ site.docs_version }}/assets/brand/bootstrap-solid.svg">
+      <a class="navbar-brand" href="{% url 'index' %}">
+          <img class="d-block mx-auto mb-4" alt="" width="200" height="60" src="{% static 'logo.png' %}">
+      </a>
     <h2>View Applicant Details</h2>
   </div>
 
   <div class="row">
     <div class="col-md-4 order-md-2 mb-4">
-      <a href="{% url 'results' pk=pk %}" class="btn btn-danger">Go Back</a>
+        <div class="d-grid gap-2 d-md-block">
+            <a href="{% url 'results' pk=pk %}" class="btn btn-danger">Go Back</a>
+            {% if test %}
+            <a href="{% url 'persona-chart' ref=ref %}" class="btn btn-info">Personality Results</a>
+            {% else %}
+            {% endif %}
+        </div>
       <br/> <br/>
       <h4 class="d-flex justify-content-between align-items-center mb-3">
         <span class="text-muted">Applicant Profile</span>
@@ -25,41 +33,41 @@
       <ul class="list-group mb-3">
           <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
-            <h6 class="my-0">Applicant Reference</h6>
+            <h6 class="my-0">Applicant Reference:</h6>
             <small class="text-muted">{{ reference }}</small>
           </div>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
-            <h6 class="my-0">Applicant Name</h6>
+            <h6 class="my-0">Applicant Name:</h6>
             <small class="text-muted">{{ title }} {{ first_name }} {{ last_name }}</small>
           </div>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
-            <h6 class="my-0">Account Email</h6>
+            <h6 class="my-0">Account Email:</h6>
             <small class="text-muted">{{ email }}</small>
           </div>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
-            <h6 class="my-0">Phone Number</h6>
+            <h6 class="my-0">Phone Number:</h6>
             <small class="text-muted">{{ phone }}</small>
           </div>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
-            <h6 class="my-0">Profession</h6>
+            <h6 class="my-0">Profession:</h6>
             <small class="text-muted">{{ profession }}</small>
           </div>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
-            <h6 class="my-0">Your Decision</h6>
+            <h6 class="my-0">Your Decision:</h6>
             <small class="text-muted">{{ status }}</small>
           </div>
           <form method="post" enctype="multipart/form-data"> {% csrf_token %}
-            <h6 class="my-0"><label for="decide">Change Status</label></h6>
+            <h6 class="my-0"><label for="decide">Change Status:</label></h6>
             <select name="decide" id="decide">
               <option value="1">APPROVE</option>
               <option value="2">DECLINE</option>
@@ -79,48 +87,48 @@
       <br/>
       {% endfor %}
       {% endif %}
-      <h4 class="mb-3">More Information about the Applicant:</h4>
+      <h4 class="mb-3">Information about the Applicant.</h4>
       <hr class="mb-4">
       <div class="needs-validation">
          <div class="mb-3">
-           <label for="resume"><strong>Download Resume</strong></label>
+           <label for="resume"><strong>Download Resume: </strong></label>
           <a href="{{ resume.url }}" class="btn btn-primary btn-sm" id="resume" target="_blank">
             Applicant Resume
           </a>
         </div>
         <div class="mb-3">
-          <label for="timestamp"><strong>Application Date</strong></label>
+          <label for="timestamp"><strong>Application Date:</strong></label>
           <p id="timestamp">{{ timestamp }}</p>
         </div>
         <div class="mb-3">
-          <label for="industry"><strong>Industry</strong></label>
+          <label for="industry"><strong>Industry:</strong></label>
           <p id="industry">{{ industry }}</p>
         </div>
         <div class="mb-3">
-          <label for="years"><strong>Years of Experience</strong></label>
+          <label for="years"><strong>Years of Experience:</strong></label>
           <p id="years">{{ years }}</p>
         </div>
         <div class="mb-3">
-          <label for="street"><strong>Street Address</strong></label>
+          <label for="street"><strong>Street Address:</strong></label>
           <p id="street">{{ street }}</p>
         </div>
 
         <div class="mb-3">
-          <label for="city"><strong>City</strong></label>
+          <label for="city"><strong>City:</strong></label>
           <p id="city">{{ city }}</p>
         </div>
 
         <div class="row">
           <div class="col-md-4 mb-3">
-            <label for="state"><strong>State</strong></label>
+            <label for="state"><strong>State:</strong></label>
             <p id="state">{{ state }}</p>
           </div>
           <div class="col-md-5 mb-3">
-            <label for="country"><strong>Country</strong></label>
+            <label for="country"><strong>Country:</strong></label>
             <p id="country">{{ country }}</p>
           </div>
           <div class="col-md-3 mb-3">
-            <label for="zipcode"><strong>Zip Code</strong></label>
+            <label for="zipcode"><strong>Zip Code:</strong></label>
             <p id="zipcode">{{ zipcode }}</p>
           </div>
         </div>

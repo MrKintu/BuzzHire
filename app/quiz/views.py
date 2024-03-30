@@ -2,9 +2,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
+from resume.models import Resume
 from users.models import UserInfo
-from .fuzzyANN.predictModel import PredictPersona
 from .forms import ResponseForm
+from .fuzzyANN.predictModel import PredictPersona
 from .models import Question, PersonalityType, Personality, UserResponse, UserPersonality
 
 
@@ -34,8 +35,10 @@ def quiz_questions(request, ref):
             else:
                 answers = UserResponse.objects.filter(user_info=user_info)
                 personality = PredictPersona(answers)
+                personality_type = get_object_or_404(PersonalityType, combo=personality["persona"])
                 user_personality = UserPersonality()
                 user_personality.user = user
+                user_personality.persona = personality_type
                 user_personality.introversion = personality["introversion"]
                 user_personality.extroversion = personality["extroversion"]
                 user_personality.sensing = personality["sensing"]
@@ -44,7 +47,18 @@ def quiz_questions(request, ref):
                 user_personality.feeling = personality["feeling"]
                 user_personality.judging = personality["judging"]
                 user_personality.perceiving = personality["perceiving"]
+                percentages = [
+                    personality["introversion"], personality["extroversion"], personality["sensing"],
+                    personality["intuition"], personality["thinking"], personality["feeling"],
+                    personality["judging"], personality["perceiving"]
+                ]
+                user_personality.save_chart(percentages)
                 user_personality.save()
+
+                resume = get_object_or_404(Resume, user=user)
+                applicant_persona = get_object_or_404(PersonalityType, combo=personality["persona"])
+                resume.personality = applicant_persona
+                resume.save()
 
                 messages.success(request, "You have successfully completed the quiz!")
                 return redirect("quiz-results", persona=personality["persona"])
@@ -112,3 +126,27 @@ def quiz_results(request, persona):
             "personalities": personalities
         }
         return render(request, "quiz/answer.html", context)
+
+
+@login_required
+def persona_chart(request, ref):
+    if request.method == "POST":
+        data = request.POST
+        user_query = data["search"]
+        return redirect("search", query=user_query)
+    else:
+        user = request.user
+        user_info = get_object_or_404(UserInfo, user=user)
+        switch = False
+        if user_info.is_applicant:
+            switch = True
+
+        persona = get_object_or_404(UserPersonality, pk=ref)
+
+        send = {
+            "switch": switch,
+            "first_name": persona.user.first_name,
+            "last_name": persona.user.last_name,
+            "graph": persona.graph
+        }
+        return render(request, 'quiz/persona-chart.html', send)

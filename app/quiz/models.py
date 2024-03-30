@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from quiz.fuzzyANN.plotGraph import GenerateChart
 from users.models import UserInfo
 
 
@@ -73,6 +74,7 @@ class PersonalityType(models.Model):
 
 class UserPersonality(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    persona = models.ForeignKey(PersonalityType, on_delete=models.CASCADE, null=True, blank=True)
     introversion = models.FloatField()
     extroversion = models.FloatField()
     sensing = models.FloatField()
@@ -81,3 +83,14 @@ class UserPersonality(models.Model):
     feeling = models.FloatField()
     judging = models.FloatField()
     perceiving = models.FloatField()
+    graph = models.ImageField(null=True, blank=True)
+
+    def save_chart(self, personality_percentages):
+        # Generate and save the chart
+        image_path = GenerateChart(personality_percentages)
+
+        # Update the graph field with the generated image path
+        self.graph = image_path
+        self.save()
+
+        return image_path

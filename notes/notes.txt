@@ -8,3 +8,5 @@ HTML Templates: https://getbootstrap.com/docs/5.3/examples/
 
 Lorem Ipsum: https://loremipsum.io/
 
+MS Azure Student: https://portal.azure.com/?Microsoft_Azure_Education_correlationId=c79f0653-73e8-44a9-9ec9-682cbf6c5785&Microsoft_Azure_Education_newA4E=true&Microsoft_Azure_Education_asoSubGuid=0049ad40-5bdf-4d90-b0e4-905691887fe7#view/Microsoft_Azure_Education/EducationMenuBlade/~/overview
+

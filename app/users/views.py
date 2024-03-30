@@ -106,7 +106,6 @@ def login_user(request):
         user = authenticate(request, username=email, password=password)
         if user is not None and user.is_active:
             login(request, user_state)
-            print(request.user.first_name)
             user_info = get_object_or_404(UserInfo, user=user)
             if user_info.is_applicant:
                 return redirect('applicant-dash')

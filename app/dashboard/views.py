@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from company.models import Company
 from job.models import JobPost, ApplyJob
+from quiz.models import UserPersonality
 from resume.models import Resume
 from users.models import UserInfo
 
@@ -55,6 +56,23 @@ def applicant_dash(request):
         approved = applications.filter(status="Approved").count()
         declined = applications.filter(status="Declined").count()
         pending = applications.exclude(status__in=["Approved", "Declined"]).count()
+        images = [
+            "ENFJ_the_protagonist.jpg", "ENFP_the_campaigner.png", "ENTJ_the_commander.png", "ENTP_the_debater.jpg",
+            "ESFJ_the_consul.png", "ESFP_the_entertainer.png", "ESTJ_the_executive.png", "ESTP_the_entrepreneur.png",
+            "INFJ_the_advocate.png", "INFP_the_mediator.png", "INTJ_the_architect.jpg", "INTP_the_logician.jpg",
+            "ISFJ_the_defender.png", "ISFP_the_adventurer.png", "ISTJ_the_logistician.png", "ISTP_the_virtuoso.png"
+        ]
+        test, persona, image = False, "", ""
+        if resume.personality:
+            test = True
+            persona = resume.personality.combo
+            image = next((img for img in images if img.startswith(persona)), None)
+
+        ref = ""
+        if UserPersonality.objects.filter(user=user).exists():
+            user_personality = get_object_or_404(UserPersonality, user=user)
+            ref = user_personality.pk
+
         send = {
             "title": user_info.title,
             "first_name": user.first_name,
@@ -73,7 +91,11 @@ def applicant_dash(request):
             "applications": app_count,
             "approved": approved,
             "declined": declined,
-            "pending": pending
+            "pending": pending,
+            "test": test,
+            "image": image,
+            "persona": persona,
+            "ref": ref
         }
 
         return render(request, "dashboard/applicant-dash.html", send)
