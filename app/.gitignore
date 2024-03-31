@@ -3,9 +3,7 @@
 *.pot
 *.pyc
 *.env
-__pycache__/
 media/
 logs/
 static/
-staticfiles/
 venv/
