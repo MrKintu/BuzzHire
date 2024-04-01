@@ -1,11 +1,6 @@
 # syntax=docker/dockerfile:1
 
-# Comments are provided throughout this file to help you get started.
-# If you need more help, visit the Dockerfile reference guide at
-# https://docs.docker.com/go/dockerfile-reference/
-
-# Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
-
+# Use the official Python image as the base image
 ARG PYTHON_VERSION=3.11.6
 FROM python:${PYTHON_VERSION}-slim as base
 
@@ -18,61 +13,49 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# Install Nano
-RUN apt update
-RUN apt -y upgrade
-RUN apt install -y python3-pip build-essential libssl-dev libffi-dev python3-dev python3-venv
-RUN pip3 install --upgrade pip
-RUN pip3 install virtualenv virtualenvwrapper
-RUN echo "export VIRTUALENVWRAPPER_PYTHON=/app/usr/bin/python3" >> ~/.bashrc
-RUN echo "export WORKON_HOME=~/Env" >> ~/.bashrc
-RUN "source /app/usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
-RUN source ~/.bashrc
+# Install system dependencies
+RUN apt-get update \
+    && apt-get install --fix-missing -y \
+       gcc python3-dev python3-pip \
+       libpq-dev binutils libproj-dev \
+       gdal-bin build-essential libssl-dev \
+       libffi-dev vim nginx sudo \
+    && rm -rf /var/lib/apt/lists/*
 
 # Create a non-privileged user that the app will run under.
-# See https://docs.docker.com/go/dockerfile-user-best-practices/
+# Ensure that the UID and GID are unique and not already in use.
 ARG UID=10001
-RUN adduser \
-    --disabled-password \
-    --gecos "" \
-    --home "/nonexistent" \
-    --shell "/sbin/nologin" \
-    --no-create-home \
-    --uid "${UID}" \
-    appuser
+RUN useradd -r -u $UID -g 0 app_user
 
-# Create Virtual Environment
-RUN mkvirtualenv venv
-
-# Install Requirements
-RUN python -m pip install -r requirements.txt
-
-# Create the logs directory and log files
-RUN mkdir -p /app/logs
-RUN touch /app/logs/critical.log
-RUN touch /app/logs/debug.log
-RUN touch /app/logs/error.log
-RUN touch /app/logs/info.log
-RUN touch /app/logs/warning.log
-
-RUN decativate
-# Virtual environment ends
-
-# Configure uWSGI
-#RUN apt-get install python3-dev
-#RUN mkdir -p /app/uwsgi
-
-# Give appuser permission execute in directory
-RUN chown -R appuser:appuser /app
-
-# Switch to the non-privileged user to run the application.
-USER appuser
+# Copy the requirements file and install dependencies
+COPY requirements.txt .
+RUN python -m venv venv
+RUN /bin/bash -c "source venv/bin/activate  \
+    && pip install --upgrade pip  \
+    && pip install -r requirements.txt"
 
 # Copy the source code into the container.
 COPY . .
+
+# Create directories for logs and media files
+RUN mkdir -p /app/media/jobs \
+    && mkdir -p /app/media/personalities \
+    && mkdir -p /app/media/resumes \
+    && mkdir -p /app/logs
+
+# Create log files
+RUN touch logs/critical.log logs/debug.log logs/error.log logs/info.log logs/warning.log
+
+# Change ownership of the app directory to a non-root user
+RUN chown -R app_user:root /app
+RUN usermod -aG sudo app_user
+
+# Switch to the new user
+USER app_user
 
 # Expose the port that the application listens on.
 EXPOSE 8000
 
 # Run the application.
-CMD uwsgi --http :8000 --home /app/venv --chdir /app -w BuzzHire.wsgi
+SHELL ["/bin/bash", "-c"]
+CMD source venv/bin/activate && venv/bin/gunicorn BuzzHire.wsgi --bind=0.0.0.0:8000

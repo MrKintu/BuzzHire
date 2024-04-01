@@ -16,6 +16,4 @@ tensorflow
 matplotlib
 seaborn
 scikit-learn
-uwsgi
-virtualenv
-virtualenvwrapper
+gunicorn
