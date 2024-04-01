@@ -1,0 +1,9 @@
+### Django template
+*.log
+*.pot
+*.pyc
+*.env
+media/
+logs/
+static/
+venv/

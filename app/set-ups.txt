@@ -1,0 +1,3 @@
+/bin/bash -c "source /app/venv/bin/activate && python3 manage.py migrate"
+
+/bin/bash -c "source /app/venv/bin/activate && python3 manage.py collectstatic"

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>New Job Posting</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+</head>
+<body>
+<section class="h-100 h-custom gradient-custom-2 bg-primary bg-gradient form-control">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <form class="col-12" method="post" enctype="multipart/form-data">{% csrf_token %}
+         <a class="navbar-brand" href="{% url 'index' %}">
+             <img class="d-block mx-auto mb-4" alt="" width="102" height="34" src="{% static 'logo.png' %}">
+         </a>
+         <br/><br/>
+         <h1 class="text-white mb-4">Create New Job Posting.</h1>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}}" role="alert">
+          {{ message }}
+        </div>
+        <br/>
+        {% endfor %}
+        {% endif %}
+        <div class="card card-registration card-registration-2 bg-light-subtle" style="border-radius: 15px;">
+          <div class="card-body p-0">
+            <div class="p-5">
+              <h3 class="fw-normal mb-5">Job Posting Questionnaire</h3>
+              <div class="card-body">
+
+                <div class="row align-items-center pt-4 pb-3">
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">{{ form.job_title.label }}:</h6></div>
+                  <div class="col-md-9 pe-5">{{ form.job_title }}</div>
+                </div>
+                <hr class="mx-n3">
+
+                <div class="row align-items-center pt-4 pb-3">
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">{{ form.job_type.label }}:</h6></div>
+                  <div class="col-md-9 pe-5">{{ form.job_type }}</div>
+                </div>
+                <hr class="mx-n3">
+
+                <div class="row align-items-center pt-4 pb-3">
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">{{ form.industry.label }}:</h6></div>
+                  <div class="col-md-9 pe-5">{{ form.industry }}</div>
+                </div>
+                <hr class="mx-n3">
+
+                <div class="row align-items-center pt-4 pb-3">
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">{{ form.city.label }}:</h6></div>
+                  <div class="col-md-9 pe-5">{{ form.city }}</div>
+                </div>
+                <hr class="mx-n3">
+
+                <div class="row align-items-center pt-4 pb-3">
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">{{ form.state.label }}:</h6></div>
+                  <div class="col-md-9 pe-5">{{ form.state }}</div>
+                </div>
+                <hr class="mx-n3">
+
+                <div class="row align-items-center pt-4 pb-3">
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">{{ form.country.label }}:</h6></div>
+                  <div class="col-md-9 pe-5">{{ form.country }}</div>
+                </div>
+                <hr class="mx-n3">
+
+                <div class="row align-items-center pt-4 pb-3">
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">Annual Salary:</h6></div>
+                  <div class="col-md-9 pe-5">{{ form.pay }}</div>
+                </div>
+                <hr class="mx-n3">
+
+                <div class="row align-items-center pt-4 pb-3">
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">Role Description:</h6></div>
+                  <div class="col-md-9 pe-5">{{ form.describe }}</div>
+                </div>
+                <hr class="mx-n3">
+
+                <div class="row align-items-center pt-4 pb-3">
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">Role Tasks:</h6></div>
+                  <div class="col-md-9 pe-5">{{ form.tasks }}</div>
+                </div>
+                <hr class="mx-n3">
+
+                <div class="row align-items-center pt-4 pb-3">
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">{{ form.ideal_candidate.label }}:</h6></div>
+                  <div class="col-md-9 pe-5">{{ form.ideal_candidate }}</div>
+                </div>
+                <hr class="mx-n3">
+
+                <div class="row align-items-center pt-4 pb-3">
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">Upload Job Description:</h6></div>
+                  <div class="col-md-9 pe-5">{{ form.download }}</div>
+                </div>
+                <hr class="mx-n3">
+              </div>
+            </div>
+            <div class="container text-center">
+              <div class="row align-items-end">
+                <div class="col">
+                  <a class="btn btn btn-danger btn-lg" href="{% url 'recruiter-dash' %}"
+                     data-mdb-ripple-color="dark">Go Back</a>
+                </div>
+                <div class="col">
+                  <button type="submit" class="btn btn btn-success btn-lg"
+                          data-mdb-ripple-color="dark">Create</button>
+                </div>
+              </div>
+            </div>
+            <br/> <br/> <br/> <br/>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous">
+</script>
+</body>
+</html>
