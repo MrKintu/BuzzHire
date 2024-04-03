@@ -88,6 +88,7 @@ def applicant_dash(request):
             "country": resume.country,
             "zipcode": resume.zipcode,
             "resume": resume.resume,
+            "skills": resume.skills,
             "applications": app_count,
             "approved": approved,
             "declined": declined,

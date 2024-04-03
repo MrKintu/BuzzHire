@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from resume.models import Resume
 from users.models import UserInfo
 from .forms import ResponseForm
-from .fuzzyANN.predictModel import PredictPersona
+from .RandomForest.predictModel import PredictPersona
 from .models import Question, PersonalityType, Personality, UserResponse, UserPersonality
 
 

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from quiz.fuzzyANN.plotGraph import GenerateChart
+from .RandomForest.plotGraph import GenerateChart
 from users.models import UserInfo
 
 
