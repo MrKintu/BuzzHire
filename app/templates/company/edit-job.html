@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,8 +12,11 @@
     <section class="h-100 bg-primary bg-gradient">
       <div class="container h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
-          <div class="col-xl-9">
-
+          <div class="col-12">
+            <a class="navbar-brand" href="{% url 'index' %}">
+                 <img class="d-block mx-auto mb-4" alt="" width="102" height="34" src="{% static 'logo.png' %}">
+             </a>
+             <br/><br/>
             <h1 class="text-white mb-4">Edit Job Details.</h1>
 
             {% if messages %}
@@ -58,7 +62,7 @@
                 <hr class="mx-n3">
                 <div class="row align-items-center pt-4 pb-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">{{ form.city.label_tag }}</h6>
+                    <h6 class="mb-0">{{ form.city.label_tag }}:</h6>
                   </div>
                   <div class="col-md-9 pe-5">
                     {{ form.city }}
@@ -68,7 +72,7 @@
                 <hr class="mx-n3">
                 <div class="row align-items-center pt-4 pb-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">{{ form.state.label_tag }}</h6>
+                    <h6 class="mb-0">{{ form.state.label_tag }}:</h6>
                   </div>
                   <div class="col-md-9 pe-5">
                     {{ form.state }}
@@ -78,7 +82,7 @@
                 <hr class="mx-n3">
                 <div class="row align-items-center pt-4 pb-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">{{ form.country.label_tag }}</h6>
+                    <h6 class="mb-0">{{ form.country.label_tag }}:</h6>
                   </div>
                   <div class="col-md-9 pe-5">
                     {{ form.country }}
@@ -88,7 +92,7 @@
                 <hr class="mx-n3">
                 <div class="row align-items-center py-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">Job Salary</h6>
+                    <h6 class="mb-0">Annual Salary:</h6>
                   </div>
                   <div class="col-md-9 pe-5">
                     {{ form.pay }}
@@ -98,7 +102,7 @@
                 <hr class="mx-n3">
                 <div class="row align-items-center pt-4 pb-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">Job Type</h6>
+                    <h6 class="mb-0">Job Type:</h6>
                   </div>
                   <div class="col-md-9 pe-5">
                     {{ form.job_type }}
@@ -108,7 +112,7 @@
                 <hr class="mx-n3">
                 <div class="row align-items-center py-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">Role Description</h6>
+                    <h6 class="mb-0">Job Description:</h6>
                   </div>
                   <div class="col-md-9 pe-5">
                     {{ form.describe }}
@@ -118,7 +122,7 @@
                 <hr class="mx-n3">
                 <div class="row align-items-center py-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">Job Tasks</h6>
+                    <h6 class="mb-0">Job Tasks:</h6>
                   </div>
                   <div class="col-md-9 pe-5">
                     {{ form.tasks }}
@@ -128,7 +132,7 @@
                 <hr class="mx-n3">
                 <div class="row align-items-center py-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">Ideal Candidate</h6>
+                    <h6 class="mb-0">Ideal Candidate:</h6>
                   </div>
                   <div class="col-md-9 pe-5">
                     {{ form.ideal_candidate }}
@@ -138,7 +142,28 @@
                 <hr class="mx-n3">
                 <div class="row align-items-center py-3">
                   <div class="col-md-3 ps-5">
-                    <h6 class="mb-0">Job Description</h6>
+                    <h6 class="mb-0">Skills:</h6>
+                  </div>
+                  <div class="col-md-9 pe-5">
+                      <p>Please separate skills with a comma.</p>
+                      {{ form.skills }}
+                  </div>
+                </div>
+
+                <hr class="mx-n3">
+                <div class="row align-items-center py-3">
+                  <div class="col-md-3 ps-5">
+                    <h6 class="mb-0">Preferred Personality:</h6>
+                  </div>
+                  <div class="col-md-9 pe-5">
+                    {{ form.personality }}
+                  </div>
+                </div>
+
+                <hr class="mx-n3">
+                <div class="row align-items-center py-3">
+                  <div class="col-md-3 ps-5">
+                    <h6 class="mb-0">Job Description:</h6>
                   </div>
                   <div class="col-md-9 pe-5">
                     {{ form.download }}

@@ -30,6 +30,11 @@
         <div class="sidebar-sticky">
           <ul class="nav flex-column">
             <li class="nav-item">
+                <a class="nav-link active" href="{% url 'index' %}">
+                  Recommended Roles
+                </a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link active" href="{% url 'applicant-dash' %}">
                 Dashboard
               </a>
@@ -50,12 +55,12 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{% url 'past-roles' %}">
                 Experience
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{% url 'education' %}">
                 Education
               </a>
             </li>
@@ -104,6 +109,13 @@
                       {{ persona_describe }}
                     </p>
                   </div>
+                  <br/>
+                  <div class="col-md-9 offset-md-1">
+                      <a href="{% url 'persona-chart' ref=ref %}" class="btn btn-info">
+                          My Personality Chart
+                      </a>
+                  </div>
+                  <br/>
                 </div>
             </div>
             <div class="col-md-4 mb-0">

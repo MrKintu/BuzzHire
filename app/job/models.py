@@ -5,6 +5,7 @@ from pathlib import Path
 from django.db import models
 
 from company.models import Company
+from quiz.models import Personality
 from resume.models import Resume
 from users.models import UserInfo
 
@@ -42,7 +43,7 @@ class JobPost(models.Model):
         ("Health Care", "Health Care")
     )
 
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
     job_title = models.CharField(max_length=100, null=True, blank=True)
     job_type = models.CharField(max_length=20, choices=type_choices, null=True, blank=True)
     industry = models.CharField(max_length=100, blank=True, null=True, choices=industry_choices)
@@ -50,9 +51,11 @@ class JobPost(models.Model):
     state = models.CharField(max_length=100, null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
     pay = models.PositiveIntegerField(null=True, blank=True)
-    describe = models.TextField()
-    tasks = models.TextField()
-    ideal_candidate = models.TextField()
+    describe = models.TextField(null=True, blank=True)
+    tasks = models.TextField(null=True, blank=True)
+    ideal_candidate = models.TextField(null=True, blank=True)
+    skills = models.TextField(null=True, blank=True)
+    personality = models.ForeignKey(Personality, on_delete=models.CASCADE, null=True, blank=True)
     available = models.BooleanField(default=True)
     download = models.FileField(upload_to=rename_file, null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)

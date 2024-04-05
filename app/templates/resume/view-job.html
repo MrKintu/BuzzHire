@@ -31,6 +31,11 @@
         <div class="sidebar-sticky">
           <ul class="nav flex-column">
             <li class="nav-item">
+                <a class="nav-link active" href="{% url 'index' %}">
+                  Recommended Roles
+                </a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link active" href="{% url 'applicant-dash' %}">
                 Dashboard
               </a>
@@ -51,12 +56,12 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{% url 'past-roles' %}">
                 Experience
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{% url 'education' %}">
                 Education
               </a>
             </li>
@@ -98,8 +103,8 @@
                       <br/><br/>
                     {% else %}
                     {% endif %}
-                    <h5>{{ title }}</h5>
-                    <p>{{ company }}</p>
+                    <h5>{{ job.job_title }}</h5>
+                    <p>{{ job.company.company }}</p>
                     <i class="far fa-edit mb-5"></i>
                   </div>
                   <div class="col-md-8">
@@ -109,22 +114,22 @@
                       <div class="row pt-1">
                         <div class="col-6 mb-3">
                           <h6>Location</h6>
-                          <p class="text-muted">{{ city }}, {{ state }}, {{ country }}.</p>
+                          <p class="text-muted">{{ job.city }}, {{ job.state }}, {{ job.country }}.</p>
                         </div>
                         <div class="col-6 mb-3">
                           <h6>Salary</h6>
-                          <p class="text-muted">${{ pay | intcomma }}/year</p>
+                          <p class="text-muted">${{ job.pay | intcomma }}/year</p>
                         </div>
                       </div>
                       <hr class="mt-0 mb-4">
                       <div class="row pt-1">
                         <div class="col-6 mb-3">
                           <h6>Industry</h6>
-                          <p class="text-muted">{{ industry }}</p>
+                          <p class="text-muted">{{ job.industry }}</p>
                         </div>
                         <div class="col-6 mb-3">
                           <h6>Posted</h6>
-                          <p class="text-muted">{{ timestamp | naturaltime }}</p>
+                          <p class="text-muted">{{ job.timestamp | naturaltime }}</p>
                         </div>
                       </div>
                     </div>
@@ -139,7 +144,7 @@
                       <hr class="mt-0 mb-4">
                       <div class="row pt-1">
                         <div class="col-6 mb-3">
-                          <a class="btn btn-primary btn-sm" href="{{ download.url }}" target="_blank">
+                          <a class="btn btn-primary btn-sm" href="{{ job.download.url }}" target="_blank">
                             DOWNLOAD
                           </a>
                         </div>
@@ -148,7 +153,7 @@
                       <div class="row pt-1">
                         <div class="col-15 mb-3">
                           <h6>About</h6>
-                          <p>{{ describe }}</p>
+                          <p>{{ job.describe }}</p>
                         </div>
                       </div>
                     </div>
@@ -165,7 +170,7 @@
                       <hr class="mt-0 mb-4">
                       <div class="row pt-1">
                         <div class="col-15 mb-3">
-                          <p>{{ tasks }}</p>
+                          <p>{{ job.tasks }}</p>
                         </div>
                       </div>
                     </div>
@@ -180,7 +185,26 @@
                       <hr class="mt-0 mb-4">
                       <div class="row pt-1">
                         <div class="col-15 mb-3">
-                          <p>{{ ideal }}</p>
+                          <p>{{ job.ideal_candidate }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container row align-items-start">
+              <div class="col card mb-3" style="border-radius: .5rem;">
+                <div class="row g-0 container">
+                  <div class="container">
+                    <div class="card-body p-4">
+                      <h6>Preferred Personality and Skills</h6>
+                      <hr class="mt-0 mb-4">
+                      <div class="row pt-1">
+                        <div class="col-15 mb-3">
+                            <p>Preferred Personality trait: {{ job.personality }}</p>
+                            <br/>
+                          <p>{{ job.skills }}</p>
                         </div>
                       </div>
                     </div>

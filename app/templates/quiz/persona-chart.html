@@ -25,6 +25,9 @@
               <a class="nav-link" href="{% url 'recruiter-dash' %}">Home</a>
             </li>
             {% endif %}
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'logout' %}">Sign out</a>
+            </li>
           </ul>
           <form class="form-inline mt-2 mt-md-0" method="post" enctype="multipart/form-data"> {% csrf_token %}
             <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search">

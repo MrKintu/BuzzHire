@@ -1,3 +1,4 @@
+import os
 import secrets
 import string
 from pathlib import Path
@@ -13,8 +14,14 @@ def rename_file(instance, filename):
     alphabet = string.ascii_letters + string.digits
     secure_string = ''.join(secrets.choice(alphabet) for _ in range(20))
     newname = f'{secure_string}.{ext}'
-
+    BASE_DIR = Path(__file__).resolve().parent.parent
     new_path = f'{BASE_DIR}/media/resumes/{newname}'
+
+    # current_directory = os.path.dirname(os.path.abspath(__file__))
+    # root_directory = current_directory
+    # while not os.path.exists(os.path.join(root_directory, 'manage.py')):
+    #     root_directory = os.path.dirname(root_directory)
+    # new_path = f"{root_directory}\\media\\resumes\\{newname}"
 
     return new_path
 
@@ -47,6 +54,26 @@ class Resume(models.Model):
     country = models.CharField(max_length=100, null=True, blank=True)
     phone = models.CharField(max_length=100, null=True, blank=True)
     personality = models.ForeignKey(PersonalityType, on_delete=models.CASCADE, null=True, blank=True)
+    skills = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.phone
+
+
+class Education(models.Model):
+    resume = models.ForeignKey(Resume, on_delete=models.CASCADE, null=True, blank=True)
+    degree = models.CharField(max_length=100, null=True, blank=True)
+    institution = models.CharField(max_length=100, null=True, blank=True)
+    start_year = models.DateField(null=True, blank=True)
+    end_year = models.DateField(null=True, blank=True)
+    gpa = models.CharField(max_length=10, null=True, blank=True)
+
+
+class PastRoles(models.Model):
+    resume = models.ForeignKey(Resume, on_delete=models.CASCADE, null=True, blank=True)
+    title = models.CharField(max_length=100, null=True, blank=True)
+    company = models.CharField(max_length=100, null=True, blank=True)
+    location = models.CharField(max_length=100, null=True, blank=True)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    responsibilities = models.TextField()

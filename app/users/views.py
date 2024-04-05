@@ -3,8 +3,10 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 
+from resume.models import Resume, PastRoles, Education
 from users.models import UserInfo
 from .forms import ApplicantForm, ResumeForm, UserInfoForm, CompanyForm
+from .openaiHandler import ReadResume
 
 
 # Register Applicant
@@ -27,6 +29,44 @@ def new_applicant(request):
             resume = resume_form.save(commit=False)
             resume.user = user
             resume.save()
+
+            resume_model = get_object_or_404(Resume, user=user)
+            resume_text = ReadResume(resume_model.resume.name)
+            if not resume_text:
+                messages.warning(request, "Something went wrong, please try again.")
+                # If there are errors, render the form with the error messages
+                context = {
+                    'user_form': user_form,
+                    'resume_form': resume_form,
+                    'user_info_form': user_info_form
+                }
+                return render(request, "users/new-applicant.html", context)
+            else:
+                resume_model.skills = str(resume_text["all_skills"])[1:-1]
+                resume_model.save()
+
+                for y in range(len(resume_text["education"])):
+                    single = resume_text["education"][y]
+                    education = Education()
+                    education.resume = resume_model
+                    education.degree = single["degree"]
+                    education.institution = single["university"]
+                    education.start_year = single["start_year"]
+                    education.end_year = single["end_year"]
+                    education.gpa = single["gpa"]
+                    education.save()
+
+                for x in range(len(resume_text["roles"])):
+                    single = resume_text["roles"][x]
+                    past_roles = PastRoles()
+                    past_roles.resume = resume_model
+                    past_roles.title = single["title"]
+                    past_roles.company = single["company"]
+                    past_roles.location = single["location"]
+                    past_roles.start_date = single["start_date"]
+                    past_roles.end_date = single["end_date"]
+                    past_roles.responsibilities = single["responsibilities"]
+                    past_roles.save()
 
             messages.success(request, "Your account has successfully been created.")
             return redirect("login")
