@@ -46,7 +46,6 @@ def new_applicant(request):
                 resume_model.save()
 
                 for y in range(len(resume_text["education"])):
-                    print(resume_text["education"])
                     single = resume_text["education"][y]
                     education = Education()
                     education.resume = resume_model

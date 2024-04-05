@@ -118,12 +118,16 @@ def quiz_results(request, persona):
                     }
                     personalities.append(data)
 
+        user_personality = get_object_or_404(UserPersonality, user=user)
+        ref = user_personality.pk
+
         context = {
             "persona": persona,
             "image": image,
             "persona_type": person_type.name,
             "persona_describe": person_type.describe,
-            "personalities": personalities
+            "personalities": personalities,
+            "ref": ref
         }
         return render(request, "quiz/answer.html", context)
 

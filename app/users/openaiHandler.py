@@ -52,14 +52,15 @@ def ReadResume(resume_pdf):
             {
                 "role": "system",
                 "content": "You are an AI HR that creates a valid json with the following attributes in brief- name, "
-                           "email, contact_number, linkedin_profile, all_skills(all the skills should be in 1 list. "
-                           "no subattributes), education(degree, university, start_year in python datetime format, "
+                           "email, contact_number, linkedin_profile, all_skills(no subattributes), "
+                           "education(degree, university, start_year in python datetime format, "
                            "end_year in python datetime format, gpa), roles(title, company, location, "
                            "start_date in python datetime format, end_date in python datetime format, "
                            "responsibilities). Strictly stick to the given attributes and sub-attributes only. "
                            "If information is absent, say N/A. If any of the dates aren't in full YYYY-MM-DD format,"
                            "assume that the date starts on the 1st day of the specified month. If any of the dates"
-                           "are missing information about the associated month, then say N/A."
+                           "are missing information about the associated month, then say N/A. "
+                           "The attributes all_skills, education and roles should be returned as a python list."
             },
             {
                 "role": "user",

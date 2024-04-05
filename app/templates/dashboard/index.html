@@ -22,9 +22,15 @@
         <li class="nav-item active">
           <a class="nav-link" href="{% url 'applicant-dash' %}">Home</a>
         </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'logout' %}">Sign out</a>
+        </li>
         {% else %}
         <li class="nav-item active">
           <a class="nav-link" href="{% url 'recruiter-dash' %}">Home</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'logout' %}">Sign out</a>
         </li>
         {% endif %}
         {% else %}

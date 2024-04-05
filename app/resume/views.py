@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from job.models import JobPost, ApplyJob
 from users.forms import ResumeForm, UserForm, UserInfoForm
 from users.models import UserInfo
+from users.openaiHandler import ReadResume
 from .emailHandler import ApplicantEmail, RecruiterEmail
 from .forms import EducationForm, RolesForm
 from .models import Resume, PastRoles, Education
@@ -35,15 +36,15 @@ def edit_resume(request):
         if user_form.is_valid() and resume_form.is_valid() and user_info_form.is_valid():
             user = user_form.save()
 
-            resume = resume_form.save(commit=False)
-            resume.user = user
-            resume.save()
-
             user_info = user_info_form.save(commit=False)
             user_info.user = user
             user_info.is_applicant = True
             user_info.has_resume = True
             user_info.save()
+
+            resume = resume_form.save(commit=False)
+            resume.user = user
+            resume.save()
 
             messages.success(request, "Your account has successfully been updated.")
             return redirect("applicant-dash")
@@ -92,18 +93,7 @@ def job_details(request, pk):
 
         send = {
             "pk": pk,
-            "company": job_post.company.company,
-            "title": job_post.job_title,
-            "industry": job_post.industry,
-            "city": job_post.city,
-            "state": job_post.state,
-            "country": job_post.country,
-            "pay": job_post.pay,
-            "describe": job_post.describe,
-            "tasks": job_post.tasks,
-            "ideal": job_post.ideal_candidate,
-            "download": job_post.download,
-            "timestamp": job_post.timestamp,
+            "job": job_post,
             "applied": applied,
             "test": test
         }
@@ -257,8 +247,8 @@ def edit_education(request, pk):
             education.resume = resume
             education.save()
 
-            messages.success(request, "Your account has successfully been updated.")
-            return redirect("applicant-dash")
+            messages.success(request, "Your education has successfully been updated.")
+            return redirect("education")
         else:
             messages.warning(request, "Something went wrong, please try again.")
             test = False
@@ -336,8 +326,8 @@ def edit_roles(request, pk):
             role.resume = resume
             role.save()
 
-            messages.success(request, "Your account has successfully been updated.")
-            return redirect("applicant-dash")
+            messages.success(request, "Your work experience has successfully been updated.")
+            return redirect("past-roles")
         else:
             messages.warning(request, "Something went wrong, please try again.")
             test = False

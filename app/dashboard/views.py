@@ -23,8 +23,21 @@ def index(request):
             user_info = get_object_or_404(UserInfo, user=user)
             if user_info.is_applicant:
                 switch = True
+                resume = get_object_or_404(Resume, user=user)
+                all_jobs = JobPost.objects.all().order_by("-timestamp")
 
-        jobs = JobPost.objects.all().order_by("-timestamp")
+                skills = [word.strip().strip("'") for word in resume.skills.split(',')]
+                matching_jobs = [job for job in all_jobs if any(word in job.skills.split(',') for word in skills)]
+                matching_jobs += [job for job in all_jobs if
+                                  resume.personality and job.personality.abbrv in resume.personality.combo]
+                jobs = list(set(matching_jobs))
+
+            else:
+                jobs = JobPost.objects.all().order_by("-timestamp")
+
+        else:
+            jobs = JobPost.objects.all().order_by("-timestamp")
+
         paginator = Paginator(jobs, 5)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -75,9 +88,6 @@ def applicant_dash(request):
 
         send = {
             "title": user_info.title,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "email": resume.user.email,
             "phone": resume.phone,
             "profession": resume.profession,
             "industry": resume.industry,
@@ -128,9 +138,6 @@ def recruiter_dash(request):
 
         send = {
             "title": user_info.title,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "email": user.email,
             "phone": company.phone,
             "type": company.recruiter_type,
             "company": company.company,

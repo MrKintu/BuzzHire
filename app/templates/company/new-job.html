@@ -29,23 +29,23 @@
         <div class="card card-registration card-registration-2 bg-light-subtle" style="border-radius: 15px;">
           <div class="card-body p-0">
             <div class="p-5">
-              <h3 class="fw-normal mb-5">Job Posting Questionnaire</h3>
+              <h3 class="fw-normal mb-5">Create new Job Post.</h3>
               <div class="card-body">
 
                 <div class="row align-items-center pt-4 pb-3">
-                  <div class="col-md-3 ps-5"><h6 class="mb-0">{{ form.job_title.label }}:</h6></div>
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">Job Title:</h6></div>
                   <div class="col-md-9 pe-5">{{ form.job_title }}</div>
                 </div>
                 <hr class="mx-n3">
 
                 <div class="row align-items-center pt-4 pb-3">
-                  <div class="col-md-3 ps-5"><h6 class="mb-0">{{ form.job_type.label }}:</h6></div>
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">Job Type:</h6></div>
                   <div class="col-md-9 pe-5">{{ form.job_type }}</div>
                 </div>
                 <hr class="mx-n3">
 
                 <div class="row align-items-center pt-4 pb-3">
-                  <div class="col-md-3 ps-5"><h6 class="mb-0">{{ form.industry.label }}:</h6></div>
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">Job Industry:</h6></div>
                   <div class="col-md-9 pe-5">{{ form.industry }}</div>
                 </div>
                 <hr class="mx-n3">
@@ -75,20 +75,35 @@
                 <hr class="mx-n3">
 
                 <div class="row align-items-center pt-4 pb-3">
-                  <div class="col-md-3 ps-5"><h6 class="mb-0">Role Description:</h6></div>
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">Job Description:</h6></div>
                   <div class="col-md-9 pe-5">{{ form.describe }}</div>
                 </div>
                 <hr class="mx-n3">
 
                 <div class="row align-items-center pt-4 pb-3">
-                  <div class="col-md-3 ps-5"><h6 class="mb-0">Role Tasks:</h6></div>
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">Job Tasks:</h6></div>
                   <div class="col-md-9 pe-5">{{ form.tasks }}</div>
                 </div>
                 <hr class="mx-n3">
 
                 <div class="row align-items-center pt-4 pb-3">
-                  <div class="col-md-3 ps-5"><h6 class="mb-0">{{ form.ideal_candidate.label }}:</h6></div>
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">Ideal Candidate:</h6></div>
                   <div class="col-md-9 pe-5">{{ form.ideal_candidate }}</div>
+                </div>
+                <hr class="mx-n3">
+
+                <div class="row align-items-center pt-4 pb-3">
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">Skills:</h6></div>
+                  <div class="col-md-9 pe-5">
+                      <p>Please separate skills with a comma.</p>
+                      {{ form.skills }}
+                  </div>
+                </div>
+                <hr class="mx-n3">
+
+                <div class="row align-items-center pt-4 pb-3">
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">Preferred Personality:</h6></div>
+                  <div class="col-md-9 pe-5">{{ form.personalities }}</div>
                 </div>
                 <hr class="mx-n3">
 

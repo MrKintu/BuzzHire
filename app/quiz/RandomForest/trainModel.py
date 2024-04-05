@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 if __name__ == "__main__":
     # Load data
-    data = pd.read_csv(f'{BASE_DIR}\\fuzzyANN\\dataset.csv')
+    data = pd.read_csv(f'{BASE_DIR}\\RandomForest\\dataset.csv')
     X = data.drop(columns=['Personality'])
     y = data['Personality']
 
@@ -39,7 +39,7 @@ if __name__ == "__main__":
     # Train RandomForestClassifier
     rf_model = RandomForestClassifier(n_estimators=5)
 
-    random_forest_path = f'{BASE_DIR}\\fuzzyANN\\random_forest.pkl'
+    random_forest_path = f'{BASE_DIR}\\RandomForest\\random_forest.pkl'
     rf_model.fit(X_train, y_train)
     with open(random_forest_path, 'wb') as file:
         pickle.dump(rf_model, file)

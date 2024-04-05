@@ -64,8 +64,8 @@ class Education(models.Model):
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE, null=True, blank=True)
     degree = models.CharField(max_length=100, null=True, blank=True)
     institution = models.CharField(max_length=100, null=True, blank=True)
-    start_year = models.DateField()
-    end_year = models.DateField()
+    start_year = models.DateField(null=True, blank=True)
+    end_year = models.DateField(null=True, blank=True)
     gpa = models.CharField(max_length=10, null=True, blank=True)
 
 
@@ -74,6 +74,6 @@ class PastRoles(models.Model):
     title = models.CharField(max_length=100, null=True, blank=True)
     company = models.CharField(max_length=100, null=True, blank=True)
     location = models.CharField(max_length=100, null=True, blank=True)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
     responsibilities = models.TextField()

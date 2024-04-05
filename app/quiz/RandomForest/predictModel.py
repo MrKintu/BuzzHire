@@ -27,7 +27,7 @@ def PredictPersona(user_responses):
     data_set["Answer"] = answers
 
     # Make predictions
-    random_forest_path = f'{BASE_DIR}\\fuzzyANN\\random_forest.pkl'
+    random_forest_path = f'{BASE_DIR}\\RandomForest\\random_forest.pkl'
     with open(random_forest_path, 'rb') as file:
         rf_model = pickle.load(file)
     predictions = rf_model.predict(data_set)
