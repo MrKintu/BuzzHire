@@ -9,7 +9,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from job.models import JobPost, ApplyJob
 from users.forms import ResumeForm, UserForm, UserInfoForm
 from users.models import UserInfo
-from users.openaiHandler import ReadResume
 from .emailHandler import ApplicantEmail, RecruiterEmail
 from .forms import EducationForm, RolesForm
 from .models import Resume, PastRoles, Education
@@ -23,11 +22,7 @@ def edit_resume(request):
     if not user_info.is_applicant:
         messages.warning(request, "You're not authorized to view that page!")
         return redirect("recruiter-dash")
-
     resume = get_object_or_404(Resume, user=user)
-    user_form = UserForm(instance=user)
-    resume_form = ResumeForm(instance=resume)
-    user_info_form = UserInfoForm(instance=user_info)
 
     if request.method == "POST":
         user_form = UserForm(request.POST, instance=user)
@@ -58,6 +53,10 @@ def edit_resume(request):
             return render(request, "resume/edit-resume.html", context)
 
     # If it's a GET request or the form submission failed, render the form
+    user_form = UserForm(instance=user)
+    resume_form = ResumeForm(instance=resume)
+    user_info_form = UserInfoForm(instance=user_info)
+
     context = {
         'user_form': user_form,
         'resume_form': resume_form,
@@ -173,7 +172,7 @@ def jobs_applied(request):
         return redirect("search", query=user_query)
     else:
         resume = get_object_or_404(Resume, user=user)
-        applied = ApplyJob.objects.filter(resume=resume)
+        applied = ApplyJob.objects.filter(resume=resume).order_by("-timestamp")
 
         # Paginate the queryset
         paginator = Paginator(applied, 10)  # Show 10 items per page

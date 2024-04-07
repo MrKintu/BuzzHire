@@ -28,9 +28,11 @@ def index(request):
 
                 skills = [word.strip().strip("'") for word in resume.skills.split(',')]
                 matching_jobs = [job for job in all_jobs if any(word in job.skills.split(',') for word in skills)]
-                matching_jobs += [job for job in all_jobs if
-                                  resume.personality and job.personality.abbrv in resume.personality.combo]
+                matching_jobs += [job for job in all_jobs if resume.personality
+                                  and job.personality.abbrv in resume.personality.combo
+                                  or job.industry == resume.industry]
                 jobs = list(set(matching_jobs))
+                jobs.sort(key=lambda x: x.timestamp, reverse=True)
 
             else:
                 jobs = JobPost.objects.all().order_by("-timestamp")
