@@ -14,14 +14,14 @@ def rename_file(instance, filename):
     alphabet = string.ascii_letters + string.digits
     secure_string = ''.join(secrets.choice(alphabet) for _ in range(20))
     newname = f'{secure_string}.{ext}'
-    BASE_DIR = Path(__file__).resolve().parent.parent
-    new_path = f'{BASE_DIR}/media/resumes/{newname}'
+    # BASE_DIR = Path(__file__).resolve().parent.parent
+    # new_path = f'{BASE_DIR}/media/resumes/{newname}'
 
-    # current_directory = os.path.dirname(os.path.abspath(__file__))
-    # root_directory = current_directory
-    # while not os.path.exists(os.path.join(root_directory, 'manage.py')):
-    #     root_directory = os.path.dirname(root_directory)
-    # new_path = f"{root_directory}\\media\\resumes\\{newname}"
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    root_directory = current_directory
+    while not os.path.exists(os.path.join(root_directory, 'manage.py')):
+        root_directory = os.path.dirname(root_directory)
+    new_path = f"{root_directory}/media/resumes/{newname}"
 
     return new_path
 
