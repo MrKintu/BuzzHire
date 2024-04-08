@@ -57,7 +57,7 @@ class JobPost(models.Model):
     skills = models.TextField(null=True, blank=True)
     personality = models.ForeignKey(Personality, on_delete=models.CASCADE, null=True, blank=True)
     available = models.BooleanField(default=True)
-    download = models.FileField(upload_to=rename_file, null=True, blank=True)
+    download = models.FileField(upload_to="jobs", null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

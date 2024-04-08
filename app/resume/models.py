@@ -46,7 +46,7 @@ class Resume(models.Model):
     industry = models.CharField(max_length=100, null=True, blank=True, choices=industry_choices)
     profession = models.CharField(max_length=100, null=True, blank=True)
     years = models.IntegerField(null=True, blank=True)
-    resume = models.FileField(upload_to=rename_file, null=True, blank=True)
+    resume = models.FileField(upload_to="resumes", null=True, blank=True)
     street = models.CharField(max_length=100, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
     zipcode = models.CharField(max_length=100, null=True, blank=True)
