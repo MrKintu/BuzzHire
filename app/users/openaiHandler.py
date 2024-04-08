@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 def extract_text_from_pdf(pdf_file_path):
-    filename = pdf_file_path[-24:]
+    filename = pdf_file_path[8:]
     current_directory = os.path.dirname(os.path.abspath(__file__))
     root_directory = current_directory
     while not os.path.exists(os.path.join(root_directory, 'manage.py')):
