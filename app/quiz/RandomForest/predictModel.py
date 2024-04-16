@@ -1,11 +1,9 @@
 import logging
 import pickle
-from pathlib import Path
 
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
-BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 logger = logging.getLogger(__name__)
 
 
@@ -27,7 +25,7 @@ def PredictPersona(user_responses):
     data_set["Answer"] = answers
 
     # Make predictions
-    random_forest_path = f'{BASE_DIR}\\RandomForest\\random_forest.pkl'
+    random_forest_path = '/srv/www/BuzzHire/app/quiz/RandomForest/random_forest.pkl'
     with open(random_forest_path, 'rb') as file:
         rf_model = pickle.load(file)
     predictions = rf_model.predict(data_set)
