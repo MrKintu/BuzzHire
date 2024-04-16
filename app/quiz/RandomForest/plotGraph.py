@@ -41,7 +41,7 @@ def GenerateChart(personality_percentages):
     root_directory = current_directory
     while not os.path.exists(os.path.join(root_directory, 'manage.py')):
         root_directory = os.path.dirname(root_directory)
-    image_path = f"{root_directory}\\media\\personalities\\{secure_string}.png"
+    image_path = f"{root_directory}/media/personalities/{secure_string}.png"
     fig.savefig(image_path, dpi=300)  # Set DPI to 300 for HD image
     plt.close(fig)
 

@@ -25,7 +25,7 @@ def PredictPersona(user_responses):
     data_set["Answer"] = answers
 
     # Make predictions
-    random_forest_path = '/srv/www/BuzzHire/app/quiz/RandomForestrandom_forest.pkl'
+    random_forest_path = '/srv/www/BuzzHire/app/quiz/RandomForest/random_forest.pkl'
     with open(random_forest_path, 'rb') as file:
         rf_model = pickle.load(file)
     predictions = rf_model.predict(data_set)
