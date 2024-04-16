@@ -2,9 +2,8 @@ import json
 import logging
 import os
 import urllib.request
-from io import BytesIO
-import fitz
 
+import fitz
 from dotenv import load_dotenv
 
 load_dotenv()
