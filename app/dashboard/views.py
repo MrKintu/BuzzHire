@@ -87,7 +87,7 @@ def applicant_dash(request):
         if UserPersonality.objects.filter(user=user).exists():
             user_personality = get_object_or_404(UserPersonality, user=user)
             ref = user_personality.pk
-
+        
         send = {
             "title": user_info.title,
             "phone": resume.phone,

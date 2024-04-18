@@ -37,15 +37,11 @@ def GenerateChart(personality_percentages):
     # Save the plot as an HD image
     alphabet = string.ascii_letters + string.digits
     secure_string = ''.join(secrets.choice(alphabet) for _ in range(16))
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    root_directory = current_directory
-    while not os.path.exists(os.path.join(root_directory, 'manage.py')):
-        root_directory = os.path.dirname(root_directory)
-    image_path = f"{root_directory}/media/personalities/{secure_string}.png"
+    image_path = f"/srv/www/BuzzHire/app/media/personalities/{secure_string}.png"
     fig.savefig(image_path, dpi=300)  # Set DPI to 300 for HD image
     plt.close(fig)
 
-    return image_path
+    return f"personalities/{secure_string}.png"
 
 
 # Example usage:
