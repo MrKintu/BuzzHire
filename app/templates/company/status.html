@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+  <title>Received Application</title>
+</head>
+<body>
+<section class="v-100 bg-primary bg-gradient">
+    <div class="container v-100">
+        <div class="row d-flex justify-content-center align-items-center v-100">
+        <div class="card">
+          <div class="card-body mx-4">
+            <div class="container">
+              <img class="d-block mx-auto mb-4" alt="" width="216" height="72" src="{% static 'logo.png' %}">
+              <p class="my-5 mx-5" style="font-size: 30px;">Feedback on your application.</p>
+              <div class="row">
+                <ul class="list-unstyled">
+                    <li class="text-black mt-1k">Dear {{ title }}. {{ first_name }} {{ last_name }},</li>
+                </ul>
+                <hr>
+                <div class="text-start">
+                    <p>
+                        You recently applied for the role of {{ job_title }} at {{ company }}. We reviewed your
+                        application and decided that your application status is {{ status }}.
+                    </p>
+                    <br/>
+                    {% if status == "Approved" %}
+                    <p>
+                        Congratulations! You are one step closer to joining our team. One of our representatives shall
+                        reach out to you with the next steps.
+                    </p>
+                    {% elif status == "Declined" %}
+                    <p>
+                        We're sorry that isn't the news you expected to hear. Please keep checking BuzzHire for other
+                        opportunities we shall post on the platform.
+                    </p>
+                    {% else %}
+                    <p>
+                        This means that you are currently wait-listed. In case of any change to your status, we shall
+                        notify you immediately.
+                    </p>
+                    {% endif %}
+                    <br/><br/>
+                    <p>Regards,</p>
+                    <p>{{ company }}.</p>
+                </div>
+                <hr>
+              </div>
+
+              <div class="text-center" style="margin-top: 90px;">
+                <a><u class="text-info">View in browser</u></a>
+                <p>BuzzHire 2024.</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous">
+</script>
+</body>
+</html>

@@ -1,3 +1,6 @@
 from django.contrib import admin
+from resume.models import Resume, PastRoles, Education
 
-# Register your models here.
+admin.site.register(Resume)
+admin.site.register(PastRoles)
+admin.site.register(Education)

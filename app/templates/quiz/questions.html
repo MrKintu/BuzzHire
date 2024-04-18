@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+  <title>Quiz</title>
+</head>
+<body>
+<header>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+    <a class="navbar-brand" href="{% url 'index' %}">
+        <img class="d-block mx-auto mb-4" alt="" width="102" height="34" src="{% static 'logo.png' %}">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'applicant-dash' %}">Dashboard</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main role="main">
+  <br/> <br/> <br/> <br/>
+  <div class="container marketing">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}}" role="alert">
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    <h2>Answer these questions to determine your personality type.</h2>
+    <hr class="featurette-divider">
+    <section class="v-100 bg-secondary">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col col-xl-10">
+              <strong>Instructions:</strong>
+              <p class="text-white">Please read each statement carefully and rate your agreement with it on a scale
+                  from 1 to 10, where:</p>
+              <p class="text-white">1 represents complete disagreement while 10 represents complete agreement.</p>
+              <br/>
+            <form class="card" style="border-radius: 15px;" enctype="multipart/form-data" method="post">
+              {% csrf_token %}
+              <div class="card-body">
+                <div class="row align-items-center pt-4 pb-3">
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">Question:</h6></div>
+                  <div class="col-md-9 pe-5">{{ question }}</div>
+                </div>
+                <div class="row align-items-center pt-4 pb-3">
+                  <div class="col-md-3 ps-5"><h6 class="mb-0">Answer:</h6></div>
+                  <div class="col-md-9 pe-5">{{ form.response }}</div>
+                </div>
+                <hr class="mx-n3">
+                <div class="container text-center">
+                  <div class="col">
+                    <button type="submit" class="btn btn btn-success btn-lg"
+                      data-mdb-ripple-color="dark">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <hr class="featurette-divider">
+
+    <!-- /END THE FEATURETTES -->
+
+  </div><!-- /.container -->
+
+
+  <!-- FOOTER -->
+  <footer class="container">
+    <p class="float-right"><a href="#">Back to top</a></p>
+    <p>&copy; 2024 BuzzHire</p>
+  </footer>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous">
+</script>
+</body>
+</html>

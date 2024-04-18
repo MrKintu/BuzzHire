@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <title>Edit Education History</title>
+</head>
+<body>
+<div class="navbar navbar-dark fixed-top bg-primary flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'index' %}">
+      <img class="d-block mx-auto mb-4" alt="" width="102" height="34" src="{% static 'logo.png' %}">
+  </a>
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <a class="nav-link" href="{% url 'logout' %}">Sign out</a>
+    </li>
+  </ul>
+</div>
+
+<br/> <br/> <br/>
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'applicant-dash' %}">
+              Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'edit-resume' %}">
+              Edit Profile
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'jobs-applied' %}">
+              Jobs Applied
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              Skills
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              Experience
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              Education
+            </a>
+          </li>
+            {% if test %}
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'questions' ref=1 %}">
+                Personality Test
+              </a>
+            </li>
+            {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Edit Education History</h1>
+      </div>
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-{{message.tags}}" role="alert">
+          {{ message }}
+      </div>
+      {% endfor %}
+      {% endif %}
+      <section class="bg-secondary">
+        <div class="container py-5">
+            <div class="card mb-5" style="border-radius: 15px;">
+                <form class="card-body p-4" enctype="multipart/form-data" method="post"> {% csrf_token %}
+                    <div class="row align-items-center pt-4 pb-3">
+                        <div class="col-md-3 ps-5">
+                            <h6 class="mb-0">Accreditation</h6>
+                        </div>
+                        <div class="col-md-3 pe-5">
+                            {{ form.degree }}
+                        </div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                        <div class="col-md-3 ps-5">
+                            <h6 class="mb-0">Institution</h6>
+                        </div>
+                        <div class="col-md-9 pe-5">
+                            {{ form.institution }}
+                        </div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                        <div class="col-md-3 ps-5">
+                            <h6 class="mb-0">Start Year</h6>
+                        </div>
+                        <div class="col-md-9 pe-5">
+                            {{ form.start_year }}
+                        </div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                        <div class="col-md-3 ps-5">
+                            <h6 class="mb-0">End Year</h6>
+                        </div>
+                        <div class="col-md-9 pe-5">
+                            {{ form.end_year }}
+                        </div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row align-items-center pt-4 pb-3">
+                        <div class="col-md-3 ps-5">
+                            <h6 class="mb-0">GPA</h6>
+                        </div>
+                        <div class="col-md-9 pe-5">
+                            {{ form.gpa }}
+                        </div>
+                    </div>
+                    <hr class="mx-n3">
+
+                    <div class="row justify-content-between">
+                        <div class="col-4">
+                          <div class="px-5 py-4">
+                            <a href="{% url 'education' %}" class="btn btn-danger btn-lg">Cancel</a>
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="px-5 py-4">
+                            <button type="submit" class="btn btn-success btn-lg">Update</button>
+                          </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+          integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+          crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+          integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+          crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+          integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+          crossorigin="anonymous">
+  </script>
+</body>
+</html>
