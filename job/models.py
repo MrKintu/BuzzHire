@@ -1,3 +1,4 @@
+import os
 import secrets
 import string
 from pathlib import Path
@@ -16,7 +17,8 @@ def rename_file(instance, filename):
     secure_string = ''.join(secrets.choice(alphabet) for _ in range(20))
     newname = f'{secure_string}.{ext}'
     BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
-    new_path = f'{BASE_DIR}/media/jobs/{newname}'
+    final_name = f'{BASE_DIR}/media/jobs/'
+    new_path = os.path.join(final_name, newname)
 
     return new_path
 
@@ -57,7 +59,7 @@ class JobPost(models.Model):
     skills = models.TextField(null=True, blank=True)
     personality = models.ForeignKey(Personality, on_delete=models.CASCADE, null=True, blank=True)
     available = models.BooleanField(default=True)
-    download = models.FileField(upload_to="jobs", null=True, blank=True)
+    download = models.FileField(upload_to=rename_file, null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

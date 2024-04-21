@@ -1,3 +1,4 @@
+import os
 import secrets
 import string
 from pathlib import Path
@@ -14,7 +15,8 @@ def rename_file(instance, filename):
     secure_string = ''.join(secrets.choice(alphabet) for _ in range(20))
     newname = f'{secure_string}.{ext}'
     BASE_DIR = Path(__file__).resolve().parent.parent
-    new_path = f'{BASE_DIR}/media/resumes/{newname}'
+    final_name = f'{BASE_DIR}/media/resumes/'
+    new_path = os.path.join(final_name, newname)
 
     return new_path
 
@@ -25,7 +27,8 @@ def rename_image(instance, filename):
     secure_string = ''.join(secrets.choice(alphabet) for _ in range(20))
     newname = f'{secure_string}.{ext}'
     BASE_DIR = Path(__file__).resolve().parent.parent
-    new_path = f'{BASE_DIR}/media/profiles/{newname}'
+    final_name = f'{BASE_DIR}/media/profiles/'
+    new_path = os.path.join(final_name, newname)
 
     return new_path
 
