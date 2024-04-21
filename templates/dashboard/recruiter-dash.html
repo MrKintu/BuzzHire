@@ -70,8 +70,13 @@
             <div class="col-lg-4">
               <div class="card mb-4">
                 <div class="card-body text-center">
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-                    class="rounded-circle img-fluid" style="width: 150px;">
+                    {% if has_profile %}
+                    <img src="{{ profile.url }}" alt="avatar" height="300" width="300"
+                         class="rounded-circle img-fluid" style="width: 150px;">
+                    {% else %}
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                         alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                    {% endif %}
                   <h5 class="my-3">{{ title }}. {{ user.first_name }} {{ user.last_name }}</h5>
                   <p class="mb-1">{{ type }}</p>
                   <p class="mb-4">{{ company }}</p>

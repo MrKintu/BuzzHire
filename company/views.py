@@ -24,7 +24,7 @@ def edit_company(request):
         company = get_object_or_404(Company, user=user)
         user_form = UserForm(request.POST, instance=user)
         user_info_form = UserInfoForm(request.POST, instance=user_info)
-        company_form = CompanyForm(request.POST, instance=company)
+        company_form = CompanyForm(request.POST, request.FILES, instance=company)
 
         if user_form.is_valid() and user_info_form.is_valid() and company_form.is_valid():
             user = user_form.save()
