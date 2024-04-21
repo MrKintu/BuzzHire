@@ -96,7 +96,7 @@ def new_recruiter(request):
     if request.method == "POST":
         user_form = ApplicantForm(request.POST)
         user_info_form = UserInfoForm(request.POST)
-        company_form = CompanyForm(request.POST)
+        company_form = CompanyForm(request.POST, request.FILES)
 
         if user_form.is_valid() and user_info_form.is_valid() and company_form.is_valid():
             user = user_form.save(commit=False)
