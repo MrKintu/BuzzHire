@@ -43,6 +43,15 @@ class ResumeForm(forms.ModelForm):
                 raise forms.ValidationError("Please upload a PDF file.")
         return resume
 
+    def clean_profile(self):
+        profile = self.cleaned_data.get('profile_image')
+        accepted = ['.png', '.jpg', '.jpeg', '.tiff', '.webp', '.svg', '.avif', '.bmp', '.gif']
+        if profile:
+            for ext in accepted:
+                if not profile.name.endswith(ext):
+                    raise forms.ValidationError("Please upload a file in picture format.")
+        return profile
+
 
 class UserInfoForm(forms.ModelForm):
     class Meta:
@@ -54,3 +63,12 @@ class CompanyForm(forms.ModelForm):
     class Meta:
         model = Company
         exclude = ['user']
+
+    def clean_profile(self):
+        profile = self.cleaned_data.get('profile_image')
+        accepted = ['.png', '.jpg', '.jpeg', '.tiff', '.webp', '.svg', '.avif', '.bmp', '.gif']
+        if profile:
+            for ext in accepted:
+                if not profile.name.endswith(ext):
+                    raise forms.ValidationError("Please upload a file in picture format.")
+        return profile

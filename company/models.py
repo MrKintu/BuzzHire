@@ -1,5 +1,20 @@
+import secrets
+import string
+from pathlib import Path
+
 from django.db import models
 from django.contrib.auth.models import User
+
+
+def rename_image(instance, filename):
+    ext = filename.split('.')[-1]
+    alphabet = string.ascii_letters + string.digits
+    secure_string = ''.join(secrets.choice(alphabet) for _ in range(20))
+    newname = f'{secure_string}.{ext}'
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    new_path = f'{BASE_DIR}/media/profiles/{newname}'
+
+    return new_path
 
 
 class Company(models.Model):
@@ -35,6 +50,7 @@ class Company(models.Model):
     state = models.CharField(max_length=100, null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
     phone = models.CharField(max_length=100, null=True, blank=True)
+    profile_image = models.ImageField(upload_to=rename_image, null=True, blank=True)
 
     def __str__(self):
         return self.company

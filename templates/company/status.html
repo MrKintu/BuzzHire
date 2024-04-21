@@ -24,24 +24,24 @@
                 <hr>
                 <div class="text-start">
                     <p>
-                        You recently applied for the role of {{ job_title }} at {{ company }}. We reviewed your
-                        application and decided that your application status is {{ status }}.
+                        You recently applied for the role of {{ job_title }} at {{ company }}. We reviewed
+                        your application and decided that your application status is {{ status }}.
                     </p>
                     <br/>
                     {% if status == "Approved" %}
                     <p>
-                        Congratulations! You are one step closer to joining our team. One of our representatives shall
-                        reach out to you with the next steps.
+                        Congratulations! You are one step closer to joining our team. One of our
+                        representatives shall reach out to you with the next steps.
                     </p>
                     {% elif status == "Declined" %}
                     <p>
-                        We're sorry that isn't the news you expected to hear. Please keep checking BuzzHire for other
-                        opportunities we shall post on the platform.
+                        We're sorry that isn't the news you expected to hear. Please keep checking BuzzHire
+                        for other opportunities we shall post on the platform.
                     </p>
                     {% else %}
                     <p>
-                        This means that you are currently wait-listed. In case of any change to your status, we shall
-                        notify you immediately.
+                        This means that you are currently wait-listed. In case of any change to your status,
+                        we shall notify you immediately.
                     </p>
                     {% endif %}
                     <br/><br/>

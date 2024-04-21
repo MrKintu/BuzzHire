@@ -83,6 +83,11 @@ def applicant_dash(request):
             persona = resume.personality.combo
             image = next((img for img in images if img.startswith(persona)), None)
 
+        has_profile, profile = False, ""
+        if resume.profile_image:
+            has_profile = True
+            profile = resume.profile_image
+
         ref = ""
         if UserPersonality.objects.filter(user=user).exists():
             user_personality = get_object_or_404(UserPersonality, user=user)
@@ -101,6 +106,8 @@ def applicant_dash(request):
             "zipcode": resume.zipcode,
             "resume": resume.resume,
             "skills": resume.skills,
+            "has_profile": has_profile,
+            "profile": profile,
             "applications": app_count,
             "approved": approved,
             "declined": declined,
@@ -138,6 +145,11 @@ def recruiter_dash(request):
         declined = applications.filter(status="Declined").count()
         pending = applications.exclude(status__in=["Approved", "Declined"]).count()
 
+        has_profile, profile = False, ""
+        if company.profile_image:
+            has_profile = True
+            profile = company.profile_image
+
         send = {
             "title": user_info.title,
             "phone": company.phone,
@@ -151,6 +163,8 @@ def recruiter_dash(request):
             "state": company.state,
             "country": company.country,
             "zipcode": company.zipcode,
+            "has_profile": has_profile,
+            "profile": profile,
             "posts": job_list.count(),
             "available": job_count,
             "disabled": disabled,
