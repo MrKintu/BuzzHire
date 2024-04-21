@@ -20,7 +20,7 @@ def __get_cxn():
 
 def load_personaTypes():
     cnxn = __get_cxn()
-    data = pd.read_csv("/srv/www/BuzzHire/app/quiz/myers_briggs/16_types.csv")
+    data = pd.read_csv("/srv/www/BuzzHire/quiz/myers_briggs/16_types.csv")
     for row in data.itertuples():
         cursor = cnxn.cursor()
         query = (f"INSERT INTO public.quiz_personalitytype (combo, name, describe) "
@@ -35,7 +35,7 @@ def load_personaTypes():
 
 def load_persona():
     cnxn = __get_cxn()
-    data = pd.read_csv("/srv/www/BuzzHire/app/quiz/myers_briggs/personalities.csv")
+    data = pd.read_csv("/srv/www/BuzzHire/quiz/myers_briggs/personalities.csv")
     for row in data.itertuples():
         cursor = cnxn.cursor()
         query = (f"INSERT INTO public.quiz_personality (name, abbrv, dichotomy, describe) "
@@ -50,7 +50,7 @@ def load_persona():
 
 def load_question():
     cnxn = __get_cxn()
-    data = pd.read_csv("/srv/www/BuzzHire/app/quiz/myers_briggs/questions.csv")
+    data = pd.read_csv("/srv/www/BuzzHire/quiz/myers_briggs/questions.csv")
     for row in data.itertuples():
         cursor = cnxn.cursor()
         query = (f"INSERT INTO public.quiz_question (count, dichotomy, text) "
