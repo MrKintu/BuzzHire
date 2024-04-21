@@ -1,7 +1,6 @@
 import os
 import secrets
 import string
-from pathlib import Path
 
 from django.db import models
 
@@ -16,9 +15,7 @@ def rename_file(instance, filename):
     alphabet = string.ascii_letters + string.digits
     secure_string = ''.join(secrets.choice(alphabet) for _ in range(20))
     newname = f'{secure_string}.{ext}'
-    BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
-    final_name = f'{BASE_DIR}/media/jobs/'
-    new_path = os.path.join(final_name, newname)
+    new_path = os.path.join("jobs", newname)
 
     return new_path
 

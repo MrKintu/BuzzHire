@@ -1,7 +1,6 @@
 import os
 import secrets
 import string
-from pathlib import Path
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -14,9 +13,7 @@ def rename_file(instance, filename):
     alphabet = string.ascii_letters + string.digits
     secure_string = ''.join(secrets.choice(alphabet) for _ in range(20))
     newname = f'{secure_string}.{ext}'
-    BASE_DIR = Path(__file__).resolve().parent.parent
-    final_name = f'{BASE_DIR}/media/resumes/'
-    new_path = os.path.join(final_name, newname)
+    new_path = os.path.join("resumes", newname)
 
     return new_path
 
@@ -26,9 +23,7 @@ def rename_image(instance, filename):
     alphabet = string.ascii_letters + string.digits
     secure_string = ''.join(secrets.choice(alphabet) for _ in range(20))
     newname = f'{secure_string}.{ext}'
-    BASE_DIR = Path(__file__).resolve().parent.parent
-    final_name = f'{BASE_DIR}/media/profiles/'
-    new_path = os.path.join(final_name, newname)
+    new_path = os.path.join("profiles", newname)
 
     return new_path
 
