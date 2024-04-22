@@ -20,5 +20,3 @@ class UserInfo(models.Model):
     d_o_b = models.DateField(null=True, blank=True)
     is_recruiter = models.BooleanField(default=False)
     is_applicant = models.BooleanField(default=False)
-    has_resume = models.BooleanField(default=False)
-    has_company = models.BooleanField(default=False)

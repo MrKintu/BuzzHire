@@ -40,7 +40,7 @@ class Question(models.Model):
 
 class UserResponse(models.Model):
     user_info = models.ForeignKey(UserInfo, on_delete=models.CASCADE, null=True, blank=True)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, null=True, blank=True)
+    question = models.OneToOneField(Question, on_delete=models.CASCADE, null=True, blank=True)
     response = models.IntegerField()
 
 
@@ -73,7 +73,7 @@ class PersonalityType(models.Model):
 
 
 class UserPersonality(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     persona = models.ForeignKey(PersonalityType, on_delete=models.CASCADE, null=True, blank=True)
     introversion = models.FloatField()
     extroversion = models.FloatField()
