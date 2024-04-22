@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from job.models import JobPost, ApplyJob
 from users.forms import ResumeForm, UserForm, UserInfoForm
 from users.models import UserInfo
+from users.openaiHandler import ReadResume
 from .emailHandler import ApplicantEmail, RecruiterEmail
 from .forms import EducationForm, RolesForm
 from .models import Resume, PastRoles, Education
@@ -34,15 +35,56 @@ def edit_resume(request):
             user_info = user_info_form.save(commit=False)
             user_info.user = user
             user_info.is_applicant = True
-            user_info.has_resume = True
             user_info.save()
 
             resume = resume_form.save(commit=False)
             resume.user = user
             resume.save()
 
-            messages.success(request, "Your account has successfully been updated.")
-            return redirect("applicant-dash")
+            resume_model = get_object_or_404(Resume, user=user)
+            resume_text = ReadResume(resume_model.resume.name)
+            if not resume_text:
+                messages.warning(request, "Something went wrong, please try again.")
+                # If there are errors, render the form with the error messages
+                context = {
+                    'user_form': user_form,
+                    'resume_form': resume_form,
+                    'user_info_form': user_info_form
+                }
+                return render(request, "users/new-applicant.html", context)
+            else:
+                resume_model.skills = str(resume_text["all_skills"])[1:-1]
+                resume_model.save()
+
+                education_list = Education.objects.filter(resume=resume_model)
+                for education in education_list:
+                    for y in range(len(resume_text["education"])):
+                        single = resume_text["education"][y]
+                        if education.degree == single["degree"]:
+                            education.resume = resume_model
+                            education.degree = single["degree"]
+                            education.institution = single["university"]
+                            education.start_year = single["start_year"]
+                            education.end_year = single["end_year"]
+                            education.gpa = single["gpa"]
+                            education.save()
+
+                past_list = PastRoles.objects.filter(resume=resume_model)
+                for past in past_list:
+                    for x in range(len(resume_text["roles"])):
+                        single = resume_text["roles"][x]
+                        if past.title == single["title"]:
+                            past.resume = resume_model
+                            past.title = single["title"]
+                            past.company = single["company"]
+                            past.location = single["location"]
+                            past.start_date = single["start_date"]
+                            past.end_date = single["end_date"]
+                            past.responsibilities = single["responsibilities"]
+                            past.save()
+
+                messages.success(request, "Your account has successfully been created.")
+                return redirect("applicant-dash")
         else:
             messages.warning(request, "Something went wrong, please try again.")
             context = {

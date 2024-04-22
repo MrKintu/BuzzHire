@@ -23,7 +23,6 @@ def new_applicant(request):
             user_info = user_info_form.save(commit=False)
             user_info.user = user
             user_info.is_applicant = True
-            user_info.has_resume = True
             user_info.save()
 
             resume = resume_form.save(commit=False)
@@ -105,7 +104,6 @@ def new_recruiter(request):
             user_info = user_info_form.save(commit=False)
             user_info.user = user
             user_info.is_recruiter = True
-            user_info.has_company = True
             user_info.save()
 
             company = company_form.save(commit=False)

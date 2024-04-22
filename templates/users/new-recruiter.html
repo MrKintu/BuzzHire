@@ -61,6 +61,23 @@
 
                         <div class="row align-items-center pt-4 pb-3">
                           <div class="col-md-3 ps-5"><h6 class="mb-0">
+                              {{ user_info_form.gender.label }}:
+                          </h6></div>
+                          <div class="col-md-9 pe-5">{{ user_info_form.gender }}</div>
+                        </div>
+                        <hr class="mx-n3">
+
+                        <div class="row align-items-center pt-4 pb-3">
+                          <div class="col-md-3 ps-5"><h6 class="mb-0">
+                              Date Of Birth:
+                          </h6></div>
+                            <p><i>Enter in YYYY-MM-DD format.</i></p>
+                          <div class="col-md-9 pe-5">{{ user_info_form.d_o_b }}</div>
+                        </div>
+                        <hr class="mx-n3">
+
+                        <div class="row align-items-center pt-4 pb-3">
+                          <div class="col-md-3 ps-5"><h6 class="mb-0">
                               Enter new Password:
                           </h6></div>
                           <div class="col-md-9 pe-5">{{ user_form.password1 }}</div>

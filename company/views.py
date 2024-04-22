@@ -32,7 +32,6 @@ def edit_company(request):
             user_info = user_info_form.save(commit=False)
             user_info.user = user
             user_info.is_recruiter = True
-            user_info.has_company = True
             user_info.save()
 
             company = company_form.save(commit=False)
