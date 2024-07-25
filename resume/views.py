@@ -57,9 +57,9 @@ def edit_resume(request):
                 resume_model.save()
 
                 education_list = Education.objects.filter(resume=resume_model)
-                for education in education_list:
-                    for y in range(len(resume_text["education"])):
-                        single = resume_text["education"][y]
+                for y in range(len(resume_text["education"])):
+                    single = resume_text["education"][y]
+                    for education in education_list:
                         if education.degree == single["degree"]:
                             education.resume = resume_model
                             education.degree = single["degree"]
@@ -68,11 +68,20 @@ def edit_resume(request):
                             education.end_year = single["end_year"]
                             education.gpa = single["gpa"]
                             education.save()
+                        else:
+                            new_ed = Education()
+                            new_ed.resume = resume_model
+                            new_ed.degree = single["degree"]
+                            new_ed.institution = single["university"]
+                            new_ed.start_year = single["start_year"]
+                            new_ed.end_year = single["end_year"]
+                            new_ed.gpa = single["gpa"]
+                            new_ed.save()
 
                 past_list = PastRoles.objects.filter(resume=resume_model)
-                for past in past_list:
-                    for x in range(len(resume_text["roles"])):
-                        single = resume_text["roles"][x]
+                for x in range(len(resume_text["roles"])):
+                    single = resume_text["roles"][x]
+                    for past in past_list:
                         if past.title == single["title"]:
                             past.resume = resume_model
                             past.title = single["title"]
@@ -82,6 +91,16 @@ def edit_resume(request):
                             past.end_date = single["end_date"]
                             past.responsibilities = single["responsibilities"]
                             past.save()
+                        else:
+                            new_past = PastRoles()
+                            new_past.resume = resume_model
+                            new_past.title = single["title"]
+                            new_past.company = single["company"]
+                            new_past.location = single["location"]
+                            new_past.start_date = single["start_date"]
+                            new_past.end_date = single["end_date"]
+                            new_past.responsibilities = single["responsibilities"]
+                            new_past.save()
 
                 messages.success(request, "Your account has successfully been created.")
                 return redirect("applicant-dash")

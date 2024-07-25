@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/30a341da-8f92-40ee-b115-ebd7c93dc631/resourceGroups/Group_1/providers/Microsoft.Web/sites/BuzzHire",
+    "appService.deploySubpath": "."
+}
