@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h2>{{ profile.user.get_full_name|default:profile.user.username }}'s Profile</h2>
+        </div>
+        <div class="card-body">
+            <h4>Personality Type: {{ profile.user.userpersonality.persona.combo }} ({{ profile.user.userpersonality.persona.name }})</h4>
+            <hr>
+            <h5>About Me</h5>
+            <p>{{ profile.bio }}</p>
+            <hr>
+            <p><strong>Contact:</strong> {{ profile.user.email }}</p>
+
+            {% if user.userinfo.is_applicant and profile.user != user %}
+                {% if not is_connected %}
+                    <form method="post" action="{% url 'connect-with-mentor' profile.user.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">Connect with {{ profile.user.username }}</button>
+                    </form>
+                {% else %}
+                    <p class="text-success font-weight-bold">You are connected with this mentor!</p>
+                {% endif %}
+            {% endif %}
+
+            <a href="{% url 'find-mentor' %}" class="btn btn-secondary mt-2">Back to Matches</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

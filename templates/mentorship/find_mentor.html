@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Find Your Mentor</h1>
+    <p class="lead">Here are some mentors we think would be a great match for you based on your personality profile.</p>
+    
+    <div class="row">
+        {% if mentors %}
+            {% for profile in mentors %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ profile.user.get_full_name|default:profile.user.username }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ profile.user.userpersonality.persona.combo }} - {{ profile.user.userpersonality.persona.name }}</h6>
+                        <p class="card-text">{{ profile.bio|truncatewords:20 }}</p>
+                        <a href="{% url 'mentor-profile' profile.user.id %}" class="btn btn-primary">View Profile</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col">
+                <div class="alert alert-info">
+                    <p>We couldn't find any mentor matches for you at the moment. This could be because you haven't completed your personality quiz yet.</p>
+                    <a href="{% url 'questions' 1 %}" class="btn btn-success">Take the Quiz</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

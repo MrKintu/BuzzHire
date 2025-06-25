@@ -8,6 +8,7 @@ from job.models import JobPost, ApplyJob
 from quiz.models import UserPersonality
 from resume.models import Resume
 from users.models import UserInfo
+from mentorship.models import MentorshipConnection
 
 
 # Index Page
@@ -60,12 +61,28 @@ def applicant_dash(request):
         messages.warning(request, "You're not authorized to view that page!")
         return redirect("recruiter-dash")
 
+    try:
+        resume = get_object_or_404(Resume, user=user)
+    except Exception as e:
+        resume = ""
+
+    try:
+        personality = get_object_or_404(UserPersonality, user=user)
+    except Exception as e:
+        personality = ""
+
+    # Onboarding checklist data
+    onboarding_status = {
+        'resume_uploaded': Resume.objects.filter(user=user).exists(),
+        'quiz_completed': UserPersonality.objects.filter(user=user).exists(),
+        'mentor_connected': MentorshipConnection.objects.filter(mentee=user).exists(),
+    }
+
     if request.method == "POST":
         data = request.POST
         user_query = data["search"]
         return redirect("search", query=user_query)
     else:
-        resume = get_object_or_404(Resume, user=user)
         applications = ApplyJob.objects.filter(resume=resume)
         app_count = applications.count()
         approved = applications.filter(status="Approved").count()
@@ -115,7 +132,8 @@ def applicant_dash(request):
             "test": test,
             "image": image,
             "persona": persona,
-            "ref": ref
+            "ref": ref,
+            "onboarding_status": onboarding_status,
         }
 
         return render(request, "dashboard/applicant-dash.html", send)
@@ -210,4 +228,3 @@ def search(request, query):
             "page_obj": page_obj
         }
         return render(request, "dashboard/search.html", send)
-

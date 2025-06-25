@@ -16,6 +16,7 @@ urlpatterns = [
     path("", include("dashboard.urls")),
     path("jobs/", include("job.urls")),
     path("matches/", include("matches.urls")),
+    path("mentors/", include("mentorship.urls")),
     path("quiz/", include("quiz.urls")),
     path("resume/", include("resume.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

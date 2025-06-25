@@ -94,3 +94,16 @@ class UserPersonality(models.Model):
         self.save()
 
         return image_path
+
+    def get_trait_vector(self):
+        """Returns a list of the 8 personality trait values."""
+        return [
+            self.introversion,
+            self.extroversion,
+            self.sensing,
+            self.intuition,
+            self.thinking,
+            self.feeling,
+            self.judging,
+            self.perceiving,
+        ]
