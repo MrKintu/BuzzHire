@@ -4,7 +4,6 @@ sqlparse
 tzdata
 psycopg
 psycopg2-binary
-
 pip
 wheel
 setuptools
@@ -17,5 +16,5 @@ matplotlib
 seaborn
 scikit-learn
 gunicorn
-uwsgi
+# uwsgi
 PyMuPDF

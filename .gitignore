@@ -7,3 +7,4 @@ media/
 logs/
 static/
 venv/
+*/migrations/0*.py
